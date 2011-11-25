@@ -56,8 +56,14 @@ void gamuzaMain::setupGui(){
 	// activate fake video grabber to obtain devices info
 	if(trackingActivated){
 		fake.setVerbose(true);
-		fake.listDevices();
-		fake.initGrabber(320, 240);
+		#ifdef TARGET_LINUX
+            	fake.initGrabber(320, 240);
+            	fake.listDevices();
+        	#endif
+        	#ifdef TARGET_OSX
+            	fake.listDevices();
+            	fake.initGrabber(320, 240);
+        	#endif
 		
 		// obtain cam devices available number
 		numCamInputs = fake.getAvailableDevicesNum();
