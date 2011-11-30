@@ -175,6 +175,7 @@ class gamuzaMain : public ofBaseApp{
 		// Live Coding vars
 		ofxGLEditor				liveCoding;
 		ofxLua					lua;
+        int                     liveKey;
 		//////////////////////////////////////////////
 	
 		//////////////////////////////////////////////

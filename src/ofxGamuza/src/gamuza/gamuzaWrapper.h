@@ -1,5 +1,5 @@
 /*
- * Extending ofxLuaWrapper for gamuza
+ * Extending ofxLuaWrapper for GAmuza
  *
  * ORIGINAL FILE FROM:
  * Dan Wilcox <danomatika@gmail.com>
@@ -30,21 +30,21 @@
 #include "gamuzaIncludes.h"
 
 class ofGamuzaWrapper{
-
+	
 	public:
-
+	
 	/// static function called when binding
 	static void bind(ofxLua& lua) {
-
+		
 		using namespace luabind;
-
+		
 		/// OpenFrameworks api wrapper
 		///
 		module(lua, "of")
 		[
 		 ///////////////////////////////
 		 /// \section Graphics
-
+		 
 		 /// openGL wrappers
 		 def("pushMatrix", &ofPushMatrix),
 		 def("popMatrix", &ofPopMatrix),
@@ -55,33 +55,33 @@ class ofGamuzaWrapper{
 		 def("rotateY", &ofRotateY),
 		 def("rotateZ", &ofRotateZ),
 		 def("rotate", (void(*)(float)) &ofRotate),
-
+		 
 		 /// drawing modes
 		 def("setCircleResolution", &ofSetCircleResolution),
 		 def("setCurveResolution", &ofSetCurveResolution),
-
+		 
 		 /// drawing options
 		 def("noFill", &ofNoFill),
 		 def("fill", &ofFill),
 		 def("setLineWidth", &ofSetLineWidth),
-
+		 
 		 /// color options
 		 def("setColor", (void(*)(int)) &ofSetColor),
 		 def("setColor", (void(*)(int,int,int)) &ofSetColor),
 		 def("setColor", (void(*)(int,int,int,int)) &ofSetColor),
 		 def("setHexColor", (void(*)(int)) &ofSetHexColor),
-
+		 
 		 /// transparency
 		 def("enableAlphaBlending", &ofEnableAlphaBlending),
 		 def("disableAlphaBlending", &ofDisableAlphaBlending),
-
+		 
 		 /// smooth
 		 def("enableSmoothing", &ofEnableSmoothing),
 		 def("disableSmoothing", &ofDisableSmoothing),
-
+		 
 		 /// drawing style
 		 def("setPolyMode", &ofSetPolyMode),
-
+		 
 		 /// background
 		 def("background",	(void(*)(int)) &background),
 		 def("background",	(void(*)(int,int)) &ofBackground),
@@ -90,7 +90,7 @@ class ofGamuzaWrapper{
 		 //def("setBackgroundAuto",	(void(*)(bool)) &ofSetBackgroundAuto),
 		 def("clear",		(void(*)(float,float,float,float)) &ofClear),
 		 def("clearAlpha",	&ofClearAlpha),
-
+		 
 		 /// geometry
 		 def("line", 	(void(*)(float,float,float,float)) &ofLine),
 		 def("rect", 	(void(*)(float,float,float,float)) &ofRect),
@@ -99,7 +99,7 @@ class ofGamuzaWrapper{
 		 def("ellipse",	(void(*)(float,float,float,float)) &ofEllipse),
 		 def("curve", 	(void(*)(float,float,float,float,float,float,float,float)) &ofCurve),
 		 def("bezier",	(void(*)(float,float,float,float,float,float,float,float)) &ofBezier),
-
+		 
 		 /// polygons
 		 def("beginShape", &ofBeginShape),
 		 def("vertex",	(void(*)(float,float)) &ofVertex),
@@ -107,27 +107,27 @@ class ofGamuzaWrapper{
 		 def("bezierVertex", (void(*)(float,float,float,float,float,float)) &ofBezierVertex),
 		 def("endShape",	&ofEndShape),
 		 def("nextContour", &ofNextContour),
-
+		 
 		 /// bitmapped text
 		 def("drawBitmapString", (void(*)(string,float,float)) &ofDrawBitmapString),
-
+		 
 		 ///////////////////////////////
 		 /// \section PolyLine
-
+		 
 		 class_<ofPolyline>("polyline")
 		 .def(constructor<>())
 		 .enum_("windingMode")
-		 [
+		 [	
 		  value("WINDING_ODD", OF_POLY_WINDING_ODD),
 		  value("WINDING_NONZERO", OF_POLY_WINDING_NONZERO),
 		  value("WINDING_POSITIVE", OF_POLY_WINDING_POSITIVE),
 		  value("WINDING_NEGATIVE", OF_POLY_WINDING_NEGATIVE),
 		  value("WINDING_ABS_GEQ_TWO", OF_POLY_WINDING_ABS_GEQ_TWO)
 		  ],
-
+		 
 		 ///////////////////////////////
 		 /// \section Rectangle
-
+		 
 		 class_<ofRectangle>("rectangle")
 		 .def(constructor<>())
 		 .def(constructor<const ofRectangle&>())
@@ -140,10 +140,10 @@ class ofGamuzaWrapper{
 		 .def_readonly("y", &ofRectangle::y)
 		 .def_readonly("width", &ofRectangle::width)
 		 .def_readonly("height", &ofRectangle::height),
-
+		 
 		 ///////////////////////////////
 		 /// \section Color
-
+		 
 		 class_<ofColor>("color")
 		 .def(constructor<>())
 		 .def(constructor<float,float,float,float>())
@@ -163,10 +163,10 @@ class ofGamuzaWrapper{
 		 .def("setHue", &ofColor::setHue)
 		 .def("setSaturation", &ofColor::setSaturation)
 		 .def("setBrightness", &ofColor::setBrightness),
-
+		 
 		 ///////////////////////////////
 		 /// \section Pixels
-
+		 
 		 class_<ofPixels>("pixels")
 		 .def(constructor<>())
 		 .def("allocate", (void(ofPixels::*)(int,int,int)) &ofPixels::allocate)
@@ -194,10 +194,10 @@ class ofGamuzaWrapper{
 		  value("BGRA", OF_PIXELS_BGRA),
 		  value("RGB565", OF_PIXELS_RGB565)
 		  ],
-
+		 
 		 ///////////////////////////////
 		 /// \section Texture
-
+		 
 		 class_<ofTexture>("texture")
 		 .def(constructor<>())
 		 .def("allocate", (void(ofTexture::*)(int,int,int)) &ofTexture::allocate)
@@ -226,10 +226,10 @@ class ofGamuzaWrapper{
 		  value("GL_RGBA4", GL_RGBA4),
 		  value("GL_RGBA8", GL_RGBA8)
 		  ],
-
+		 
 		 ///////////////////////////////
 		 /// \section Image
-
+		 
 		 class_<ofImage>("image")
 		 .def(constructor<>())
 		 .def(constructor<const string&>())
@@ -258,10 +258,10 @@ class ofGamuzaWrapper{
 		  value("COLOR_ALPHA", OF_IMAGE_COLOR_ALPHA),
 		  value("UNDEFINED", OF_IMAGE_UNDEFINED)
 		  ],
-
+		 
 		 ///////////////////////////////
 		 /// \section VideoPlayer
-
+		 
 		 class_<ofVideoPlayer>("videoPlayer")
 		 .def(constructor<>())
 		 .def("loadMovie", (bool(ofVideoPlayer::*)(string)) &ofVideoPlayer::loadMovie)
@@ -311,10 +311,10 @@ class ofGamuzaWrapper{
 		  value("PALINDROME", OF_LOOP_PALINDROME),
 		  value("NORMAL", OF_LOOP_NORMAL)
 		  ],
-
+		 
 		 ///////////////////////////////
 		 /// \section Font
-
+		 
 		 class_<ofTrueTypeFont>("font")
 		 .def(constructor<>())
 		 .def("loadFont", &loadFont2)
@@ -332,10 +332,10 @@ class ofGamuzaWrapper{
 		 .def("getStringBoundingBox", &ofTrueTypeFont::getStringBoundingBox)
 		 .def("drawString", &ofTrueTypeFont::drawString)
 		 .def("drawStringAsShapes", &ofTrueTypeFont::drawStringAsShapes),
-
+		 
 		 ///////////////////////////////
 		 /// \section Sound Player
-
+		 
 		 class_<ofSoundPlayer>("soundPlayer")
 		 .def(constructor<>())
 		 .def("loadSound", (void(ofSoundPlayer::*)(string,bool)) &ofSoundPlayer::loadSound)
@@ -353,10 +353,10 @@ class ofGamuzaWrapper{
 		 .def("getIsPlaying", (bool(ofSoundPlayer::*)(void)) &ofSoundPlayer::getIsPlaying)
 		 .def("getSpeed", (float(ofSoundPlayer::*)(void)) &ofSoundPlayer::getSpeed)
 		 .def("getPan", (float(ofSoundPlayer::*)(void)) &ofSoundPlayer::getPan),
-
+		 
 		 ///////////////////////////////
 		 /// \section Math
-
+		 
 		 def("nextPow2", (int(*)(int)) &ofNextPow2),
 		 def("seedRandom", (void(*)(void)) &ofSeedRandom),
 		 def("seedRandom", (void(*)(int)) &ofSeedRandom),
@@ -388,10 +388,10 @@ class ofGamuzaWrapper{
 		 def("signedNoise", (float(*)(float,float)) &ofSignedNoise),
 		 def("signedNoise", (float(*)(float,float,float)) &ofSignedNoise),
 		 def("signedNoise", (float(*)(float,float,float,float)) &ofSignedNoise),
-
+		 
 		 ///////////////////////////////
 		 /// \section ofVec
-
+		 
 		 class_<ofVec2f>("vec2f")
 		 .def(constructor<>())
 		 .def(constructor<float,float>())
@@ -399,7 +399,7 @@ class ofGamuzaWrapper{
 		 .def(constructor<const ofVec4f&>())
 		 .def("set", (void(ofVec2f::*)(float,float)) &ofVec2f::set)
 		 .def("set", (void(ofVec2f::*)(const ofVec2f&)) &ofVec2f::set),
-
+		 
 		 class_<ofVec3f>("vec3f")
 		 .def(constructor<>())
 		 .def(constructor<float,float,float>())
@@ -407,7 +407,7 @@ class ofGamuzaWrapper{
 		 .def(constructor<const ofVec4f&>())
 		 .def("set", (void(ofVec3f::*)(float,float,float)) &ofVec3f::set)
 		 .def("set", (void(ofVec3f::*)(const ofVec3f&)) &ofVec3f::set),
-
+		 
 		 class_<ofVec4f>("vec4f")
 		 .def(constructor<>())
 		 .def(constructor<float,float,float,float>())
@@ -415,29 +415,29 @@ class ofGamuzaWrapper{
 		 .def(constructor<const ofVec3f&>())
 		 .def("set", (void(ofVec4f::*)(float,float,float,float)) &ofVec4f::set)
 		 .def("set", (void(ofVec4f::*)(const ofVec4f&)) &ofVec4f::set),
-
+		 
 		 ///////////////////////////////
 		 /// \section App
-
+		 
 		 /// input properties
 		 def("mouseX", &getMouseX), // of.mouseX()
 		 def("mouseY", &getMouseY), // of.mouseY()
-
+		 
 		 /// exit
-		 //def("exit", (void(*)(void)) &ofExit),
-		 //def("exit", (void(*)(int)) &ofExit),
-
+		 def("exit", (void(*)(void)) &ofExit),
+		 def("exit", (void(*)(int)) &ofExit),
+		 
 		 /// time
 		 def("getFrameRate", &ofGetFrameRate),
 		 def("getFrameNum", &ofGetFrameNum),
 		 def("setFrameRate", &ofSetFrameRate),
 		 def("sleepMillis", &ofSleepMillis),
 		 def("getLastFrameTime", &ofGetLastFrameTime),
-
+		 
 		 /// cursor
 		 def("hideCursor", &ofHideCursor),
 		 def("showCursor", &ofShowCursor),
-
+		 
 		 /// window / screen
 		 def("getWindowPositionX", &ofGetWindowPositionX),
 		 def("getWindowPositionY", &ofGetWindowPositionY),
@@ -448,65 +448,69 @@ class ofGamuzaWrapper{
 		 def("getHeight", &ofGetHeight),
 		 def("getWindowWidth", &ofGetWindowWidth),
 		 def("getWindowHeight", &ofGetWindowHeight),
-
+		 
 		 ///////////////////////////////
 		 /// \section Utils
-
+		 
 		 def("resetElapsedTimeCounter", &ofResetElapsedTimeCounter),
 		 def("getElapsedTimef", &ofGetElapsedTimef),
 		 def("getElapsedTimeMillis", &ofGetElapsedTimeMillis),
 		 def("getElapsedTimeMicros", &ofGetElapsedTimeMicros),
 		 def("getFrameNum", &ofGetFrameNum),
-
+		 
 		 def("getSeconds", &ofGetSeconds),
 		 def("getMinutes", &ofGetMinutes),
 		 def("getHours", &ofGetHours),
-
+		 
 		 def("getUnixTime", &ofGetUnixTime),
 		 def("getSystemTime", &ofGetSystemTime),
 		 def("getSystemTimeMicros", &ofGetSystemTimeMicros),
-
+		 
 		 def("getTimestampString", (string(*)(void)) &ofGetTimestampString),
 		 def("getTimestampString", (string(*)(string)) &ofGetTimestampString),
-
+		 
 		 def("getYear", &ofGetYear),
 		 def("getMonth", &ofGetMonth),
 		 def("getDay", &ofGetDay),
 		 def("getWeekday", &ofGetWeekday),
-
+		 
 		 def("toInt", (int(*)(const string&)) &ofToInt),
 		 def("toChar", (char(*)(const string&)) &ofToChar),
 		 def("toFloat", (float(*)(const string&)) &ofToFloat),
 		 def("toBool", (bool(*)(const string&)) &ofToBool),
-
+		 
 		 def("toBinary", (string(*)(const string&)) &ofToBinary),
 		 def("toBinary", (string(*)(const char*)) &ofToBinary),
-
+		 
 		 def("binaryToInt", (int(*)(const string&)) &ofBinaryToInt),
 		 def("binaryToChar", (char(*)(const string&)) &ofBinaryToChar),
 		 def("binaryToFloat", (float(*)(const string&)) &ofBinaryToFloat),
 		 def("binaryToString", (string(*)(const string&)) &ofBinaryToString),
-
+		 
 		 def("splitString", (vector<string>(*)(const string&, const string&, bool)) &ofSplitString),
 		 def("joinString", (string(*)(vector<string>, const string&)) &ofJoinString),
 		 def("stringReplace", (void(*)(string&, string, string)) &ofStringReplace),
 		 def("isStringInString", (bool(*)(string, string)) &ofIsStringInString),
-
+		 
 		 def("launchBrowser", &ofLaunchBrowser)
 		];
-
+		
 		//////////////////////////////////////////////////////////////
 		///////////////////////////////
 		/// gamuza core api wrapper
 		module(lua, "ga")
 		[
-
+		 
+         ///////////////////////////////
+		 // app section
+         def("key", &getKey), // ga.key()
+         
 		 ///////////////////////////////
 		 // graphics section
 		 def("background", (void(*)(float,float)) &gaBackground),
 		 def("background", (void(*)(float,float,float,float)) &gaBackground),
 		 def("cameraTexture", (ofTexture(*)(int)) &gaGetWebcamTexture),
-
+		 
 		 ///////////////////////////////
 		 // audio synth section
 		 def("wave", &gaSetupOSC),
@@ -516,24 +520,35 @@ class ofGamuzaWrapper{
 		 def("waveType", &gaSetOscWaveType),
 		 def("waveTuning,", &gaSetOscTuning),
 		 def("nToF", &gaNote),
-
+		 
 		 //////////////////////////////////////////////////////////////// GUI MODULES
 		 ///////////////////////////////
 		 // openni sensor kinect
-		 def("oniBlobs", (int(*)(void)) &getONIRunningBlob),
-		 def("oniBlobX", (float(*)(int)) &getONIBlobX),
-		 def("oniBlobY", (float(*)(int)) &getONIBlobY),
-		 def("oniBlobW", (float(*)(int)) &getONIBlobW),
-		 def("oniBlobH", (float(*)(int)) &getONIBlobH),
-		 def("oniBlobAngle", (float(*)(int)) &getONIBlobAngle),
-		 def("oniBlobContour", (vector<ofVec2f>(*)(int)) &getONIBlobContour, return_stl_iterator),
-		 def("oniBlobGeometry", (vector<ofVec4f>(*)(int)) &getONIBlobGeometry, return_stl_iterator),
-		 def("oniOpticalFlow", (ofVec2f*(*)(void)) &getONIOpticalFlow),
-		 def("oniTrigger", (bool(*)(int)) &getONITrigger),
-		 def("oniHand", (ofVec3f(*)(int)) &getONIHand),
-		 def("oniAccelerometer", (ofVec3f(*)(void)) &getONIAccelerometer),
-		 def("oniTilt", (float(*)(void)) &getONITilt),
-
+		 def("oniBlobs", (int(*)(void)) &gaONIRunningBlob),
+		 def("oniBlobX", (float(*)(int)) &gaONIBlobX),
+		 def("oniBlobY", (float(*)(int)) &gaONIBlobY),
+		 def("oniBlobW", (float(*)(int)) &gaONIBlobW),
+		 def("oniBlobH", (float(*)(int)) &gaONIBlobH),
+		 def("oniBlobAngle", (float(*)(int)) &gaONIBlobAngle),
+		 def("oniBlobContourSize", (int(*)(int)) &gaONIBlobContourSize),
+         def("oniBlobCPointX", (float(*)(int,int)) &gaONIBlobCPointX),
+         def("oniBlobCPointY", (float(*)(int,int)) &gaONIBlobCPointY),
+		 def("oniBlobGeometrySize", (int(*)(int)) &gaONIBlobGeometrySize),
+         def("oniBlobGLineX1", (float(*)(int,int)) &gaONIBlobGLineX1),
+         def("oniBlobGLineY1", (float(*)(int,int)) &gaONIBlobGLineY1),
+         def("oniBlobGLineX2", (float(*)(int,int)) &gaONIBlobGLineX2),
+         def("oniBlobGLineY2", (float(*)(int,int)) &gaONIBlobGLineY2),
+		 def("oniOpticalFlowX", (float(*)(int,int)) &gaONIOpticalFlowX),
+         def("oniOpticalFlowY", (float(*)(int,int)) &gaONIOpticalFlowY),
+		 def("oniTrigger", (bool(*)(int)) &gaONITrigger),
+		 def("oniHandX", (float(*)(int)) &gaONIHandX),
+         def("oniHandY", (float(*)(int)) &gaONIHandY),
+         def("oniHandZ", (float(*)(int)) &gaONIHandZ),
+		 def("oniAccelerometerX", (float(*)(void)) &gaONIAccelerometerX),
+         def("oniAccelerometerY", (float(*)(void)) &gaONIAccelerometerY),
+         def("oniAccelerometerZ", (float(*)(void)) &gaONIAccelerometerZ),
+		 def("oniTilt", (float(*)(void)) &gaONITilt),
+		 
 		 ///////////////////////////////
 		 // webcam tracking
 		 def("camMotionQ", (float(*)(int)) &gaCamMotionQ),
@@ -545,51 +560,93 @@ class ofGamuzaWrapper{
 		 def("camBlobW", (float(*)(int,int)) &gaCamBlobW),
 		 def("camBlobH", (float(*)(int,int)) &gaCamBlobH),
 		 def("camBlobAngle", (float(*)(int,int)) &gaCamBlobAngle),
-		 def("camBlobContour", (vector<ofVec2f>(*)(int,int)) &gaCamBlobContour, return_stl_iterator),
-		 def("camBlobGeometry", (vector<ofVec4f>(*)(int,int)) &gaCamBlobGeometry, return_stl_iterator),
-		 def("camOpticalFlow", (ofVec2f*(*)(int)) &gaCamOpticalFlow),
-		 def("camHaar", (ofVec4f(*)(int,int)) &gaCamHaar),
+         def("camBlobContourSize", (int(*)(int,int)) &gaCamBlobContourSize),
+         def("camBlobCPointX", (float(*)(int,int,int)) &gaCamBlobCPointX),
+         def("camBlobCPointY", (float(*)(int,int,int)) &gaCamBlobCPointY),
+		 def("camBlobGeometrySize", (int(*)(int,int)) &gaCamBlobGeometrySize),
+         def("camBlobGLineX1", (float(*)(int,int,int)) &gaCamBlobGLineX1),
+         def("camBlobGLineY1", (float(*)(int,int,int)) &gaCamBlobGLineY1),
+         def("camBlobGLineX2", (float(*)(int,int,int)) &gaCamBlobGLineX2),
+         def("camBlobGLineY2", (float(*)(int,int,int)) &gaCamBlobGLineY2),
+		 def("camOpticalFlowX", (float(*)(int,int,int)) &gaCamOpticalFlowX),
+         def("camOpticalFlowY", (float(*)(int,int,int)) &gaCamOpticalFlowY),
+		 def("camHaarX", (float(*)(int,int)) &gaCamHaarX),
+         def("camHaarY", (float(*)(int,int)) &gaCamHaarY),
+         def("camHaarW", (float(*)(int,int)) &gaCamHaarW),
+         def("camHaarH", (float(*)(int,int)) &gaCamHaarH),
 		 def("camTrigger", (bool(*)(int,int)) &gaCamTrigger),
-
+		 
 		 ///////////////////////////////
 		 // audio input
 		 def("getVolume", (float(*)(int)) &gaGetVolume),
 		 def("getPitch", (float(*)(int)) &gaGetPitch),
 		 def("getBin", (float(*)(int,int)) &gaGetFFTBin),
 		 def("getFFT", (float*(*)(int)) &gaGetFFTBins),
-
+		 
 		 ///////////////////////////////
 		 // arduino
 		 def("analogRead", (float(*)(int)) &gaGetAArduinoPin),
 		 def("digitalRead", (int(*)(int)) &gaGetDArduinoPin),
 		 def("digitalWrite", (void(*)(int,int)) &gaSetDArduinoPin)
 		 //////////////////////////////////////////////////////////////// GUI MODULES
-
-
+		 
+		 
 		];
 		//////////////////////////////////////////////////////////////
-
+		
 		///////////////////////////////
 		/// \section Add Values
-
-		/// add some constant values to the lua state
-		//lua.doString("math.HALF_PI = "+ofToString(HALF_PI));
-		//lua.doString("math.PI = "+ofToString(PI));
-		//lua.doString("math.TWO_PI = "+ofToString(TWO_PI));
-
+		
+		/// OF math constants		
+		lua.doString("HALF_PI = "+ofToString(HALF_PI));
+		lua.doString("PI = "+ofToString(PI));
+		lua.doString("TWO_PI = "+ofToString(TWO_PI));
+        lua.doString("FOUR_PI = "+ofToString(FOUR_PI));
+        lua.doString("DEG_TO_RAD = "+ofToString(DEG_TO_RAD));
+        lua.doString("RAD_TO_DEG = "+ofToString(RAD_TO_DEG));
+        
+        // OF key constants
+        lua.doString("OF_KEY_RETURN = "+ofToString(OF_KEY_RETURN));
+        lua.doString("OF_KEY_ESC = "+ofToString(OF_KEY_ESC));
+        lua.doString("OF_KEY_F1 = "+ofToString(OF_KEY_F1));
+        lua.doString("OF_KEY_F2 = "+ofToString(OF_KEY_F2));
+        lua.doString("OF_KEY_F3 = "+ofToString(OF_KEY_F3));
+        lua.doString("OF_KEY_F4 = "+ofToString(OF_KEY_F4));
+        lua.doString("OF_KEY_F5 = "+ofToString(OF_KEY_F5));
+        lua.doString("OF_KEY_F6 = "+ofToString(OF_KEY_F6));
+        lua.doString("OF_KEY_F7 = "+ofToString(OF_KEY_F7));
+        lua.doString("OF_KEY_F8 = "+ofToString(OF_KEY_F8));
+        lua.doString("OF_KEY_F9 = "+ofToString(OF_KEY_F9));
+        lua.doString("OF_KEY_F10 = "+ofToString(OF_KEY_F10));
+        lua.doString("OF_KEY_F11 = "+ofToString(OF_KEY_F11));
+        lua.doString("OF_KEY_F12 = "+ofToString(OF_KEY_F11));
+        lua.doString("OF_KEY_LEFT = "+ofToString(OF_KEY_LEFT));
+        lua.doString("OF_KEY_UP = "+ofToString(OF_KEY_UP));
+        lua.doString("OF_KEY_RIGHT = "+ofToString(OF_KEY_RIGHT));
+        lua.doString("OF_KEY_DOWN = "+ofToString(OF_KEY_DOWN));
+        lua.doString("OF_KEY_PAGE_UP = "+ofToString(OF_KEY_PAGE_UP));
+        lua.doString("OF_KEY_PAGE_DOWN = "+ofToString(OF_KEY_PAGE_DOWN));
+        lua.doString("OF_KEY_HOME = "+ofToString(OF_KEY_HOME));
+        lua.doString("OF_KEY_END = "+ofToString(OF_KEY_END));
+        lua.doString("OF_KEY_INSERT = "+ofToString(OF_KEY_INSERT));
+        lua.doString("OF_KEY_BACKSPACE = "+ofToString(OF_KEY_BACKSPACE));
+        lua.doString("OF_KEY_DEL = "+ofToString(OF_KEY_DEL));
+		
 		// graphics
 		lua.doString("OUTPUT_W = "+ofToString(gapp->gamuzaBase.projectionScreenW));
 		lua.doString("OUTPUT_H = "+ofToString(gapp->gamuzaBase.projectionScreenH));
 		lua.doString("CAPTURE_W = "+ofToString(gapp->gamuzaBase.workingW));
 		lua.doString("CAPTURE_H = "+ofToString(gapp->gamuzaBase.workingH));
 		lua.doString("CAPTURE_PIX = "+ofToString(gapp->gamuzaBase.totPixels));
-
+		
 		// video tracking
 		lua.doString("MAX_BLOBS = "+ofToString(MAX_USERS_HARDLIMIT));
-
+        lua.doString("OPTICAL_FLOW_GRID_X = "+ofToString((int)(gapp->gamuzaBase.workingW/OPTICAL_FLOW_COLS_STEP)));
+        lua.doString("OPTICAL_FLOW_GRID_Y = "+ofToString((int)(gapp->gamuzaBase.workingH/OPTICAL_FLOW_ROWS_STEP)));
+		
 		// audio analysis
 		lua.doString("FFT_BANDS = "+ofToString(BARK_SCALE_CRITICAL_BANDS));
-
+		
 		// audio synth
 		lua.doString("SIN = "+ofToString(OSC_SINE_WAVE));
 		lua.doString("COS = "+ofToString(OSC_COSINE_WAVE));
@@ -710,13 +767,13 @@ class ofGamuzaWrapper{
 		lua.doString("LA_8 = "+ofToString(LA_8));
 		lua.doString("LAB_8 = "+ofToString(LAB_8));
 		lua.doString("SI_8 = "+ofToString(SI_8));
-
+		
 		//////////////////////////////////////////////////////////////
 		///////////////////////////////
 		/// opengl core api wrapper
 		module(lua, "gl")
 		[
-
+			 
 			 def("enable", &glEnable),
 			 def("disable", &glDisable),
 			 def("depthMask",&glDepthMask),
@@ -734,7 +791,7 @@ class ofGamuzaWrapper{
 			 def("viewport", &glViewport),
 			 def("translate", &glTranslatef)
 		];
-
+		
 		lua.doString("GL_POINTS = "+ofToString(GL_POINTS));
 		lua.doString("GL_LINES = "+ofToString(GL_LINES));
 		lua.doString("GL_LINE_STRIP = "+ofToString(GL_LINE_STRIP));
@@ -750,16 +807,16 @@ class ofGamuzaWrapper{
 		lua.doString("GL_RGB = "+ofToString(GL_RGB));
 		lua.doString("GL_RGBA = "+ofToString(GL_RGBA));
 		//////////////////////////////////////////////////////////////
-
+		
 	}
-
+	
 	////////////////////////////////////////////////////////
 	/// \section Function & Object Wrappers
-
+	
 	/// background
 	static void background(int brightness) 		{ofBackground(brightness);}
 	static void background(int r, int g, int b)	{ofBackground(r, g, b);}
-
+	
 	/// ofPixels
 	static unsigned char getPixel(ofPixels* pixels, int index) {
 		return pixels->getPixels()[index];
@@ -767,11 +824,14 @@ class ofGamuzaWrapper{
 	static void setPixel(ofPixels* pixels, int index, unsigned char p) {
 		pixels->getPixels()[index] = p;
 	}
-
+	
 	/// global mouse vars
 	static float getMouseX() {return (float)ofGetAppPtr()->mouseX;}
 	static float getMouseY() {return (float)ofGetAppPtr()->mouseY;}
-
+    
+    /// global key vars
+    static int getKey() {return (int)gapp->gamuzaBase.liveKey;}
+	
 	/// ofTrueTypeFont
 	static void loadFont2(ofTrueTypeFont* font, string filename, int fontsize) {
 		font->loadFont(filename, fontsize);

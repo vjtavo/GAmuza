@@ -22,12 +22,14 @@ using namespace fluxus;
 class ofxGLEditor {
 
 public:
-
+	
 	void setup(string fontFile = GL_EDITOR_FONT);
-	void keyPressed(int key);
-	void draw();
+    	void renderScript();
+	void keyPressed(int key, bool editorOn);
+	void draw();	
 	void reShape();
 	void reShape(int _w, int _h);
+    	void reShape(int _w, int _h, int _x, int _y);
 	bool isAltPressed(); // should be used in keypress callback
 	void pasteFromClipBoard();
 	void pasteFromLuaScript(string _s);
@@ -35,13 +37,13 @@ public:
 	void saveToFile();
 	void saveToFile(string _name,string _path);
 	void saveToFile(string _path);
-
-
-	ofxKeyMap kmap;
+	
+	
+	ofxKeyMap kmap;	
 	vector<GLEditor*> glEditor;
 	int currentEditor;
 	ClipBoard clipBoard;
-
+	
 	ofEvent<string> doCompileEvent;
-
+	
 };

@@ -51,19 +51,20 @@ void gamuzaMain::setupGui(){
 	// load fonts
 	fontSmall.loadFont(GAMUZA_FONT, 6);
 	///////////////////////////////////////////////
-	
+    
 	///////////////////////////////////////////////
 	// activate fake video grabber to obtain devices info
 	if(trackingActivated){
 		fake.setVerbose(true);
-		#ifdef TARGET_LINUX
-            	fake.initGrabber(320, 240);
-            	fake.listDevices();
-        	#endif
-        	#ifdef TARGET_OSX
-            	fake.listDevices();
-            	fake.initGrabber(320, 240);
-        	#endif
+        
+        #ifdef TARGET_LINUX
+            fake.initGrabber(320, 240);
+            fake.listDevices();
+        #endif
+        #ifdef TARGET_OSX
+            fake.listDevices();
+            fake.initGrabber(320, 240);
+        #endif
 		
 		// obtain cam devices available number
 		numCamInputs = fake.getAvailableDevicesNum();
@@ -244,15 +245,25 @@ void gamuzaMain::setupGui(){
 	gui.setWhichColumn(1);
 	//////////////////////////////////////////////
 	gui.addDrawableRect("Output Projection Preview", &kuro, 512, 384);
-	sprintf(xml_name,"USE_VSYNC");
+    gui.addChartPlotter("FPS chart", guiStatVarPointer("gamuza FPS", &gamuzaRealFPS, GUI_VAR_FLOAT, true, 2), 512, 70, 200, 1, 120);
+	sprintf(xml_name,"RENDER_SCRIPT");
+	gui.addToggle("render script", xml_name, false);
+    sprintf(xml_name,"ACTIVATE_LIVE_EDITOR");
+	gui.addToggle("activate editor", xml_name, false);
+    sprintf(xml_name,"VIEW_LIVE_PREVIEW");
+	gui.addToggle("view preview texture", xml_name, false);
+    sprintf(xml_name,"VIEW_LIVE_CODE");
+	gui.addToggle("view code on output texture", xml_name, false);
+    sprintf(xml_name,"USE_VSYNC");
 	gui.addToggle("use vertical sync", xml_name, false);
-	gui.addChartPlotter("FPS chart", guiStatVarPointer("gamuza FPS", &gamuzaRealFPS, GUI_VAR_FLOAT, true, 2), 512, 182, 200, 1, 120);
 	//////////////////////////////////////////////
 	
 	gui.setWhichColumn(2);
 	//////////////////////////////////////////////
+    gui.setOutlineColor(simpleColor(30,30,30,255));
 	scriptsLister.listDir("scripts/");
 	gui.addFileLister("script examples", &scriptsLister, 160, 562);
+    gui.setOutlineColor(simpleColor(0,0,0,255));
 	sprintf(xml_name,"OPEN_SCRIPT_FILE_DIALOG");
 	gui.addToggle("open script", xml_name, false);
 	sprintf(xml_name,"SAVE_SCRIPT_FILE_DIALOG");
@@ -1054,6 +1065,12 @@ void gamuzaMain::updateGui(){
 		fbo_diffusion = gui.getValueF(xml_name);
 	}
 	//////////////////////////////////////////////
+    sprintf(xml_name,"ACTIVATE_LIVE_EDITOR");
+	activateLiveEditor = gui.getValueI(xml_name);
+    sprintf(xml_name,"VIEW_LIVE_PREVIEW");
+	viewPreview = gui.getValueI(xml_name);
+    sprintf(xml_name,"VIEW_LIVE_CODE");
+	codeOnLive = gui.getValueI(xml_name);
 	sprintf(xml_name,"USE_VSYNC");
 	useVSync = gui.getValueI(xml_name);
 	//////////////////////////////////////////////
@@ -1531,7 +1548,7 @@ void gamuzaMain::drawGui(){
 			glPushMatrix();	
 				glTranslatef(950, 676, 0.0f);
 				glEnable(GL_BLEND);
-				glColor4f(0.3f,0.3f,0.3f,0.15f);
+				glColor4f(0.4f,0.4f,0.4f,0.75f);
 				ofNoFill();
 				glLineWidth(1.0f);
 				ofBeginShape();
@@ -1539,7 +1556,7 @@ void gamuzaMain::drawGui(){
 					ofVertex(i * stretch, hardClip(outputBufferCopy[i]) * 20);
 					ofVertex((i + 1) * stretch, hardClip(outputBufferCopy[i+1]) * 20);
 				}
-				ofEndShape();
+				ofEndShape(false);
 				glDisable(GL_BLEND);
 			glPopMatrix();
 		}
@@ -1688,6 +1705,11 @@ void gamuzaMain::eventsIn(guiCallbackData & data){
 		
 		if(data.isElement("DRAW_FBO_CALIB_SCREEN") && data.getInt(0) == 1){
 			gui.setValueB("USE_LIVECODING", false);
+		}
+        
+        if(data.isElement("RENDER_SCRIPT") && data.getInt(0) == 1){
+            liveCoding.renderScript();
+			gui.setValueB("RENDER_SCRIPT", false);
 		}
 		
 	}

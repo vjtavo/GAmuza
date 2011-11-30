@@ -26,7 +26,19 @@ void ofxGLEditor::setup(string fontFile) {
 
 }
 
-void ofxGLEditor::keyPressed(int key) {
+void ofxGLEditor::renderScript(){
+    int i = 0;
+    string script;
+    for (int i = 0; i < glEditor.size(); i++) {
+        script += wstring_to_string(glEditor[i]->GetAllText());
+        script += "\n";
+        glEditor[i]->m_haveError = false;
+        glEditor[i]->m_errorLine = 0;
+    }
+    ofNotifyEvent(doCompileEvent, script);
+}
+
+void ofxGLEditor::keyPressed(int key, bool editorOn) {
 
 	bool alt = kmap.isAltDown();
 	bool shift = kmap.isShiftDown();
@@ -54,15 +66,7 @@ void ofxGLEditor::keyPressed(int key) {
 	}
 
 	if (alt && key == 'r') {
-		int i = 0;
-		string script;
-		for (int i = 0; i < glEditor.size(); i++) {
-			script += wstring_to_string(glEditor[i]->GetAllText());
-			script += "\n";
-			glEditor[i]->m_haveError = false;
-			glEditor[i]->m_errorLine = 0;
-		}
-		ofNotifyEvent(doCompileEvent, script);
+		renderScript();
 	}else if (alt && key == 'b') {
 		glEditor[currentEditor]->BlowupCursor();
 	}else if (alt && key == 'a') {
@@ -94,7 +98,10 @@ void ofxGLEditor::keyPressed(int key) {
 	}else if (alt && key == '9') {
 		currentEditor = 9;
 	}*/
-	glEditor[currentEditor]->Handle(-1, key, special, 0, ofGetMouseX(), ofGetMouseY(), mod);
+
+    if(editorOn){
+        glEditor[currentEditor]->Handle(-1, key, special, 0, ofGetMouseX(), ofGetMouseY(), mod);
+    }
 
 }
 
@@ -139,6 +146,14 @@ void ofxGLEditor::reShape(int _w, int _h) {
 
 }
 
+void ofxGLEditor::reShape(int _w, int _h, int _x, int _y) {
+
+	for (int i = 0; i < glEditor.size(); i++) {
+		glEditor[i]->Reshape(_w*1.2, _h, _x, _y);
+	}
+
+}
+
 void ofxGLEditor::pasteFromClipBoard() {
 
 	wstring m_CopyBuffer = string_to_wstring(clipBoard.getTextFromPasteboard());
@@ -163,9 +178,9 @@ void ofxGLEditor::copyToClipBoard() {
 
 	string script = wstring_to_string(glEditor[currentEditor]->GetText());
 	#ifndef __APPLE__
-        // TODO
+    // TODO
     #else
-        clipBoard.setTextToPasteboard(script.c_str());
+    clipBoard.setTextToPasteboard(script.c_str());
     #endif
 
 }
@@ -176,6 +191,7 @@ void ofxGLEditor::saveToFile() {
 	#ifdef TARGET_OSX
 	ofSetDataPathRoot("../../../data/scripts/");
     #endif
+
 	string zero = "0";
 	string y = ofToString(ofGetYear());
 	string m = ofToString(ofGetMonth());
@@ -191,18 +207,17 @@ void ofxGLEditor::saveToFile() {
 	string ymdhms = "gamuzaScript_"+y+m+d+hour+min+sec;
 	string en = ".lua";
 	#ifndef __APPLE__
-    string fin = "scripts/"+ymdhms+en;
-    #else
-    string fin = ymdhms+en;
-    #endif
-
+    	string fin = "scripts/"+ymdhms+en;
+    	#else
+    	string fin = ymdhms+en;
+    	#endif
 
 	string scriptPath = fin;
 	string file = ofToDataPath(scriptPath);
 	ofstream myfile;
 	myfile.open(file.c_str(), _S_out);
 	string script;
-	for (unsigned int i = 0; i < glEditor.size(); i++) {
+	for (int i = 0; i < glEditor.size(); i++) {
 		script += wstring_to_string(glEditor[i]->GetAllText());
 		script += "\n";
 	}
