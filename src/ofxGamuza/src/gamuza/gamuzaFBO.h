@@ -255,7 +255,7 @@ void gamuzaMain::drawFBO(){
                         ofPushView();
                         ofPushMatrix();
                         ofPushStyle();
-                            liveCoding.reShape(previewW-90,previewH,246.0 + guiPosX,(previewH*2 / 3) + guiPosY);
+                            liveCoding.reShape(previewW-90,previewH,246 + guiPosX,314 + guiPosY);
                             glColor4f(1.0,1.0,1.0,1.0);
                             liveCoding.draw();
                         ofPopStyle();
