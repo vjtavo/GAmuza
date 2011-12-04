@@ -1429,15 +1429,23 @@ void sourceTracking::smoothingValues(){
 	
 	// optical flow pixels velocity
 	if(computeOpticalFlow){
-		for(unsigned int o=0;o<opticalFlowYGrid;o++){
-			for(unsigned int oo=0;oo<opticalFlowXGrid;oo++){
-				float _sdx,_sdy;
-				getVelAtNorm(oo, o, &_sdx, &_sdy);
-				_s_opfVel[oo+(opticalFlowXGrid*o)].x = _s_opfVel[oo+(opticalFlowXGrid*o)].x*_smoothingFactor + (1.0-_smoothingFactor)*_sdx;
-				_s_opfVel[oo+(opticalFlowXGrid*o)].y = _s_opfVel[oo+(opticalFlowXGrid*o)].y*_smoothingFactor + (1.0-_smoothingFactor)*_sdy;
-			}
-		}
-	}
+        unsigned int o=0;
+        unsigned int oo=0;
+        for (unsigned int y = 0; y < _height; y += OPTICAL_FLOW_ROWS_STEP ){
+            for (unsigned int x = 0; x < _width; x += OPTICAL_FLOW_COLS_STEP ){
+                float _sdx,_sdy;
+                _sdx = (int)cvGetReal2D(opticalFlow.getVelX(), y, x );
+                _sdy = (int)cvGetReal2D(opticalFlow.getVelY(), y, x );
+                
+                _s_opfVel[oo+(opticalFlowXGrid*o)].x = _s_opfVel[oo+(opticalFlowXGrid*o)].x*_smoothingFactor + (1.0-_smoothingFactor)*_sdx;
+                _s_opfVel[oo+(opticalFlowXGrid*o)].y = _s_opfVel[oo+(opticalFlowXGrid*o)].y*_smoothingFactor + (1.0-_smoothingFactor)*_sdy;
+                
+                oo++;
+                
+            }
+            o++;
+        }
+    }
 	
 	// face tracking blobs positions
 	if(computeHaarFinder){
@@ -1503,7 +1511,8 @@ void sourceTracking::normalizeValues(){
 	// optical flow pixels velocity
 	if(computeOpticalFlow){
 		for(unsigned int o=0;o<opticalFlowXGrid*opticalFlowYGrid;o++){
-			_osc_opfVel[o] = _s_opfVel[o];
+			_osc_opfVel[o].x = ofNormalize(_s_opfVel[o].x,0.0f,(float)_width);
+            _osc_opfVel[o].y = ofNormalize(_s_opfVel[o].y,0.0f,(float)_height);
 		}
 	}
 	

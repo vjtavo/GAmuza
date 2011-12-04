@@ -50,7 +50,15 @@ public:
 	virtual void Render();
 	virtual void Handle(int button, int key, int special, int state, int x, int y, int mod);
 	void Reshape(unsigned int w,unsigned int h);
+    void Reshape(unsigned int w,unsigned int h,unsigned int _x,unsigned int _y);
 	void BlowupCursor();
+    
+    void cutSelection();
+    void copySelection();
+    void pasteSelection();
+    
+    void selectAll();
+    void clearEditor();
 
 	wstring GetText();
 	wstring GetAllText() { return m_Text; }
@@ -144,6 +152,7 @@ public:
 	unsigned int m_HighlightEnd;
 	unsigned int m_DesiredXPos;
 	bool m_Selection;
+    bool m_SelectALL;
 	bool m_ShiftState;
 	bool m_CtrlState;
 	float m_CursorWidth;
@@ -164,6 +173,8 @@ public:
 
 	int m_Width;
 	int m_Height;
+    int m_posX;
+    int m_posY;
 
 	static PolyGlyph *m_PolyGlyph;
 #ifndef WIN32

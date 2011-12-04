@@ -33,7 +33,6 @@
 
 #include "GLEditor.h"
 #include "PolyGlyph.h"
-//#include "Interpreter.h"
 #include "assert.h"
 #include "Unicode.h"
 
@@ -109,6 +108,7 @@ m_HighlightStart(0),
 m_HighlightEnd(0),
 m_DesiredXPos(0),
 m_Selection(false),
+m_SelectALL(false),
 m_ShiftState(false),
 m_CtrlState(false),
 m_CursorWidth(0),
@@ -124,6 +124,8 @@ m_BBMinX(0),
 m_BBMinY(0),
 m_BBMaxX(0),
 m_BBMaxY(0),
+m_posX(0),
+m_posY(0),
 m_Width(0),
 m_Height(0),
 m_Delta(0.0f),
@@ -170,6 +172,15 @@ void GLEditor::Reshape(unsigned int w,unsigned int h)
 {
 	m_Width=w;
 	m_Height=h;
+}
+
+void GLEditor::Reshape(unsigned int w,unsigned int h,unsigned int _x,unsigned int _y)
+{
+	m_Width=w;
+	m_Height=h;
+    
+    m_posX = _x;
+    m_posY = _y;
 }
 
 void GLEditor::BlowupCursor()
@@ -377,12 +388,12 @@ void GLEditor::Render()
 		GetEffectParameters();
 	}
 
-    glViewport(0,0,m_Width,m_Height);
+    glViewport(m_posX,m_posY,m_Width,m_Height);
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 	glLoadIdentity();
-	// glOrtho(-50,50,-37.5,37.5,0,10);
-	glOrtho(-50,50,37.5,-37.5,0,10);
+	glOrtho(-50,50,-37.5,37.5,0,10);
+	//glOrtho(-50,50,37.5,-37.5,0,10); // vertical inverted
 
 	glMatrixMode(GL_MODELVIEW);
 	glDisable(GL_TEXTURE_2D);
@@ -472,6 +483,12 @@ void GLEditor::Render()
 			DrawCharBlock();
 			glColor4f(0.7,0.7,0.7,1);
 		}
+        
+        if(m_SelectALL){
+            glColor4f(0,1,0,0.5*m_Alpha);
+			DrawCharBlock();
+			glColor4f(0.7,0.7,0.7,1);
+        }
 
 		if(m_Text[n]=='\n')
 		{
@@ -652,6 +669,53 @@ void GLEditor::Render()
 	if (m_Delta>100.0f) m_Delta=0.000001f;
 }
 
+void GLEditor::cutSelection(){
+    if (m_Selection) 
+    {
+        m_CopyBuffer=m_Text.substr(m_HighlightStart,m_HighlightEnd-m_HighlightStart);
+        m_Text.erase(m_HighlightStart,m_HighlightEnd-m_HighlightStart);
+        if (m_Position>=m_HighlightEnd) 
+        {
+            m_Position-=m_HighlightEnd-m_HighlightStart;
+        }	
+        m_Selection=false;
+        m_SelectALL = false;
+    }
+}
+void GLEditor::copySelection(){
+    if (m_Selection) 
+    {
+        m_CopyBuffer=m_Text.substr(m_HighlightStart,m_HighlightEnd-m_HighlightStart);
+        m_SelectALL = false;
+    }
+}
+void GLEditor::pasteSelection(){
+    m_Text.insert(m_Position,m_CopyBuffer);
+    m_Selection=false;
+    m_SelectALL = false;
+    m_Position+=m_CopyBuffer.size();
+}
+
+void GLEditor::selectAll(){
+    if(!m_SelectALL){
+        m_SelectALL = true;
+        m_Selection = true;
+        m_HighlightStart = 0;
+        m_HighlightEnd = m_Text.size()-1;
+    }else{
+        m_SelectALL = false;
+        m_Selection = false;
+        m_HighlightStart = 0;
+        m_HighlightEnd = 0;
+    }
+}
+
+void GLEditor::clearEditor(){
+    ClearAllText();
+    m_haveError = false;
+    m_errorLine = 0;
+}
+
 void GLEditor::Handle(int button, int key, int special, int state, int x, int y, int mod)
 {
     // build a two byte character - todo: what happens if it's 3 or 4 bytes?
@@ -670,19 +734,19 @@ void GLEditor::Handle(int button, int key, int special, int state, int x, int y,
 			case GLUT_KEY_RIGHT: 
 			{
 				if (!m_Text.empty()) m_Position++; 
-				m_DesiredXPos=OffsetToCurrentLineStart(); 
+				m_DesiredXPos=OffsetToCurrentLineStart();
 			}
 			break;
 			case GLUT_KEY_LEFT: 
 			{
 				if (m_Position>0) m_Position--;  
-				m_DesiredXPos=OffsetToCurrentLineStart(); 
+				m_DesiredXPos=OffsetToCurrentLineStart();
 			}
 			break;
 			case GLUT_KEY_END: 
 			{
 				m_Position=LineEnd(m_Position);
-				m_DesiredXPos=OffsetToCurrentLineStart()+1; 
+				m_DesiredXPos=OffsetToCurrentLineStart()+1;
 			}
 			break;
 			case GLUT_KEY_HOME: 
@@ -758,27 +822,13 @@ void GLEditor::Handle(int button, int key, int special, int state, int x, int y,
 			case 17: ClearAllText(); break;
 			
 			case GLEDITOR_CUT: // cut
-				if (m_Selection) 
-				{
-					m_CopyBuffer=m_Text.substr(m_HighlightStart,m_HighlightEnd-m_HighlightStart);
-					m_Text.erase(m_HighlightStart,m_HighlightEnd-m_HighlightStart);
-					if (m_Position>=m_HighlightEnd) 
-					{
-						m_Position-=m_HighlightEnd-m_HighlightStart;
-					}	
-					m_Selection=false;
-				}
+				cutSelection();
 			break;
 			case GLEDITOR_COPY: // copy
-				if (m_Selection) 
-				{
-					m_CopyBuffer=m_Text.substr(m_HighlightStart,m_HighlightEnd-m_HighlightStart);
-				}
+				copySelection();
 			break;
 			case GLEDITOR_PASTE: // paste
-				m_Text.insert(m_Position,m_CopyBuffer);
-				m_Selection=false;
-				m_Position+=m_CopyBuffer.size();
+				pasteSelection();
 			break;
 			/*case GLEDITOR_PLUS: // zoom in
 				m_Scale*=1.1f;
@@ -792,7 +842,7 @@ void GLEditor::Handle(int button, int key, int special, int state, int x, int y,
 	else
 	if (mod&GLUT_ACTIVE_ALT)
 	{
-		//printf("%i\n",key);
+        //printf("%i",key);
 		switch(key)
 		{
 			// alt+l = lambda
@@ -818,8 +868,8 @@ void GLEditor::Handle(int button, int key, int special, int state, int x, int y,
 				m_Text.insert(m_Position,string_to_wstring("}"));
 				m_Position++;
 				break;
-			case 177:
-				m_Text.insert(m_Position,string_to_wstring("~"));
+            case 177:
+				m_Text.insert(m_Position, string_to_wstring("~"));
 				m_Position++;
 				break;
 			/////////////////////////
@@ -844,6 +894,7 @@ void GLEditor::Handle(int button, int key, int special, int state, int x, int y,
 								m_Position-=m_HighlightEnd-m_HighlightStart;
 							}						
 							m_Selection=false;
+                            m_SelectALL=false;
 						}
 						else
 						{

@@ -69,10 +69,12 @@ void ofxGLEditor::keyPressed(int key, bool editorOn) {
 		renderScript();
 	}else if (alt && key == 'b') {
 		glEditor[currentEditor]->BlowupCursor();
+	}else if (alt && key == 'e') {
+		glEditor[currentEditor]->clearEditor();
 	}else if (alt && key == 'a') {
-		glEditor[currentEditor]->ClearAllText();
-		glEditor[currentEditor]->m_haveError = false;
-		glEditor[currentEditor]->m_errorLine = 0;
+		glEditor[currentEditor]->selectAll();
+	}else if (alt && key == 'x') {
+		cutToClipBoard();
 	}else if (alt && key == 'c') {
 		copyToClipBoard();
 	}else if (alt && key == 'v') {
@@ -177,10 +179,24 @@ void ofxGLEditor::pasteFromLuaScript(string _s) {
 void ofxGLEditor::copyToClipBoard() {
 
 	string script = wstring_to_string(glEditor[currentEditor]->GetText());
-	#ifndef __APPLE__
-    // TODO
+    #ifndef __APPLE__
+        // TODO
     #else
-    clipBoard.setTextToPasteboard(script.c_str());
+        clipBoard.setTextToPasteboard(script.c_str());
+    #endif
+
+}
+
+void ofxGLEditor::cutToClipBoard() {
+
+	string script = wstring_to_string(glEditor[currentEditor]->GetText());
+
+    #ifndef __APPLE__
+    // TODO
+        glEditor[currentEditor]->cutSelection();
+    #else
+        clipBoard.setTextToPasteboard(script.c_str());
+        glEditor[currentEditor]->cutSelection();
     #endif
 
 }
@@ -188,8 +204,8 @@ void ofxGLEditor::copyToClipBoard() {
 void ofxGLEditor::saveToFile() {
 
 	string curPath = ofToDataPath("", false);
-	#ifdef TARGET_OSX
-	ofSetDataPathRoot("../../../data/scripts/");
+    #ifdef TARGET_OSX
+        ofSetDataPathRoot("../../../data/scripts/");
     #endif
 
 	string zero = "0";
@@ -206,11 +222,11 @@ void ofxGLEditor::saveToFile() {
 	if (sec.size() == 1) sec = zero+sec;
 	string ymdhms = "gamuzaScript_"+y+m+d+hour+min+sec;
 	string en = ".lua";
-	#ifndef __APPLE__
-    	string fin = "scripts/"+ymdhms+en;
-    	#else
-    	string fin = ymdhms+en;
-    	#endif
+    #ifndef __APPLE__
+        string fin = "scripts/"+ymdhms+en;
+    #else
+        string fin = ymdhms+en;
+    #endif
 
 	string scriptPath = fin;
 	string file = ofToDataPath(scriptPath);
@@ -223,9 +239,9 @@ void ofxGLEditor::saveToFile() {
 	}
 	myfile << script;
 	myfile.close();
-	#ifdef TARGET_OSX
-	ofSetDataPathRoot(curPath);
-	#endif
+    #ifdef TARGET_OSX
+        ofSetDataPathRoot(curPath);
+    #endif
 	cout << "script saved" << endl;
 }
 

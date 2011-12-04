@@ -387,7 +387,7 @@ void gamuzaMain::updateOSC(){
 				// sending optical flow data
 				if(inputCam[i].sendOsc_OF && inputCam[i].computeOpticalFlow){
 					for(unsigned int o=0;o<inputCam[i].opticalFlowYGrid;o++){ // Y
-						for(unsigned int oo=0;oo<inputCam[i].opticalFlowXGrid;oo++){ // X
+                        for(unsigned int oo=0;oo<inputCam[i].opticalFlowXGrid;oo++){ // X
 							osc_message.clear();
 							sprintf(osc_name,"/oscOF_DEV%i/PixelVel_X%i_Y%i",i,oo,o);
 							osc_message.setAddress(osc_name);
