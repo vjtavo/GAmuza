@@ -6,6 +6,11 @@
 #include "ofMain.h"
 #include "ofxOpenCv.h"
 
+// b&w comic style (coherent line drawing) <http://www.cs.umsl.edu/~kang/Papers/kang_npar07.html>
+#include "ofxCLD.h"
+// 80's copy-machine art
+#include "ofxHalftoner.h"
+
 // imageAnalysis
 #include "ofxCvOpticalFlowLK.h"     // cvOpticalFlowLK wrapper for OF [from Takashi Maekawa]
 #include "ofxCvHaarFinder.h"		// openCV haar finder [by Charlie, Stefanix & Kyle Mcdonald + Theo Watson]
@@ -14,7 +19,7 @@
 #include "matrixAreas.h"			// sub matrix areas for indipendent areas tracking [from Emanuele Mazza]
 
 // extends ofxCvBlob functions
-#include "ofxCvBlobTracker.h"		
+#include "ofxCvBlobTracker.h"
 #include "ofxCvTrackedBlob.h"
 #include "ofxCvConstants_Track.h"
 
@@ -38,10 +43,10 @@ class sourceTracking: public ofBaseApp, public ofxCvBlobListener{
 			void mouseDragged(int x, int y, int button);
 			void mousePressed(int x, int y, int button);
 			void mouseReleased(int x, int y, int button);
-	
+
 			void loadCalibration();
 			void getQuadSubImage(unsigned char* inputData,unsigned char* outputData,int inW,int inH,int outW,int outH,ofPoint *quad,int bpp);
-			
+
 			void calculateColorDifference();									// background subtraction using rgb image
 			void calculateGrayscaleDifference();								// background subtraction using grayscale image
 			void calculateColorDifferenceHSV();									// tracking color difference over time using HSV color information
@@ -51,24 +56,27 @@ class sourceTracking: public ofBaseApp, public ofxCvBlobListener{
 			void drawMotionCentroid();											// draw basic motion detection centroid
 			void drawContourAnalysis();											// draw contour analysis
 			void drawHaarFinder();
-	
+
 			// advanced blob tracking functions
 			void blobOn( int x, int y, int id, int order );
 			void blobMoved( int x, int y, int id, int order );
 			void blobOff( int x, int y, int id, int order );
-	
+
 			float averageBnWVal(IplImage * img);
-	
+
 			// optical flow utils function
 			void getVelAtPixel(int x, int y, float *u, float *v);               // get optical_flow pixel velocity
 			void getVelAtNorm(float x, float y, float *u, float *v);            // get optical_flow normal velocity
-			
+
 			// utils functions
 			void kalmanFilterValues();											// kalman weighted average correction
 			void smoothingValues();												// smoothing numerical data
 			void normalizeValues();												// normalize numerical data
-			
-			
+
+            // pixels manipulation
+            void computeCLD(int _black, float _sigma1, float _sigma2, float _tau, float _thresh);
+
+
 			int						_id;
 			int						_devID;
 			int						_width;
@@ -76,18 +84,29 @@ class sourceTracking: public ofBaseApp, public ofxCvBlobListener{
 			int						_numPixels;
 			bool					isPlayer;
 			string					movieFile;
-	
+
 			string					trackBg;
 			string					trackBgBW;
-			
+
 			int						videoCamSelector;
 			int						randomWait;
-			
+
 			ofVideoGrabber			vidGrabber;
 			ofVideoPlayer			vidPlayer;
-			
-			ofImage					camPixels;			// Live cam pixels copy
+
+
+            ////////////////////////////////////////////// IMAGE MANIPULATION SECTION
+            //////////////////////////////////////////////
+            unsigned char			*camPixels;         // Live cam pixels copy
 			ofTexture				camTexture;			// Live cam texture copy
+            ofTexture               effectedTexture;    // Live effected cam texture
+
+            unsigned char           *cld_pixels;
+            imatrix                 cld_img;
+            ETF                     cld_e;
+
+            ////////////////////////////////////////////// TRACKING SECTION
+            //////////////////////////////////////////////
 			ofxCvColorImage			preColorImg;		// Live cam input image
 			ofxCvColorImage			colorImg;			// Live cam input image without lens correction
 			ofxCvColorImage			colorImgUndistorted;// Live cam input image with lens correction
@@ -97,7 +116,7 @@ class sourceTracking: public ofBaseApp, public ofxCvBlobListener{
 			ofImage					savedBG;			// saving color background on hard drive
 			ofImage					loadBG;				// load color background from hard drive
 			int						colorImgBlur;		// input image blur value
-	
+
 			ofxCvGrayscaleImage		grayImg;			// B&W Live cam input image
 			unsigned char			*grayImgPixels;
 			ofxCvGrayscaleImage		grayBg;				// gray background static image
@@ -114,7 +133,7 @@ class sourceTracking: public ofBaseApp, public ofxCvBlobListener{
 			int						bgErodeDilateUse;
 			bool					bgUseContrastStrech;
 			int						bgSubTech;			// background subtraction algorithm selector
-	
+
 			ofxCvGrayscaleImage		hueImg;				// Hue image
 			ofxCvGrayscaleImage		satImg;				// Saturation image
 			ofxCvGrayscaleImage		valImg;				// Value image
@@ -133,19 +152,19 @@ class sourceTracking: public ofBaseApp, public ofxCvBlobListener{
 			//////////////////////////////////////////////
 			float					hue, hueWidth, sat, satWidth, val, valWidth;
 			float					minHue, maxHue, minSat, maxSat, minVal, maxVal;
-			
+
 			//////////////////////////////////////////////
 			ofxCvGrayscaleImage 	colorDiff;			// background subtraction over RGB input image
 			unsigned char			*pixels1;
 			unsigned char			*pixels2;
 			unsigned char			*resPixels;
-			
-			
+
+
 			//////////////////////////////////////////////
 			ofPoint					*sourcePoints;		// input image warping points
 			ofPoint					*destPoints;		// destination image warping points
 			matrixAreas				sourceFrame;
-			
+
 			// source image lens correction (undistort)
 			bool					undistortInput;
 			float					un_radialX;
@@ -156,7 +175,7 @@ class sourceTracking: public ofBaseApp, public ofxCvBlobListener{
 			float					un_focusY;
 			float					un_centerX;
 			float					un_centerY;
-	
+
 			// source image brightness/contrast
 			bool					bUseContrast;
 			bool					bUseGamma;
@@ -164,7 +183,7 @@ class sourceTracking: public ofBaseApp, public ofxCvBlobListener{
 			float					contrast;
 			float					brightness;
 			float					gamma;
-	
+
 			// balanced tracking
 			ofxCvGrayscaleImage		balancedTracking;	// balanced tracking from back subtraction over color & HSV tracking together
 			int						btBlur;
@@ -177,7 +196,7 @@ class sourceTracking: public ofBaseApp, public ofxCvBlobListener{
 			unsigned char			*alg2;
 			unsigned char			*balPixels;
 			float					balance1, balance2;
-	
+
 			// motion detection
 			ofxCvGrayscaleImage		motionGUI;
 			ofxCvGrayscaleImage 	grayPrev;
@@ -190,7 +209,7 @@ class sourceTracking: public ofBaseApp, public ofxCvBlobListener{
 			ofVec2f					MDCM; // motion centroid
 			int						mThreshold;
 			float					mNoiseComp; // motion noise compensation
-	
+
 			// contour finder
 			ofxCvContourFinder		contourFinder;
 			contourSimplify			contourS;
@@ -206,7 +225,7 @@ class sourceTracking: public ofBaseApp, public ofxCvBlobListener{
 			int						minBlobArea;
 			int						maxBlobArea;
 			int						cfDetail;
-	
+
 			// advanced blob tracking
 			ofxCvBlobTracker		blobTracker;
 			int						*blobsOrder;
@@ -221,21 +240,21 @@ class sourceTracking: public ofBaseApp, public ofxCvBlobListener{
 			int						maxUsers;
 			int						usersTracking[MAX_USERS_HARDLIMIT];
 			int						currAdjustment;
-	
+
 			float					mood;
 			float					moodSpike;
 			int						currNonMoodFrame;
 			int						nonMoodFrames;
-	
+
 			// optical flow analysis
 			ofxCvOpticalFlowLK		opticalFlow;
 			int						opticalFlowXGrid;
 			int						opticalFlowYGrid;
-	
+
 			// face tracking
 			ofxCvHaarFinder			haarFinder;
 			int						numFace;
-	
+
 			// matrix areas for motion trigger
 			matrixAreas				triggerAreas;
 			bool					*triggerState;
@@ -244,17 +263,17 @@ class sourceTracking: public ofBaseApp, public ofxCvBlobListener{
 			int						offHorizon, onHorizon;
 			int						lastTime;
 			int						silencePeriod;
-	
+
 			// generic vars
 			ofMutex					cv_mutex;
 			unsigned char			*blackPixels;
 
 			int						threshold;
 			bool					bLearnBackground;
-	
+
 			// kalman weighted average vars
 			bool					useKalmanFilter;
-			
+
 			ofVec2f					_kalman_MDCM;									// kalman filtered motion detection center mass
 			ofxCvKalman				*kMDCM[2];
 			float					_kalman_MDQ;									// kalman filtered motion quantity
@@ -270,7 +289,7 @@ class sourceTracking: public ofBaseApp, public ofxCvBlobListener{
 			ofxCvKalman				*kFtInfoY[MAX_NUM_CONTOURS_TO_FIND];
 			ofxCvKalman				*kFtInfoW[MAX_NUM_CONTOURS_TO_FIND];
 			ofxCvKalman				*kFtInfoH[MAX_NUM_CONTOURS_TO_FIND];
-	
+
 			// smoothed vars
 			float					_smoothingFactor;								// smoothing factor
 			ofVec2f					_s_MDCM;										// smoothed motion detection center mass
@@ -281,8 +300,8 @@ class sourceTracking: public ofBaseApp, public ofxCvBlobListener{
 			vector<ofVec2f>			*_s_contourSimple;								// smoothed simple contour points (redux)
 			ofVec2f					*_s_opfVel;										// smoothed optical flow pixel velocity
 			ofVec4f					*_s_ftInfo;										// smoothed face tracking blobs info
-			
-	
+
+
 			// OSC sending vars
 			ofVec2f					_osc_MDCM;										// normalized motion detection centers mass
 			float					_osc_MDQ;										// normalized motion quantity
@@ -292,7 +311,7 @@ class sourceTracking: public ofBaseApp, public ofxCvBlobListener{
 			vector<ofVec2f>			*_osc_contourSimple;							// normalized simple contour points (redux)
 			ofVec2f					*_osc_opfVel;									// normalized optical flow pixel velocity
 			ofVec4f					*_osc_ftInfo;									// normalized face tracking blobs info
-			
+
 			// selectors
 			bool					captureVideo;
 			bool					sourceHFlip;
@@ -305,9 +324,9 @@ class sourceTracking: public ofBaseApp, public ofxCvBlobListener{
 			bool					computeOpticalFlow;
 			bool					computeHaarFinder;
 			bool					computeTriggerAreas;
-	
+
 			bool					saveAllSettings;
-	
+
 			// OSC flags
 			bool					sendOsc_MD;										// send motion detection flag
 			bool					sendOsc_BD;										// send blob detection flag
@@ -316,7 +335,7 @@ class sourceTracking: public ofBaseApp, public ofxCvBlobListener{
 			bool					sendOsc_OF;										// send optical flow flag
 			bool					sendOsc_HF;										// send haar finder flag
 			bool					sendOsc_TA;										// send trigger areas flag
-			
+
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -2,7 +2,8 @@
 
 
 
--- camera Image Example
+
+-- camera Texture Example
 
 test = of.texture()
 
@@ -19,31 +20,6 @@ function draw()
     of.setColor(255)
     test:draw(of.mouseX(),of.mouseY())
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

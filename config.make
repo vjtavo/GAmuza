@@ -46,6 +46,7 @@ USER_CFLAGS += -I src/ofxGamuza/src/midiUtils
 USER_CFLAGS += -I src/ofxGamuza/src/randomUtils
 USER_CFLAGS += -I src/ofxGamuza/src/sourceTracking
 USER_CFLAGS += -I src/ofxAudioSample/src
+USER_CFLAGS += -I src/ofxCLD/src
 USER_CFLAGS += -I src/ofxControlPanel/src
 USER_CFLAGS += -I src/ofxCvKalman
 USER_CFLAGS += -I src/ofxFft/src

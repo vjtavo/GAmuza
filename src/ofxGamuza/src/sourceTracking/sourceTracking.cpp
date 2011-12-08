@@ -35,7 +35,13 @@ void sourceTracking::setupCam(int __id, int _w, int _h, int deviceID, bool playe
 		vidPlayer.play();
 	}
 	
-	camTexture.allocate(_width,_height,GL_RGB);
+    camPixels = new unsigned char[_numPixels*3];                // Live Cam pixels copy
+	camTexture.allocate(_width,_height,GL_RGB);                 // Live Cam texture copy
+    effectedTexture.allocate(_width,_height,GL_RGB);    // Live effected cam texture
+    
+    cld_pixels = new unsigned char[_numPixels*3];
+    cld_img.init(_width,_height);
+    
     preColorImg.allocate(_width,_height);						// Live Cam as input source
 	colorImg.allocate(_width,_height);							// Live Cam as input source without lens correction
 	colorImgUndistorted.allocate(_width,_height);				// Live Cam as input source with lens correction
@@ -701,6 +707,77 @@ void sourceTracking::draw(){
 		
 	}
 	
+}
+
+//--------------------------------------------------------------
+void sourceTracking::computeCLD(int _black, float _sigma1, float _sigma2, float _tau, float _thresh){
+    
+    if(_black < -255){
+        _black = 255;
+    }else if(_black > 255){
+        _black = 255;
+    }
+    
+    if(_sigma1 < 0.01f){
+        _sigma1 = 0.01f;
+    }else if(_sigma1 > 2.0f){
+        _sigma1 = 2.0f;
+    }
+    
+    if(_sigma2 < 0.01f){
+        _sigma2 = 0.01f;
+    }else if(_sigma2 > 10.0f){
+        _sigma2 = 10.0f;
+    }
+    
+    if(_tau < 0.8f){
+        _tau = 0.8f;
+    }else if(_tau > 1.0f){
+        _tau = 1.0f;
+    }
+    
+    if(_thresh < -1.0f){
+        _thresh = -1.0f;
+    }else if(_thresh > 1.0f){
+        _thresh = 1.0f;
+    }
+    
+    
+    if(!isPlayer && vidGrabber.isFrameNew()){
+        cld_pixels = vidGrabber.getPixels();
+    }else if(isPlayer && vidPlayer.isFrameNew()){
+        cld_pixels = vidPlayer.getPixels();
+    }
+    
+    if(captureVideo){
+        for(int w=0; w<_width; w++) {
+            for(int h=0; h<_height; h++) {
+        
+                int p = h*_width + w;
+                cld_img[w][h] = cld_pixels[p*3] - _black;
+            }        
+        }
+
+        cld_e.init(_width, _height);
+        cld_e.set(cld_img);
+        cld_e.Smooth(4, 2);
+        GetFDoG(cld_img, cld_e, _sigma1, _sigma2, _tau); 
+        GrayThresholding(cld_img, _thresh);
+
+        for(int w=0; w<_width; w++) {
+            for(int h=0; h<_height; h++) {
+        
+                int p = h*_width + w;
+                camPixels[p*3]      = CLAMP(cld_img[w][h], 0, 255);
+                camPixels[p*3+1]    = CLAMP(cld_img[w][h], 0, 255);
+                camPixels[p*3+2]    = CLAMP(cld_img[w][h], 0, 255);
+            }        
+        }
+
+        effectedTexture.loadData(camPixels, _width, _height, GL_RGB);
+
+    }
+    
 }
 
 //--------------------------------------------------------------

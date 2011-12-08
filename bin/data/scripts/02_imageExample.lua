@@ -1,3 +1,8 @@
+
+
+
+
+
 -- image Example
 
 test = of.image()
@@ -11,3 +16,8 @@ function draw()
     of.setColor(255,255,255)
     test:draw(0,0,OUTPUT_W,OUTPUT_H)
 end
+
+
+
+
+

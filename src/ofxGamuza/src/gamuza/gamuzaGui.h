@@ -896,7 +896,7 @@ void gamuzaMain::setupGui(){
 	// Gamuza Credits GUI
 	gui.setBackgroundColor(simpleColor(20, 20, 20, 255));
 
-	sprintf(temp," Gamuza [0.3] rel. 0395 'Raven Shammy' Beta Testing");
+	sprintf(temp," Gamuza [0.3] rel. 0396 'Raven Shammy' Beta Testing");
 	gui.addPanel(temp, 3);
 	gui.setWhichPanel(temp);
 	//////////////////////////////////////////////
@@ -1442,7 +1442,7 @@ void gamuzaMain::drawGui(){
 
 	////////////////////////////////////
 	// MAIN TITLE
-	sprintf(temp," GAMUZA[0.3] rel. 0395 | <http://www.gamuza.cc> | <http://www.d3cod3.org>");
+	sprintf(temp," GAMUZA[0.3] rel. 0396 | <http://www.gamuza.cc> | <http://www.d3cod3.org>");
 	ofSetColor(216, 64, 64);
 	fontSmall.drawString(temp,8,14);
 	ofSetColor(255, 255, 255);

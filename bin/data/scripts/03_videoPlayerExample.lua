@@ -5,7 +5,7 @@
 
 
 
--- loading video example
+-- video player example
 
 myVideo = of.videoPlayer()
 
@@ -24,14 +24,6 @@ function draw()
     myVideo:draw(0,0,OUTPUT_W,OUTPUT_H)
 end
 
-function mouseMoved()
-
-end
-
-function mouseDragged()
-
-end
-
 function mousePressed()
     myVideo:setPaused(true)
 end
@@ -39,7 +31,6 @@ end
 function mouseReleased()
     myVideo:setPaused(false)
 end
-
 
 
 

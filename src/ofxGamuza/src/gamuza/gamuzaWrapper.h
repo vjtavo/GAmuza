@@ -116,6 +116,21 @@ class ofGamuzaWrapper{
 		 
 		 class_<ofPolyline>("polyline")
 		 .def(constructor<>())
+         .def("clear", (void(ofPolyline::*)(void)) &ofPolyline::clear)
+         .def("addVertex", (void(ofPolyline::*)(float,float,float)) &ofPolyline::addVertex) // float x, float y, float z
+         .def("lineTo", (void(ofPolyline::*)(float,float,float)) &ofPolyline::lineTo) // float x, float y, float z
+         .def("arc", (void(ofPolyline::*)(float,float,float,float,float,float,float,int)) &ofPolyline::arc) // float x, float y, float z, float radiusX, float radiusY, float angleBegin, float angleEnd, int curveResolution
+         .def("curveTo", (void(ofPolyline::*)(float,float,float,int)) &ofPolyline::curveTo) // float x, float y, float z, int curveResolution
+         .def("bezierTo", (void(ofPolyline::*)(float,float,float,float,float,float,float,float,float,int)) &ofPolyline::bezierTo) // float cx1, float cy1, float cz1, float cx2, float cy2, float cz2, float x, float y, float z, int curveResolution
+         .def("quadBezierTo", (void(ofPolyline::*)(float,float,float,float,float,float,float,float,float,int)) &ofPolyline::quadBezierTo) // float cx1, float cy1, float cz1, float cx2, float cy2, float cz2, float x, float y, float z, int curveResolution
+         .def("getSmoothed", (ofPolyline(ofPolyline::*)(int)) &ofPolyline::getSmoothed) // int smoothingSize
+         .def("getResampledBySpacing", (ofPolyline(ofPolyline::*)(float)) &ofPolyline::getResampledBySpacing) // float spacing
+         .def("getResampledByCount", (ofPolyline(ofPolyline::*)(int)) &ofPolyline::getResampledByCount) // int count
+         .def("getBoundingBox", (ofRectangle(ofPolyline::*)(void)) &ofPolyline::getBoundingBox)
+         .def("simplify", (void(ofPolyline::*)(float)) &ofPolyline::simplify)
+         .def("close", (void(ofPolyline::*)(void)) &ofPolyline::close)
+         .def("getPerimeter", (float(ofPolyline::*)(void)) &ofPolyline::getPerimeter)
+         .def("draw", (void(ofPolyline::*)(void)) &ofPolyline::draw)
 		 .enum_("windingMode")
 		 [	
 		  value("WINDING_ODD", OF_POLY_WINDING_ODD),
@@ -135,7 +150,7 @@ class ofGamuzaWrapper{
 		 .def("set", (void(ofRectangle::*)(float,float,float,float)) &ofRectangle::set)
 		 .def("set", (void(ofRectangle::*)(const ofRectangle&)) &ofRectangle::set)
 		 .def("setFromCenter", (void(ofRectangle::*)(float,float,float,float)) &ofRectangle::setFromCenter)
-		 //.def("inside", (void(ofRectangle::*)(float,float)) &ofRectangle::inside)
+		 .def("inside", (bool(ofRectangle::*)(float,float)) &ofRectangle::inside)
 		 .def_readonly("x", &ofRectangle::x)
 		 .def_readonly("y", &ofRectangle::y)
 		 .def_readonly("width", &ofRectangle::width)
@@ -147,22 +162,28 @@ class ofGamuzaWrapper{
 		 class_<ofColor>("color")
 		 .def(constructor<>())
 		 .def(constructor<float,float,float,float>())
-		 .def(constructor<float,float,float>())
 		 .def(constructor<float,float>())
-		 .def(constructor<float>())
 		 .def("set", (void(ofColor::*)(float,float,float,float)) &ofColor::set)
-		 //.def("set", (void(ofColor::*)(float,float,float)) &ofColor::set3)
 		 .def("set", (void(ofColor::*)(float,float)) &ofColor::set)
-		 //.def("set", (void(Color::*)(float)) &ofColor::set1)
 		 .def("setHex", &ofColor::setHex)
 		 .def("getHex", &ofColor::getHex)
+         .def("getClamped", (ofColor(ofColor::*)(void)) &ofColor::getClamped)
+         .def("getInverted", (ofColor(ofColor::*)(void)) &ofColor::getInverted)
+         .def("getNormalized", (ofColor(ofColor::*)(void)) &ofColor::getNormalized)
+         .def("getLerped", (ofColor(ofColor::*)(const ofColor&, float)) &ofColor::getLerped)
 		 .def("getHue", &ofColor::getHue)
 		 .def("getSaturation", &ofColor::getSaturation)
 		 .def("getBrightness", &ofColor::getBrightness)
 		 .def("getLightness", &ofColor::getLightness)
 		 .def("setHue", &ofColor::setHue)
 		 .def("setSaturation", &ofColor::setSaturation)
-		 .def("setBrightness", &ofColor::setBrightness),
+		 .def("setBrightness", &ofColor::setBrightness)
+         .def("setHsb", (void(ofColor::*)(float,float,float,float)) &ofColor::setHsb)
+         .def("setHsb", (void(ofColor::*)(float,float,float)) &ofColor::setHsb)
+         .def_readonly("r", &ofColor::r)
+		 .def_readonly("g", &ofColor::g)
+		 .def_readonly("b", &ofColor::b)
+		 .def_readonly("a", &ofColor::a),
 		 
 		 ///////////////////////////////
 		 /// \section Pixels
@@ -174,16 +195,24 @@ class ofGamuzaWrapper{
 		 .def("allocate", (void(ofPixels::*)(int,int,ofImageType)) &ofPixels::allocate)
 		 .def("set", (void(ofPixels::*)(unsigned char)) &ofPixels::set)
 		 .def("set", (void(ofPixels::*)(int,unsigned char)) &ofPixels::set)
+         .def("crop", (void(ofPixels::*)(int,int,int,int)) &ofPixels::crop)
+         .def("rotate90", &ofPixels::rotate90)
+         .def("mirror", &ofPixels::mirror)
+         .def("resize", (void(ofPixels::*)(int,int)) &ofPixels::resize)
 		 .def("swapRgb", &ofPixels::swapRgb)
 		 .def("clear", &ofPixels::clear)
+         .def("getPixels", &getPixel)
+         .def("getPixelIndex", &ofPixels::getPixelIndex)
 		 .def("getColor", &ofPixels::getColor)
 		 .def("setColor", &ofPixels::setColor)
-		 .def("getPixelIndex", &ofPixels::getPixelIndex)
-		 .def("getPixel", &getPixel)
-		 .def("setPixel", &setPixel)
 		 .def("isAllocated", &ofPixels::isAllocated)
 		 .def("getWidth", &ofPixels::getWidth)
 		 .def("getHeight", &ofPixels::getHeight)
+         .def("getBytesPerPixel", &ofPixels::getBytesPerPixel)
+         .def("getBitsPerPixel", &ofPixels::getBitsPerPixel)
+         .def("getBytesPerChannel", &ofPixels::getBytesPerChannel)
+         .def("getBitsPerChannel", &ofPixels::getBitsPerChannel)
+         .def("getNumChannels", &ofPixels::getNumChannels)
 		 .def("getImageType", &ofPixels::getImageType)
 		 .def("size", &ofPixels::size)
 		 .enum_("format")
@@ -226,7 +255,44 @@ class ofGamuzaWrapper{
 		  value("GL_RGBA4", GL_RGBA4),
 		  value("GL_RGBA8", GL_RGBA8)
 		  ],
-		 
+         
+         ///////////////////////////////
+		 /// \section FBO
+         
+         class_<ofFbo>("fbo")
+		 .def(constructor<>())
+		 .def("allocate", (void(ofFbo::*)(int,int,int,int)) &ofFbo::allocate) // int width, int height, int internalformat, int numSamples
+         .def("draw", (void(ofFbo::*)(float,float)) &ofFbo::draw)
+         .def("draw", (void(ofFbo::*)(float,float,float,float)) &ofFbo::draw)
+         .def("beginFbo", &ofFbo::begin)
+		 .def("endFbo", &ofFbo::end)
+         .def("setAnchorPoint", &ofFbo::setAnchorPoint)
+         .def("resetAnchor", &ofFbo::resetAnchor)
+         .def("getWidth", &ofFbo::getWidth)
+		 .def("getHeight", &ofFbo::getHeight)
+         .def("bind", &ofFbo::bind)
+		 .def("unbind", &ofFbo::unbind),
+         
+         ///////////////////////////////
+		 /// \section SHADER
+		 class_<ofShader>("shader")
+		 .def(constructor<>())
+         .def("load", (bool(ofShader::*)(string)) &ofShader::load)
+         .def("load", (bool(ofShader::*)(string,string,string)) &ofShader::load)
+         .def("beginShader", (void(ofShader::*)(void)) &ofShader::begin)
+         .def("endShader", (void(ofShader::*)(void)) &ofShader::end)
+         .def("setUniformTexture", (void(ofShader::*)(const char*,ofBaseHasTexture&,int)) &ofShader::setUniformTexture)
+         .def("setUniformTexture", (void(ofShader::*)(const char*,ofTexture&,int)) &ofShader::setUniformTexture)
+         .def("setUniform1i", (void(ofShader::*)(const char*,int)) &ofShader::setUniform1i)
+         .def("setUniform2i", (void(ofShader::*)(const char*,int,int)) &ofShader::setUniform2i)
+         .def("setUniform3i", (void(ofShader::*)(const char*,int,int,int)) &ofShader::setUniform3i)
+         .def("setUniform4i", (void(ofShader::*)(const char*,int,int,int,int)) &ofShader::setUniform4i)
+         .def("setUniform1f", (void(ofShader::*)(const char*,float)) &ofShader::setUniform1f)
+         .def("setUniform2f", (void(ofShader::*)(const char*,float,float)) &ofShader::setUniform2f)
+         .def("setUniform3f", (void(ofShader::*)(const char*,float,float,float)) &ofShader::setUniform3f)
+         .def("setUniform4f", (void(ofShader::*)(const char*,float,float,float,float)) &ofShader::setUniform4f)
+         .def("unload", (void(ofShader::*)(void)) &ofShader::unload),
+         
 		 ///////////////////////////////
 		 /// \section Image
 		 
@@ -423,10 +489,6 @@ class ofGamuzaWrapper{
 		 def("mouseX", &getMouseX), // of.mouseX()
 		 def("mouseY", &getMouseY), // of.mouseY()
 		 
-		 /// exit
-		 def("exit", (void(*)(void)) &ofExit),
-		 def("exit", (void(*)(int)) &ofExit),
-		 
 		 /// time
 		 def("getFrameRate", &ofGetFrameRate),
 		 def("getFrameNum", &ofGetFrameNum),
@@ -435,8 +497,8 @@ class ofGamuzaWrapper{
 		 def("getLastFrameTime", &ofGetLastFrameTime),
 		 
 		 /// cursor
-		 def("hideCursor", &ofHideCursor),
-		 def("showCursor", &ofShowCursor),
+		 // def("hideCursor", &ofHideCursor),
+		 // def("showCursor", &ofShowCursor),
 		 
 		 /// window / screen
 		 def("getWindowPositionX", &ofGetWindowPositionX),
@@ -510,6 +572,10 @@ class ofGamuzaWrapper{
 		 def("background", (void(*)(float,float)) &gaBackground),
 		 def("background", (void(*)(float,float,float,float)) &gaBackground),
 		 def("cameraTexture", (ofTexture(*)(int)) &gaGetWebcamTexture),
+         
+         ///////////////////////////////
+		 // pixel manipulation section
+         def("cameraMiller", (ofTexture(*)(int,int,float,float,float,float)) &gaGetWebcamMiller),
 		 
 		 ///////////////////////////////
 		 // audio synth section
@@ -570,6 +636,7 @@ class ofGamuzaWrapper{
          def("camBlobGLineY2", (float(*)(int,int,int)) &gaCamBlobGLineY2),
 		 def("camOpticalFlowX", (float(*)(int,int,int)) &gaCamOpticalFlowX),
          def("camOpticalFlowY", (float(*)(int,int,int)) &gaCamOpticalFlowY),
+         def("camHaars", (int(*)(int)) &gaCamRunningHaar),
 		 def("camHaarX", (float(*)(int,int)) &gaCamHaarX),
          def("camHaarY", (float(*)(int,int)) &gaCamHaarY),
          def("camHaarW", (float(*)(int,int)) &gaCamHaarW),

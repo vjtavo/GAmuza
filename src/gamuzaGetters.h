@@ -23,8 +23,20 @@ void gaBackground(float r, float g, float b, float a){
 }
 
 ofTexture gaGetWebcamTexture(int _id){
-	if(_id < gapp->gamuzaBase.numCamInputs && gapp->gamuzaBase.trackingActivated && gapp->gamuzaBase.inputCam[_id].captureVideo){
+	if(_id < gapp->gamuzaBase.numCamInputs && _id >= 0 && gapp->gamuzaBase.trackingActivated && gapp->gamuzaBase.inputCam[_id].captureVideo){
 		return gapp->gamuzaBase.inputCam[_id].camTexture;
+	}else{
+		return gapp->gamuzaBase.emptyTexture;
+	}
+}
+
+//--------------------------------------------------------------
+// PIXELS MANIPULATION SECTION
+//--------------------------------------------------------------
+ofTexture gaGetWebcamMiller(int _id, int _black, float _sigma1, float _sigma2, float _tau, float _thresh){
+    if(_id < gapp->gamuzaBase.numCamInputs && _id >= 0 && gapp->gamuzaBase.trackingActivated && gapp->gamuzaBase.inputCam[_id].captureVideo){
+        gapp->gamuzaBase.inputCam[_id].computeCLD(_black, _sigma1, _sigma2, _tau, _thresh);
+		return gapp->gamuzaBase.inputCam[_id].effectedTexture;
 	}else{
 		return gapp->gamuzaBase.emptyTexture;
 	}
@@ -463,7 +475,7 @@ float gaONITilt(){
 // WEBCAM TRACKING SECTION
 //--------------------------------------------------------------
 float gaCamMotionQ(int _dID){
-	if(gapp->gamuzaBase.trackingActivated && _dID < gapp->gamuzaBase.numCamInputs){
+	if(gapp->gamuzaBase.trackingActivated && _dID < gapp->gamuzaBase.numCamInputs  && _dID >= 0){
 		if(gapp->gamuzaBase.inputCam[_dID].captureVideo){
 			return gapp->gamuzaBase.inputCam[_dID]._osc_MDQ;
 		}else{
@@ -475,7 +487,7 @@ float gaCamMotionQ(int _dID){
 }
 
 float gaCamMotionX(int _dID){
-	if(gapp->gamuzaBase.trackingActivated && _dID < gapp->gamuzaBase.numCamInputs){
+	if(gapp->gamuzaBase.trackingActivated && _dID < gapp->gamuzaBase.numCamInputs  && _dID >= 0){
 		if(gapp->gamuzaBase.inputCam[_dID].captureVideo){
 			return gapp->gamuzaBase.inputCam[_dID]._osc_MDCM.x;
 		}else{
@@ -487,7 +499,7 @@ float gaCamMotionX(int _dID){
 }
 
 float gaCamMotionY(int _dID){
-	if(gapp->gamuzaBase.trackingActivated && _dID < gapp->gamuzaBase.numCamInputs){
+	if(gapp->gamuzaBase.trackingActivated && _dID < gapp->gamuzaBase.numCamInputs  && _dID >= 0){
 		if(gapp->gamuzaBase.inputCam[_dID].captureVideo){
 			return gapp->gamuzaBase.inputCam[_dID]._osc_MDCM.x;
 		}else{
@@ -499,7 +511,7 @@ float gaCamMotionY(int _dID){
 }
 
 int gaCamRunningBlob(int _dID){
-	if(gapp->gamuzaBase.trackingActivated && gapp->gamuzaBase.inputCam[_dID].captureVideo && _dID < gapp->gamuzaBase.numCamInputs){
+	if(gapp->gamuzaBase.trackingActivated && gapp->gamuzaBase.inputCam[_dID].captureVideo && _dID < gapp->gamuzaBase.numCamInputs  && _dID >= 0 && gapp->gamuzaBase.inputCam[_dID].computeContourFinder){
 		return gapp->gamuzaBase.inputCam[_dID].runningBlobs;
 	}else{
 		return 0;
@@ -507,7 +519,7 @@ int gaCamRunningBlob(int _dID){
 }
 
 float gaCamBlobX(int _dID,int _bId){
-	if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs){
+	if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs  && _dID >= 0){
 		if(gapp->gamuzaBase.inputCam[_dID].captureVideo && _dID < gapp->gamuzaBase.numCamInputs && gapp->gamuzaBase.inputCam[_dID].computeContourFinder){
 			for(unsigned int e = 0; e < gapp->gamuzaBase.inputCam[_dID].runningBlobs; e++){
 				if(gapp->gamuzaBase.inputCam[_dID].blobsOrder[e] == _bId){
@@ -524,7 +536,7 @@ float gaCamBlobX(int _dID,int _bId){
 }
 
 float gaCamBlobY(int _dID,int _bId){
-	if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs){
+	if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs && _dID >= 0){
 		if(gapp->gamuzaBase.inputCam[_dID].captureVideo && _dID < gapp->gamuzaBase.numCamInputs && gapp->gamuzaBase.inputCam[_dID].computeContourFinder){
 			for(unsigned int e = 0; e < gapp->gamuzaBase.inputCam[_dID].runningBlobs; e++){
 				if(gapp->gamuzaBase.inputCam[_dID].blobsOrder[e] == _bId){
@@ -541,7 +553,7 @@ float gaCamBlobY(int _dID,int _bId){
 }
 
 float gaCamBlobW(int _dID,int _bId){
-	if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs){
+	if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs && _dID >= 0){
 		if(gapp->gamuzaBase.inputCam[_dID].captureVideo && _dID < gapp->gamuzaBase.numCamInputs && gapp->gamuzaBase.inputCam[_dID].computeContourFinder){
 			for(unsigned int e = 0; e < gapp->gamuzaBase.inputCam[_dID].runningBlobs; e++){
 				if(gapp->gamuzaBase.inputCam[_dID].blobsOrder[e] == _bId){
@@ -559,7 +571,7 @@ float gaCamBlobW(int _dID,int _bId){
 
 
 float gaCamBlobH(int _dID,int _bId){
-	if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs){
+	if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs && _dID >= 0){
 		if(gapp->gamuzaBase.inputCam[_dID].captureVideo && _dID < gapp->gamuzaBase.numCamInputs && gapp->gamuzaBase.inputCam[_dID].computeContourFinder){
 			for(unsigned int e = 0; e < gapp->gamuzaBase.inputCam[_dID].runningBlobs; e++){
 				if(gapp->gamuzaBase.inputCam[_dID].blobsOrder[e] == _bId){
@@ -576,7 +588,7 @@ float gaCamBlobH(int _dID,int _bId){
 }
 
 float gaCamBlobAngle(int _dID,int _bId){
-	if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs){
+	if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs && _dID >= 0){
 		if(gapp->gamuzaBase.inputCam[_dID].captureVideo && _dID < gapp->gamuzaBase.numCamInputs && gapp->gamuzaBase.inputCam[_dID].computeContourFinder){
 			for(unsigned int e = 0; e < gapp->gamuzaBase.inputCam[_dID].runningBlobs; e++){
 				if(gapp->gamuzaBase.inputCam[_dID].blobsOrder[e] == _bId){
@@ -593,7 +605,7 @@ float gaCamBlobAngle(int _dID,int _bId){
 }
 
 int gaCamBlobContourSize(int _dID, int _bId){
-    if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs){
+    if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs && _dID >= 0){
 		if(gapp->gamuzaBase.inputCam[_dID].captureVideo && _dID < gapp->gamuzaBase.numCamInputs && gapp->gamuzaBase.inputCam[_dID].computeContourFinder){
             if(gapp->gamuzaBase.inputCam[_dID].cfDetail == 0 || gapp->gamuzaBase.inputCam[_dID].cfDetail == 1){
                 for(unsigned int e = 0; e < gapp->gamuzaBase.inputCam[_dID].runningBlobs; e++){
@@ -617,7 +629,7 @@ int gaCamBlobContourSize(int _dID, int _bId){
 }
 
 float gaCamBlobCPointX(int _dID, int _bId, int _cPoint){
-    if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs){
+    if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs && _dID >= 0){
 		if(gapp->gamuzaBase.inputCam[_dID].captureVideo && _dID < gapp->gamuzaBase.numCamInputs && gapp->gamuzaBase.inputCam[_dID].computeContourFinder){
             if(gapp->gamuzaBase.inputCam[_dID].cfDetail == 0 || gapp->gamuzaBase.inputCam[_dID].cfDetail == 1){
                 for(unsigned int e = 0; e < gapp->gamuzaBase.inputCam[_dID].runningBlobs; e++){
@@ -641,7 +653,7 @@ float gaCamBlobCPointX(int _dID, int _bId, int _cPoint){
 }
 
 float gaCamBlobCPointY(int _dID, int _bId, int _cPoint){
-    if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs){
+    if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs && _dID >= 0){
 		if(gapp->gamuzaBase.inputCam[_dID].captureVideo && _dID < gapp->gamuzaBase.numCamInputs && gapp->gamuzaBase.inputCam[_dID].computeContourFinder){
             if(gapp->gamuzaBase.inputCam[_dID].cfDetail == 0 || gapp->gamuzaBase.inputCam[_dID].cfDetail == 1){
                 for(unsigned int e = 0; e < gapp->gamuzaBase.inputCam[_dID].runningBlobs; e++){
@@ -665,7 +677,7 @@ float gaCamBlobCPointY(int _dID, int _bId, int _cPoint){
 }
 
 int gaCamBlobGeometrySize(int _dID,int _bId){
-	if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs){
+	if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs && _dID >= 0){
 		if(gapp->gamuzaBase.inputCam[_dID].captureVideo && _dID < gapp->gamuzaBase.numCamInputs && gapp->gamuzaBase.inputCam[_dID].computeContourFinder && gapp->gamuzaBase.inputCam[_dID].computeContourGeometry){
             for(unsigned int e = 0; e < gapp->gamuzaBase.inputCam[_dID].runningBlobs; e++){
 				if(gapp->gamuzaBase.inputCam[_dID].blobsOrder[e] == _bId){
@@ -681,7 +693,7 @@ int gaCamBlobGeometrySize(int _dID,int _bId){
 }
 
 float gaCamBlobGLineX1(int _dID, int _bId, int _gLine){
-    if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs){
+    if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs && _dID >= 0){
 		if(gapp->gamuzaBase.inputCam[_dID].captureVideo && _dID < gapp->gamuzaBase.numCamInputs && gapp->gamuzaBase.inputCam[_dID].computeContourFinder && gapp->gamuzaBase.inputCam[_dID].computeContourGeometry){
             for(unsigned int e = 0; e < gapp->gamuzaBase.inputCam[_dID].runningBlobs; e++){
 				if(gapp->gamuzaBase.inputCam[_dID].blobsOrder[e] == _bId && _gLine < gapp->gamuzaBase.inputCam[_dID]._osc_blobGeom[e].size()){
@@ -697,7 +709,7 @@ float gaCamBlobGLineX1(int _dID, int _bId, int _gLine){
 }
 
 float gaCamBlobGLineY1(int _dID, int _bId, int _gLine){
-    if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs){
+    if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs && _dID >= 0){
 		if(gapp->gamuzaBase.inputCam[_dID].captureVideo && _dID < gapp->gamuzaBase.numCamInputs && gapp->gamuzaBase.inputCam[_dID].computeContourFinder && gapp->gamuzaBase.inputCam[_dID].computeContourGeometry){
             for(unsigned int e = 0; e < gapp->gamuzaBase.inputCam[_dID].runningBlobs; e++){
 				if(gapp->gamuzaBase.inputCam[_dID].blobsOrder[e] == _bId && _gLine < gapp->gamuzaBase.inputCam[_dID]._osc_blobGeom[e].size()){
@@ -713,7 +725,7 @@ float gaCamBlobGLineY1(int _dID, int _bId, int _gLine){
 }
 
 float gaCamBlobGLineX2(int _dID, int _bId, int _gLine){
-    if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs){
+    if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs && _dID >= 0){
 		if(gapp->gamuzaBase.inputCam[_dID].captureVideo && _dID < gapp->gamuzaBase.numCamInputs && gapp->gamuzaBase.inputCam[_dID].computeContourFinder && gapp->gamuzaBase.inputCam[_dID].computeContourGeometry){
             for(unsigned int e = 0; e < gapp->gamuzaBase.inputCam[_dID].runningBlobs; e++){
 				if(gapp->gamuzaBase.inputCam[_dID].blobsOrder[e] == _bId && _gLine < gapp->gamuzaBase.inputCam[_dID]._osc_blobGeom[e].size()){
@@ -729,7 +741,7 @@ float gaCamBlobGLineX2(int _dID, int _bId, int _gLine){
 }
 
 float gaCamBlobGLineY2(int _dID, int _bId, int _gLine){
-    if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs){
+    if(gapp->gamuzaBase.trackingActivated && _bId >= 0 && _bId < gapp->gamuzaBase.inputCam[_dID].runningBlobs && _dID >= 0){
 		if(gapp->gamuzaBase.inputCam[_dID].captureVideo && _dID < gapp->gamuzaBase.numCamInputs && gapp->gamuzaBase.inputCam[_dID].computeContourFinder && gapp->gamuzaBase.inputCam[_dID].computeContourGeometry){
             for(unsigned int e = 0; e < gapp->gamuzaBase.inputCam[_dID].runningBlobs; e++){
 				if(gapp->gamuzaBase.inputCam[_dID].blobsOrder[e] == _bId && _gLine < gapp->gamuzaBase.inputCam[_dID]._osc_blobGeom[e].size()){
@@ -745,7 +757,7 @@ float gaCamBlobGLineY2(int _dID, int _bId, int _gLine){
 }
 
 float gaCamOpticalFlowX(int _dID, int _i, int _j){
-	if(gapp->gamuzaBase.trackingActivated && _dID < gapp->gamuzaBase.numCamInputs){
+	if(gapp->gamuzaBase.trackingActivated && _dID < gapp->gamuzaBase.numCamInputs && _dID >= 0){
 		if(gapp->gamuzaBase.inputCam[_dID].captureVideo && gapp->gamuzaBase.inputCam[_dID].computeOpticalFlow){
 			return gapp->gamuzaBase.inputCam[_dID]._osc_opfVel[_i+(gapp->gamuzaBase.inputCam[_dID].opticalFlowXGrid*_j)].x;
 		}else{
@@ -757,7 +769,7 @@ float gaCamOpticalFlowX(int _dID, int _i, int _j){
 }
 
 float gaCamOpticalFlowY(int _dID, int _i, int _j){
-	if(gapp->gamuzaBase.trackingActivated && _dID < gapp->gamuzaBase.numCamInputs){
+	if(gapp->gamuzaBase.trackingActivated && _dID < gapp->gamuzaBase.numCamInputs && _dID >= 0){
 		if(gapp->gamuzaBase.inputCam[_dID].captureVideo && gapp->gamuzaBase.inputCam[_dID].computeOpticalFlow){
 			return gapp->gamuzaBase.inputCam[_dID]._osc_opfVel[_i+(gapp->gamuzaBase.inputCam[_dID].opticalFlowXGrid*_j)].y;
 		}else{
@@ -768,8 +780,16 @@ float gaCamOpticalFlowY(int _dID, int _i, int _j){
 	}
 }
 
+int gaCamRunningHaar(int _dID){
+	if(gapp->gamuzaBase.trackingActivated && gapp->gamuzaBase.inputCam[_dID].captureVideo && _dID < gapp->gamuzaBase.numCamInputs && _dID >= 0 && gapp->gamuzaBase.inputCam[_dID].computeHaarFinder){
+		return gapp->gamuzaBase.inputCam[_dID].numFace;
+	}else{
+		return 0;
+	}
+}
+
 float gaCamHaarX(int _dID, int _hID){
-	if(gapp->gamuzaBase.trackingActivated && _dID < gapp->gamuzaBase.numCamInputs){
+	if(gapp->gamuzaBase.trackingActivated && _dID < gapp->gamuzaBase.numCamInputs && _dID >= 0){
 		if(gapp->gamuzaBase.inputCam[_dID].captureVideo && _hID < gapp->gamuzaBase.inputCam[_dID].numFace && gapp->gamuzaBase.inputCam[_dID].computeHaarFinder){
 			return gapp->gamuzaBase.inputCam[_dID]._osc_ftInfo[_hID].x;
 		}else{
@@ -781,7 +801,7 @@ float gaCamHaarX(int _dID, int _hID){
 }
 
 float gaCamHaarY(int _dID, int _hID){
-	if(gapp->gamuzaBase.trackingActivated && _dID < gapp->gamuzaBase.numCamInputs){
+	if(gapp->gamuzaBase.trackingActivated && _dID < gapp->gamuzaBase.numCamInputs && _dID >= 0){
 		if(gapp->gamuzaBase.inputCam[_dID].captureVideo && _hID < gapp->gamuzaBase.inputCam[_dID].numFace && gapp->gamuzaBase.inputCam[_dID].computeHaarFinder){
 			return gapp->gamuzaBase.inputCam[_dID]._osc_ftInfo[_hID].y;
 		}else{
@@ -793,7 +813,7 @@ float gaCamHaarY(int _dID, int _hID){
 }
 
 float gaCamHaarW(int _dID, int _hID){
-	if(gapp->gamuzaBase.trackingActivated && _dID < gapp->gamuzaBase.numCamInputs){
+	if(gapp->gamuzaBase.trackingActivated && _dID < gapp->gamuzaBase.numCamInputs && _dID >= 0){
 		if(gapp->gamuzaBase.inputCam[_dID].captureVideo && _hID < gapp->gamuzaBase.inputCam[_dID].numFace && gapp->gamuzaBase.inputCam[_dID].computeHaarFinder){
 			return gapp->gamuzaBase.inputCam[_dID]._osc_ftInfo[_hID].z;
 		}else{
@@ -805,7 +825,7 @@ float gaCamHaarW(int _dID, int _hID){
 }
 
 float gaCamHaarH(int _dID, int _hID){
-	if(gapp->gamuzaBase.trackingActivated && _dID < gapp->gamuzaBase.numCamInputs){
+	if(gapp->gamuzaBase.trackingActivated && _dID < gapp->gamuzaBase.numCamInputs && _dID >= 0){
 		if(gapp->gamuzaBase.inputCam[_dID].captureVideo && _hID < gapp->gamuzaBase.inputCam[_dID].numFace && gapp->gamuzaBase.inputCam[_dID].computeHaarFinder){
 			return gapp->gamuzaBase.inputCam[_dID]._osc_ftInfo[_hID].w;
 		}else{
@@ -817,7 +837,7 @@ float gaCamHaarH(int _dID, int _hID){
 }
 
 bool gaCamTrigger(int _dID, int _aID){
-	if(gapp->gamuzaBase.trackingActivated && _dID < gapp->gamuzaBase.numCamInputs && _aID < TRIGGER_AREAS_NUM){
+	if(gapp->gamuzaBase.trackingActivated && _dID < gapp->gamuzaBase.numCamInputs && _dID >= 0 && _aID < TRIGGER_AREAS_NUM){
 		if(gapp->gamuzaBase.inputCam[_dID].captureVideo && gapp->gamuzaBase.inputCam[_dID].computeContourFinder && gapp->gamuzaBase.inputCam[_dID].computeTriggerAreas){
 			return gapp->gamuzaBase.inputCam[_dID].triggerState[_aID];
 		}else{
