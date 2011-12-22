@@ -36,7 +36,15 @@ USER_CFLAGS += -I /usr/include/nite
 
 # GAmuza
 USER_CFLAGS += -I src
+USER_CFLAGS += -I src/ofxAudioSample/src
+USER_CFLAGS += -I src/ofxAudioSample/libs/libsndfile/include
+USER_CFLAGS += -I src/ofxCLD/src
+USER_CFLAGS += -I src/ofxControlPanel/src
+USER_CFLAGS += -I src/ofxCvKalman
+USER_CFLAGS += -I src/ofxFft/src
+USER_CFLAGS += -I src/ofxFileDialog/src
 USER_CFLAGS += -I src/ofxGamuza/src/audioAnalysis
+USER_CFLAGS += -I src/ofxGamuza/src/audioSample
 USER_CFLAGS += -I src/ofxGamuza/src/audioSequencing
 USER_CFLAGS += -I src/ofxGamuza/src/audioSynthesis
 USER_CFLAGS += -I src/ofxGamuza/src/gamuza
@@ -45,34 +53,49 @@ USER_CFLAGS += -I src/ofxGamuza/src/math
 USER_CFLAGS += -I src/ofxGamuza/src/midiUtils
 USER_CFLAGS += -I src/ofxGamuza/src/randomUtils
 USER_CFLAGS += -I src/ofxGamuza/src/sourceTracking
-USER_CFLAGS += -I src/ofxAudioSample/src
-USER_CFLAGS += -I src/ofxCLD/src
-USER_CFLAGS += -I src/ofxControlPanel/src
-USER_CFLAGS += -I src/ofxCvKalman
-USER_CFLAGS += -I src/ofxFft/src
-USER_CFLAGS += -I src/ofxFileDialog/src
+USER_CFLAGS += -I src/ofxGaussian/src/
 USER_CFLAGS += -I src/ofxGLEditor/src
 USER_CFLAGS += -I src/ofxHalftoner/src
 USER_CFLAGS += -I src/ofxKeyMap/src
+USER_CFLAGS += -I src/ofxLibsndfileRecorder/src
+USER_CFLAGS += -I src/ofxMemoryUsage/src
 USER_CFLAGS += -I src/ofxMidi/src
 USER_CFLAGS += -I src/ofxMidi/libs
 USER_CFLAGS += -I src/ofxMissing/src
 USER_CFLAGS += -I src/ofxOpenCVBlobTrackingExt/src
+USER_CFLAGS += -I src/ofxPd/src
+USER_CFLAGS += -I src/ofxPd/src/pd/libpd_wrapper
+USER_CFLAGS += -I src/ofxPd/src/pd/pure-data/src
+USER_CFLAGS += -I src/ofxRange/src
 USER_CFLAGS += -I src/ofxStringEncoders/src
+USER_CFLAGS += -I src/ofxTextInputField/src
+USER_CFLAGS += -I src/ofxTimeline/src
+USER_CFLAGS += -I src/ofxTween/src
+USER_CFLAGS += -I src/ofxTween/src/Easings
+USER_CFLAGS += -I src/ofxVideoRecorder/src
+
+# OFXPD
+USER_CFLAGS += -DHAVE_UNISTD_H -DUSEAPI_DUMMY -DPD -shared
 
 # --------------------------------------------------------
 # USER_LDFLAGS allows to pass custom flags to the linker
 # --------------------------------------------------------
 
 # BULLET PHYSICS
-USER_LDFLAGS += ../../../addons/ofxBullet/bullet/lib/linux/Release/libBulletDynamics.a ../../../addons/ofxBullet/bullet/lib/linux/Release/libBulletCollision.a  ../../../addons/ofxBullet/bullet/lib/linux/Release/libBulletSoftBody.a ../../../addons/ofxBullet/bullet/lib/linux/Release/libLinearMath.a ../../../addons/ofxBullet/bullet/lib/linux/Release/libMiniCL.a
+USER_LDFLAGS = ../../../addons/ofxBullet/bullet/lib/linux/Release/libBulletDynamics.a ../../../addons/ofxBullet/bullet/lib/linux/Release/libBulletCollision.a  ../../../addons/ofxBullet/bullet/lib/linux/Release/libBulletSoftBody.a ../../../addons/ofxBullet/bullet/lib/linux/Release/libLinearMath.a ../../../addons/ofxBullet/bullet/lib/linux/Release/libMiniCL.a
 
 # LUA
 USER_LDFLAGS += ../../../addons/ofxLua/lib/linux/ofxLuaStaticLib/liblua.a
 USER_LDFLAGS += ../../../addons/ofxLua/lib/linux/ofxLuabindStaticLib/libluabind.a
 
+# LIBSNDFILE
+USER_LDFLAGS += src/ofxAudioSample/libs/libsndfile/lib/linux/libsndfile.a
+
 # OPENNI
 USER_LDFLAGS += /usr/lib/libnimCodecs.so /usr/lib/libnimMockNodes.so /usr/lib/libnimRecorder.so /usr/lib/libXnCore.so /usr/lib/libXnDDK.so /usr/lib/libXnDeviceFile.so /usr/lib/libXnDeviceSensorV2.so /usr/lib/libXnFormats.so /usr/lib/libXnVFeatures_1_4_1.so /usr/lib/libXnVHandGenerator_1_4_1.so /usr/lib/libXnVNite_1_4_1.so /usr/lib/libOpenNI.so
+
+# OFXPD
+USER_LDFLAGS += --export-dynamic
 
 # --------------------------------------------------------
 # use this to add system libraries for example:
@@ -85,6 +108,9 @@ USER_LIBS += -lOpenNI
 
 # X11
 USER_LIBS += -lX11
+
+# OFXPD
+USER_LIBS += -ldl -lm
 
 # --------------------------------------------------------
 # change this to add different compiler optimizations to your project

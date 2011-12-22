@@ -8,7 +8,7 @@
 #include "gamuzaConstants.h"
 
 
-class gamuzaMain : public ofBaseApp{
+class gamuzaMain : public ofBaseApp, public ofxMidiListener{
 	
 	public:
 		
@@ -37,7 +37,13 @@ class gamuzaMain : public ofBaseApp{
 		void audioOut(float *output, int bufferSize, int nChannels);
 		void addAudioModule(int _wT, float _freq);
 		void addAudioModule(int _wT, float _freq, int _ch);
+        void addAudioSample(string _file);
 		void resetAudioOutput();
+    
+        // MIDI functions
+        void setupMidi();
+        void updateMidi();
+        void newMidiMessage(ofxMidiEventArgs& eventArgs);
 			
 		// loading settings from XML
 		void loadGamuzaSettings();
@@ -49,6 +55,8 @@ class gamuzaMain : public ofBaseApp{
 		void drawGui();
 		void gamuzaFullscreen();
 		void resetWarpingPoints(int actualPanel);
+        void initTimeline();
+        void receivedTrigger(ofxTLTriggerEventArgs& trigger);
 	
 		// EXPORT function
 		void saveFrame();
@@ -57,6 +65,10 @@ class gamuzaMain : public ofBaseApp{
 		// FILE dialog functions
 		void openFileDialog();
 		void saveFileDialog();
+    
+        // Video Export functions
+        void exportVideoFileDialog();
+        void stopExportVideo();
 	
 		// GUI Events
 		void eventsIn(guiCallbackData & data);
@@ -143,6 +155,9 @@ class gamuzaMain : public ofBaseApp{
 		bool					oscActivated;
 		string					host_number;
 		string					host_port;
+    
+        // MIDI settings
+        int                     midiPortNumber;
 		
 		//////////////////////////////////////////////
 		
@@ -153,10 +168,13 @@ class gamuzaMain : public ofBaseApp{
 		simpleLogger			logger;
 		ofxKeyMap				gamuzaKmap;
 		ofTexture				emptyTexture;
+        ofxTimeline             timeline;
+        string                  actualTriggerName;
 	
 		float					guiPosX;
 		float					guiPosY;
 		bool					isFullscreen;
+        bool                    showTimeline;
 		//////////////////////////////////////////////
 	
 		//////////////////////////////////////////////
@@ -164,6 +182,7 @@ class gamuzaMain : public ofBaseApp{
 		ofFbo					drawingFbo;
 		ofFbo					finalTexture;
 		ofTexture				drawingTexture;
+        ofPixels                outputPix;
 		ofShader				shaderColorCorrection;
 		bool					useShader;
 		matrixAreas				finalTextureMapping;
@@ -203,8 +222,13 @@ class gamuzaMain : public ofBaseApp{
 	
 		gaDsp					gamuzaDSP;
 		gaAmplifier				gamuzaAMP;
+    
 		vector<audioModule>		audioModules;
 		int						audioModulesNum;
+    
+        vector<audioSample>     audioSamples;
+        int                     audioSamplesNum;
+    
 		float					*outputBufferCopy;
 		float					mainVolume;
 	
@@ -235,6 +259,19 @@ class gamuzaMain : public ofBaseApp{
 		bool					sendOsc_AAP;
 		bool					sendOsc_ADP;
 		//////////////////////////////////////////////
+    
+        //////////////////////////////////////////////
+        // MIDI vars
+        ofxMidiOut              midiOut;
+        ofxMidiIn               midiIn;
+        vector<ofVec3f>         midiMapping;
+        char                    midi_msg[255];
+        int                     midi_port;
+        int                     midi_id;
+        int                     midi_valueOne;
+        int                     midi_valueTwo;
+        double                  midi_timestamp;
+        //////////////////////////////////////////////
 		
 		//////////////////////////////////////////////
 		// OSC vars
@@ -244,12 +281,22 @@ class gamuzaMain : public ofBaseApp{
 	
 	private:
 		
+        ofxMemoryUsage          ramMemory;
+        ofxVideoRecorder        movieExport;
+        ofxLibsndFileRecorder   audioExport;
+        threadedEncoding        threadMovieEncoding;
 		ofMutex					gamuzaSetup;
 		ofxXmlSettings			setting_data;
 		ofImage					tempFrame;
 		int						currentSavedFrame;
+        bool                    isExporting;
+        bool                    isEncoding;
+        bool                    exportAudio;
 		
+        int                     gamuzaMem;
 		float					gamuzaRealFPS;
+        float                   gamuzaExportFPS;
+        int                     exportCodec;
 		bool					useVSync;
 
 			 

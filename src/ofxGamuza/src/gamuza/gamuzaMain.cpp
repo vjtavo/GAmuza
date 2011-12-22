@@ -3,6 +3,7 @@
 #include "gamuzaFBO.h"
 #include "gamuzaAudio.h"
 #include "gamuzaArduino.h"
+#include "gamuzaMidi.h"
 #include "gamuzaOSC.h"
 
 //--------------------------------------------------------------
@@ -33,12 +34,21 @@ void gamuzaMain::setup(){
 
 	//////////////////////////////////////////////
 	// AUDIO
+    exportAudio             = false;
+
 	if(audioActivated){
 		gamuzaSetup.lock();
 		setupAudio();
 		gamuzaSetup.unlock();
 	}
 	//////////////////////////////////////////////
+
+    //////////////////////////////////////////////
+	// MIDI
+    gamuzaSetup.lock();
+    setupMidi();
+    gamuzaSetup.unlock();
+    //////////////////////////////////////////////
 
 	//////////////////////////////////////////////
 	// OPENNI
@@ -82,10 +92,20 @@ void gamuzaMain::setup(){
 	gamuzaSetup.unlock();
 	//////////////////////////////////////////////
 
+    //////////////////////////////////////////////
+    // VIDEO EXPORT
+    gamuzaExportFPS     = FPS;
+    isExporting         = false;
+    isEncoding          = false;
+    exportCodec         = 0;
+    ramMemory.setup();
+    threadMovieEncoding.setup(audioOutputChannels);
+	//////////////////////////////////////////////
+
 	//////////////////////////////////////////////
 	// SYSTEM
-	currentSavedFrame = 0;
-	//////////////////////////////////////////////
+	currentSavedFrame   = 0;
+    //////////////////////////////////////////////
 
 	//////////////////////////////////////////////
 	// set log level to error only
@@ -157,12 +177,15 @@ void gamuzaMain::update(){
 			updateOSC();
 		}
 		//////////////////////////////////////////////
+
 	}
 	//////////////////////////////////////////////
 
 	//////////////////////////////////////////////
-	// Various reference var
+	// SYSTEM
 	gamuzaRealFPS = ofGetFrameRate();
+    ramMemory.update();
+    gamuzaMem = ramMemory.getUsedMemory();
 	//////////////////////////////////////////////
 
 }
@@ -185,6 +208,25 @@ void gamuzaMain::draw(){
 		// FBO texture draw
 		drawFBO();
 		//////////////////////////////////////////////
+
+        ////////////////////////////////////
+        // TIMELINE
+        if(showTimeline && useLiveCoding && !isFullscreen){
+            ofEnableAlphaBlending();
+            glColor4f(0.0,0.0,0.0,0.9);
+            ofRect(0,0,MAIN_WINDOW_W-4,MAIN_WINDOW_H);
+            ofDisableAlphaBlending();
+        }else if(showTimeline && useLiveCoding && isFullscreen){
+            ofEnableAlphaBlending();
+            glColor4f(0.0,0.0,0.0,0.9);
+            ofRect(0,0,mainScreenW-1,mainScreenH);
+            ofDisableAlphaBlending();
+        }
+
+        if(useLiveCoding){
+            timeline.draw();
+        }
+        ////////////////////////////////////
 
 	}else{
 		ofBackground(20,20,20);
@@ -215,7 +257,9 @@ void gamuzaMain::keyPressed(int key){
 
 	// LIVE CODING
 	if(computeFBOTexture && useLiveCoding){
-		liveCoding.keyPressed(key,activateLiveEditor);
+        if(!showTimeline){
+            liveCoding.keyPressed(key,activateLiveEditor);
+        }
 		lua.scriptKeyPressed(key);
 	}
 
@@ -258,6 +302,24 @@ void gamuzaMain::keyReleased(int key){
 		printFrame();
 	}
 
+    if(useLiveCoding){
+        // toggle the visualization of the timeline
+        if(alt && (key == 't' || key == 'T')){
+            showTimeline = !showTimeline;
+            if(showTimeline){
+                timeline.show();
+                timeline.enableMouse();
+            }else{
+                timeline.hide();
+                timeline.disableMouse();
+            }
+        }
+        // play/stop the timeline
+        if(alt && (key == 'g' || key == 'G')){
+            timeline.togglePlay();
+        }
+    }
+
     // LIVE CODING
 	if(computeFBOTexture && useLiveCoding){
 		lua.scriptKeyReleased(key);
@@ -290,7 +352,7 @@ void gamuzaMain::mouseMoved(int x, int y){
 void gamuzaMain::mouseDragged(int x, int y, int button){
 
 	// gui interface
-    if(!liveCodingMode){
+    if(!liveCodingMode && !showTimeline){
         gui.mouseDragged(x, y, button);
     }
 
@@ -322,7 +384,7 @@ void gamuzaMain::mouseDragged(int x, int y, int button){
 void gamuzaMain::mousePressed(int x, int y, int button){
 
 	// gui interface
-    if(!liveCodingMode){
+    if(!liveCodingMode  && !showTimeline){
         gui.mousePressed(x, y, button);
     }
 
@@ -380,7 +442,7 @@ void gamuzaMain::mousePressed(int x, int y, int button){
 void gamuzaMain::mouseReleased(int x, int y, int button){
 
 	// gui interface
-    if(!liveCodingMode){
+    if(!liveCodingMode  && !showTimeline){
         gui.mouseReleased();
     }
 
@@ -424,6 +486,11 @@ void gamuzaMain::gotMessage(ofMessage msg){
 }
 
 //--------------------------------------------------------------
+void gamuzaMain::receivedTrigger(ofxTLTriggerEventArgs& trigger){
+	actualTriggerName = trigger.triggerName;
+}
+
+//--------------------------------------------------------------
 void gamuzaMain::saveFrame(){
 
 	string _d = getDateTimeAsString("%d_%m_%Y");
@@ -458,47 +525,108 @@ void gamuzaMain::printFrame(){
 //--------------------------------------------------------------
 void gamuzaMain::openFileDialog(){
 
-	string URL;
+    string URL;
 
-	int response = ofxFileDialog::openFile(URL);
-	if(response){
-		loadScript(URL);
-		logger.log(99, " %s", URL.c_str());
-		logger.log(99, " OPEN SCRIPT:");
-		liveCoding.glEditor[liveCoding.currentEditor]->ClearAllText();
-		liveCoding.pasteFromLuaScript(readScript(URL,true));
-	}else{
-		logger.log(99, " OPEN SCRIPT Canceled.");
-	}
+    int response = ofxFileDialog::openFile(URL);
+    if(response){
+        loadScript(URL);
+        logger.log(99, " %s", URL.c_str());
+        logger.log(99, " OPEN SCRIPT:");
+        liveCoding.glEditor[liveCoding.currentEditor]->ClearAllText();
+        liveCoding.pasteFromLuaScript(readScript(URL,true));
+    }else{
+        logger.log(99, " OPEN SCRIPT Canceled.");
+    }
 
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::saveFileDialog(){
 
-	string folderURL;
-	string fileName;
+    string folderURL;
+    string fileName;
 
-	int response = ofxFileDialog::saveFile(folderURL, fileName);
-	if(response){
-	    #ifdef TARGET_OSX
-		logger.log(99, " %s%s", folderURL.c_str(),fileName.c_str());
-		logger.log(99, " SAVE SCRIPT:");
-		liveCoding.saveToFile(fileName,folderURL);
-		#endif
+    int response = ofxFileDialog::saveFile(folderURL, fileName);
+    if(response){
+    #ifdef TARGET_OSX
+        logger.log(99, " %s%s", folderURL.c_str(),fileName.c_str());
+        logger.log(99, " SAVE SCRIPT:");
+        liveCoding.saveToFile(fileName,folderURL);
+    #endif
 
-		#ifdef TARGET_LINUX
-		logger.log(99, " %s", fileName.c_str());
-		logger.log(99, " SAVE SCRIPT:");
-		liveCoding.saveToFile(folderURL);
-		#endif
+    #ifdef TARGET_LINUX
+        logger.log(99, " %s", fileName.c_str());
+        logger.log(99, " SAVE SCRIPT:");
+        liveCoding.saveToFile(folderURL);
+    #endif
 
-		scriptsLister.refreshDir();
+        scriptsLister.refreshDir();
 
-	}else{
-		logger.log(99, " SAVE SCRIPT Canceled");
-	}
+    }else{
+        logger.log(99, " SAVE SCRIPT Canceled");
+    }
 
+}
+
+//--------------------------------------------------------------
+void gamuzaMain::exportVideoFileDialog(){
+
+    string folderURL;
+    string fileName;
+    char temp[256];
+    char temp2[256];
+
+    int response = ofxFileDialog::saveFile(folderURL, fileName);
+    if(response){
+        #ifdef TARGET_OSX
+        logger.log(99, " %s/%s", folderURL.c_str(),fileName.c_str());
+        logger.log(99, " EXPORT VIDEO: ");
+        sprintf(temp,"%s/%s",folderURL.c_str(),fileName.c_str());
+        sprintf(temp2,"%s/%s.aif",folderURL.c_str(),fileName.c_str());
+        #endif
+
+        #ifdef TARGET_LINUX
+        logger.log(99, " %s", fileName.c_str());
+        logger.log(99, " EXPORT VIDEO: ");
+        sprintf(temp,"%s",folderURL.c_str());
+        sprintf(temp2,"%s.aif",folderURL.c_str());
+        #endif
+
+        // setup video export
+        movieExport.setup(temp,projectionScreenW,projectionScreenH,gamuzaExportFPS,exportCodec);
+
+        // setup audio export
+        if(exportAudio){
+            audioExport.setup(temp2,GAMUZA_AUDIO_EXPORT_FORMAT,audioSamplingRate,audioOutputChannels);
+        }
+
+        isExporting         = true;
+        logger.log(99," Exporting Video to RAM...");
+    }else{
+        isExporting         = false;
+    }
+
+}
+
+//--------------------------------------------------------------
+void gamuzaMain::stopExportVideo(){
+
+    isExporting         = false;
+    isEncoding          = true;
+
+    if(movieExport.isInitialized()){
+        // stop video export
+        movieExport.close();
+        // stop audio export
+        if(exportAudio){
+            audioExport.finalize();
+        }
+    }
+    // encode movie file & mux it with audio file (with ffmpeg)
+    threadMovieEncoding.encodeThreaded(movieExport.getFileName(),audioExport.getFileName(),gamuzaExportFPS,exportCodec,exportAudio);
+
+    logger.log(99," Video Encoded");
+    isEncoding          = false;
 }
 
 //--------------------------------------------------------------
@@ -507,10 +635,6 @@ void gamuzaMain::exit(){
 	// close arduino connection
 	if(arduinoActivated){
 		arduino.disconnect();
-	}
-
-	if(audioActivated && audioOutputChannels > 0){
-		audioModules.clear();
 	}
 
 	// call the script's exit() function
@@ -598,6 +722,11 @@ void gamuzaMain::loadGamuzaSettings(){
 		audioOutputChannels = 0;
 	}
 	//////////////////////////////////////////////
+
+    //////////////////////////////////////////////
+	// get MIDI settings
+    midiPortNumber          = setting_data.getValue("midi_port",0,0);
+    //////////////////////////////////////////////
 
 	//////////////////////////////////////////////
 	// get ARDUINO settings

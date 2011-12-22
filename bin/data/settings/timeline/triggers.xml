@@ -1,0 +1,18 @@
+<triggers>
+    <trigger>
+        <point>0,149265</point>
+        <name>WHITE</name>
+    </trigger>
+    <trigger>
+        <point>0,277941</point>
+        <name>RED</name>
+    </trigger>
+    <trigger>
+        <point>0,493382</point>
+        <name>WHITE</name>
+    </trigger>
+    <trigger>
+        <point>0,686765</point>
+        <name>RED</name>
+    </trigger>
+</triggers>

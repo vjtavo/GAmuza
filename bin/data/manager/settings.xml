@@ -17,7 +17,7 @@
     <val_0>0.000000</val_0>
 </MAIN_SCREEN_SIZE_SEL>
 <SECONDARY_SCREEN_SIZE_SEL>
-    <val_0>12.000000</val_0>
+    <val_0>4.000000</val_0>
 </SECONDARY_SCREEN_SIZE_SEL>
 <MAPPING_GRID_RES>
     <val_0>8.283333</val_0>
@@ -46,3 +46,6 @@
 <ARDUINO_SERIAL_PORT>
     <val_0>0.000000</val_0>
 </ARDUINO_SERIAL_PORT>
+<MIDI_DEV>
+    <val_0>2.000000</val_0>
+</MIDI_DEV>

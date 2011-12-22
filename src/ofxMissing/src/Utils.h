@@ -13,6 +13,7 @@ bool createDirectory(string dir, bool relativeToDataDir = true, bool createSubDi
 bool fileExists(string path, bool relativeToDataDir = true);
 std::set<string> getFiles(string filePathWithGlob, bool relativeToDataDir = true);
 string md5(string input);
+int gaStringReplace(string& input, string searchStr, string replaceStr);
 
 #ifdef __cplusplus
 	}

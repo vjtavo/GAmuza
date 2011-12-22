@@ -43,6 +43,7 @@ public:
 	ofxKeyMap kmap;	
 	vector<GLEditor*> glEditor;
 	int currentEditor;
+    int currentLine;
 	ClipBoard clipBoard;
 	
 	ofEvent<string> doCompileEvent;

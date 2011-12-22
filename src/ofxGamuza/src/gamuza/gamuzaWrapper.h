@@ -201,7 +201,8 @@ class ofGamuzaWrapper{
          .def("resize", (void(ofPixels::*)(int,int)) &ofPixels::resize)
 		 .def("swapRgb", &ofPixels::swapRgb)
 		 .def("clear", &ofPixels::clear)
-         .def("getPixels", &getPixel)
+         .def("getPixel", getPixel)
+         .def("setPixel", setPixel)
          .def("getPixelIndex", &ofPixels::getPixelIndex)
 		 .def("getColor", &ofPixels::getColor)
 		 .def("setColor", &ofPixels::setColor)
@@ -234,10 +235,12 @@ class ofGamuzaWrapper{
 		 .def("loadData", (void(ofTexture::*)(float*,int,int,int)) &ofTexture::loadData)
 		 .def("loadData", (void(ofTexture::*)(unsigned char*,int,int,int)) &ofTexture::loadData)
 		 .def("loadData", (void(ofTexture::*)(unsigned short*,int,int,int)) &ofTexture::loadData)
-		 .def("loadScreenData", (void(ofTexture::*)(int,int,int,int)) &ofTexture::loadScreenData)
+		 .def("loadData", (void(ofTexture::*)(ofPixels&)) &ofTexture::loadData)
+         .def("loadScreenData", (void(ofTexture::*)(int,int,int,int)) &ofTexture::loadScreenData)
 		 .def("setAnchorPercent", (void(ofTexture::*)(float,float)) &ofTexture::setAnchorPercent)
 		 .def("setAnchorPoint", (void(ofTexture::*)(float,float)) &ofTexture::setAnchorPoint)
 		 .def("resetAnchor", (void(ofTexture::*)(void)) &ofTexture::resetAnchor)
+         .def("readToPixels", (void(ofTexture::*)(ofPixels&)) &ofTexture::readToPixels)
 		 .def("draw", (void(ofTexture::*)(const ofRectangle&)) &ofTexture::draw)
 		 .def("draw", (void(ofTexture::*)(const ofPoint&)) &ofTexture::draw)
 		 .def("draw", (void(ofTexture::*)(const ofPoint&, float, float)) &ofTexture::draw)
@@ -419,6 +422,43 @@ class ofGamuzaWrapper{
 		 .def("getIsPlaying", (bool(ofSoundPlayer::*)(void)) &ofSoundPlayer::getIsPlaying)
 		 .def("getSpeed", (float(ofSoundPlayer::*)(void)) &ofSoundPlayer::getSpeed)
 		 .def("getPan", (float(ofSoundPlayer::*)(void)) &ofSoundPlayer::getPan),
+         
+         ///////////////////////////////
+		 /// \section Camera
+         
+         class_<ofCamera>("camera")
+		 .def(constructor<>())
+		 .def("setFov", (void(ofCamera::*)(float)) &ofCamera::setFov)
+         .def("setNearClip", (void(ofCamera::*)(float)) &ofCamera::setNearClip)
+		 .def("setFarClip", (void(ofCamera::*)(float)) &ofCamera::setFarClip)
+         .def("enableOrtho", (void(ofCamera::*)(void)) &ofCamera::enableOrtho)
+         .def("disableOrtho", (void(ofCamera::*)(void)) &ofCamera::disableOrtho)
+         .def("getOrtho", (bool(ofCamera::*)(void)) &ofCamera::getOrtho)
+         .def("setPosition", (void(ofCamera::*)(float,float,float)) &ofCamera::setPosition)
+         .def("setPosition", (void(ofCamera::*)(const ofVec3f&)) &ofCamera::setPosition)
+         .def("setScale", (void(ofCamera::*)(float)) &ofCamera::setScale)
+         .def("setScale", (void(ofCamera::*)(float,float,float)) &ofCamera::setScale)
+         .def("setScale", (void(ofCamera::*)(const ofVec3f&)) &ofCamera::setScale)
+         .def("move", (void(ofCamera::*)(float,float,float)) &ofCamera::move)
+         .def("move", (void(ofCamera::*)(const ofVec3f&)) &ofCamera::move)
+         .def("truck", (void(ofCamera::*)(float)) &ofCamera::truck)
+         .def("boom", (void(ofCamera::*)(float)) &ofCamera::boom)
+         .def("dolly", (void(ofCamera::*)(float)) &ofCamera::dolly)
+         .def("tilt", (void(ofCamera::*)(float)) &ofCamera::tilt)
+         .def("pan", (void(ofCamera::*)(float)) &ofCamera::pan)
+         .def("roll", (void(ofCamera::*)(float)) &ofCamera::roll)
+         .def("rotate", (void(ofCamera::*)(float,const ofVec3f&)) &ofCamera::rotate)
+         .def("rotate", (void(ofCamera::*)(float,float,float,float)) &ofCamera::rotate)
+         .def("lookAt", (void(ofCamera::*)(const ofVec3f&,ofVec3f)) &ofCamera::lookAt)
+         .def("orbit", (void(ofCamera::*)(float,float,float,const ofVec3f&)) &ofCamera::orbit)
+         .def("transformGL", (void(ofCamera::*)(void)) &ofCamera::transformGL)
+         .def("restoreTransformGL", (void(ofCamera::*)(void)) &ofCamera::restoreTransformGL)
+         .def("resetTransform", (void(ofCamera::*)(void)) &ofCamera::resetTransform)
+         .def("draw", (void(ofCamera::*)(void)) &ofCamera::draw)
+         .def("getImagePlaneDistance", (float(ofCamera::*)(ofRectangle)) &ofCamera::getImagePlaneDistance)
+         .def("cacheMatrices", (void(ofCamera::*)(bool)) &ofCamera::cacheMatrices)
+         .def("beginCamera", (void(ofCamera::*)(ofRectangle)) &ofCamera::begin)
+         .def("endCamera", (void(ofCamera::*)(void)) &ofCamera::end),
 		 
 		 ///////////////////////////////
 		 /// \section Math
@@ -510,6 +550,9 @@ class ofGamuzaWrapper{
 		 def("getHeight", &ofGetHeight),
 		 def("getWindowWidth", &ofGetWindowWidth),
 		 def("getWindowHeight", &ofGetWindowHeight),
+         
+         /// 3D
+         def("getCurrentViewport", &ofGetCurrentViewport),
 		 
 		 ///////////////////////////////
 		 /// \section Utils
@@ -556,6 +599,76 @@ class ofGamuzaWrapper{
 		 
 		 def("launchBrowser", &ofLaunchBrowser)
 		];
+        
+        //////////////////////////////////////////////////////////////
+		///////////////////////////////
+		/// OF experimental addons api wrapper
+		module(lua, "ofx")
+		[
+         
+         ///////////////////////////////
+         // OFXBULLET ---------------------------------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>(UNSTABLE)
+         class_<ofxBulletWorldRigid>("bulletWorldRigid")
+         .def(constructor<>())
+         .def("setup", (void(ofxBulletWorldRigid::*)(void)) &ofxBulletWorldRigid::setup)
+         .def("update", (void(ofxBulletWorldRigid::*)(void)) &ofxBulletWorldRigid::update)
+         .def("setCameraPosition", (void(ofxBulletWorldRigid::*)(ofVec3f)) &ofxBulletWorldRigid::setCameraPosition)
+         .def("setCamera", (void(ofxBulletWorldRigid::*)(ofCamera)) &ofxBulletWorldRigid::setCamera)
+         .def("enableCollisionEvents", (void(ofxBulletWorldRigid::*)(void)) &ofxBulletWorldRigid::enableCollisionEvents)
+         .def("disableCollisionEvents", (void(ofxBulletWorldRigid::*)(void)) &ofxBulletWorldRigid::disableCollisionEvents)
+         .def("checkCollisions", (void(ofxBulletWorldRigid::*)(void)) &ofxBulletWorldRigid::checkCollisions)
+         .def("enableMousePickingEvents", (void(ofxBulletWorldRigid::*)(short int)) &ofxBulletWorldRigid::enableMousePickingEvents)
+         .def("disableMousePickingEvents", (void(ofxBulletWorldRigid::*)(void)) &ofxBulletWorldRigid::disableMousePickingEvents)
+         .def("checkMousePicking", (void(ofxBulletWorldRigid::*)(float,float)) &ofxBulletWorldRigid::checkMousePicking)
+         .def("enableGrabbing", (void(ofxBulletWorldRigid::*)(short int)) &ofxBulletWorldRigid::enableGrabbing)
+         .def("disableGrabbing", (void(ofxBulletWorldRigid::*)(void)) &ofxBulletWorldRigid::disableGrabbing)
+         .def("enableDebugDraw", (void(ofxBulletWorldRigid::*)(void)) &ofxBulletWorldRigid::enableDebugDraw)
+         .def("drawDebug", (void(ofxBulletWorldRigid::*)(void)) &ofxBulletWorldRigid::drawDebug)
+         .def("checkWorld", (void(ofxBulletWorldRigid::*)(void)) &ofxBulletWorldRigid::checkWorld)
+         .def("setGravity", (void(ofxBulletWorldRigid::*)(ofVec3f)) &ofxBulletWorldRigid::setGravity)
+         .def("getGravity", (ofVec3f(ofxBulletWorldRigid::*)(void)) &ofxBulletWorldRigid::getGravity)
+         .def("removeMouseConstraint", (void(ofxBulletWorldRigid::*)(void)) &ofxBulletWorldRigid::removeMouseConstraint)
+         .def("destroy", (void(ofxBulletWorldRigid::*)(void)) &ofxBulletWorldRigid::destroy),
+         
+         class_<ofxBulletBox>("bulletBox")
+         .def(constructor<>())
+         .def("init", (void(ofxBulletBox::*)(float,float,float)) &ofxBulletBox::init)
+         .def("create", (void(ofxBulletBox::*)(btDiscreteDynamicsWorld*,ofVec3f,float,float,float,float)) &ofxBulletBox::create)
+         .def("add", (void(ofxBulletBox::*)(void)) &ofxBulletBox::add)
+         .def("remove", (void(ofxBulletBox::*)(void)) &ofxBulletBox::remove)
+         .def("removeRigidBody", (void(ofxBulletBox::*)(void)) &ofxBulletBox::removeRigidBody)
+         .def("draw", (void(ofxBulletBox::*)(void)) &ofxBulletBox::draw)
+         .def("drawBox", (void(ofxBulletBox::*)(float,float,float)) &ofxBulletBox::drawBox)
+         .def("getSize", (ofVec3f(ofxBulletBox::*)(void)) &ofxBulletBox::getSize)
+         .def("isInside", (bool(ofxBulletBox::*)(const ofVec3f&,float)) &ofxBulletBox::isInside),
+         //////////////////////////////////////////////////////////////////////////////////////////////////
+         
+         ///////////////////////////////
+         // OFXGAUSSIAN
+         def("gaussian", (float(*)(void)) &ofxGaussian)
+         //////////////////////////////////////////////////////////////////////////////////////////////////
+         
+         ///////////////////////////////
+         // OFXMISSING
+         
+         //////////////////////////////////////////////////////////////////////////////////////////////////
+         
+         ///////////////////////////////
+         // OFXPD
+         
+         //////////////////////////////////////////////////////////////////////////////////////////////////
+         
+         ///////////////////////////////
+         // OFXSTEPSEQUENCER
+         
+         //////////////////////////////////////////////////////////////////////////////////////////////////
+         
+         ///////////////////////////////
+         // OFXSTRINGENCODERS
+         
+         //////////////////////////////////////////////////////////////////////////////////////////////////
+         
+        ];
 		
 		//////////////////////////////////////////////////////////////
 		///////////////////////////////
@@ -574,6 +687,16 @@ class ofGamuzaWrapper{
 		 def("cameraTexture", (ofTexture(*)(int)) &gaGetWebcamTexture),
          
          ///////////////////////////////
+		 // timeline section
+         def("playTimeline", (void(*)(void)) &gaPlayTimeline),
+         def("stopTimeline", (void(*)(void)) &gaStopTimeline),
+         def("setTimelineFrames", (void(*)(int)) &gaSetTimelineDurationInFrames),
+         def("setTimelineLoop", (void(*)(int)) &gaSetTimelineLoopType),
+         def("addTimelineKeyframes", (void(*)(string,string,float,float)) &gaAddTimelineKeyframes),
+         def("getTimelineValue", (float(*)(string)) &gaGetTimelineKeyframeValue),
+         def("getTimelineTrigger", (string(*)(void)) &gaGetTimelineTrigger),
+         
+         ///////////////////////////////
 		 // pixel manipulation section
          def("cameraMiller", (ofTexture(*)(int,int,float,float,float,float)) &gaGetWebcamMiller),
 		 
@@ -586,6 +709,24 @@ class ofGamuzaWrapper{
 		 def("waveType", &gaSetOscWaveType),
 		 def("waveTuning,", &gaSetOscTuning),
 		 def("nToF", &gaNote),
+         
+         ///////////////////////////////
+		 // audio sample section
+         def("sample", (void(*)(string)) &gaSetupSample),
+         def("samplePlay", (void(*)(int)) &gaSamplePlay),
+         def("sampleStop", (void(*)(int)) &gaSampleStop),
+		 def("sampleVolume", (void(*)(int,float)) &gaSetSampleVolume),
+		 def("sampleLooping", (void(*)(int,bool)) &gaSetSampleLooping),
+		 def("samplePaused", (void(*)(int,bool)) &gaSetSamplePaused),
+         def("sampleSpeed", (void(*)(int,float)) &gaSetSampleSpeed),
+         def("drawSample", (void(*)(int,int,int,int,int)) &gaDrawSampleWave),
+         
+         ///////////////////////////////
+		 // midi section
+         def("getMidiChannel", (int(*)(void)) &gaGetMidiChannel),
+         def("getMidiByteOne", (int(*)(void)) &gaGetMidiByteOne),
+         def("getMidiByteTwo", (int(*)(void)) &gaGetMidiByteTwo),
+         def("getMidiValue", (float(*)(int,int)) &gaGetMidiValue),
 		 
 		 //////////////////////////////////////////////////////////////// GUI MODULES
 		 ///////////////////////////////
@@ -698,6 +839,16 @@ class ofGamuzaWrapper{
         lua.doString("OF_KEY_INSERT = "+ofToString(OF_KEY_INSERT));
         lua.doString("OF_KEY_BACKSPACE = "+ofToString(OF_KEY_BACKSPACE));
         lua.doString("OF_KEY_DEL = "+ofToString(OF_KEY_DEL));
+        
+        // OF loop constants
+        lua.doString("OF_LOOP_NONE = "+ofToString(OF_LOOP_NONE));
+        lua.doString("OF_LOOP_NORMAL = "+ofToString(OF_LOOP_NORMAL));
+        lua.doString("OF_LOOP_PALINDROME = "+ofToString(OF_LOOP_PALINDROME));
+        
+        // OF image type
+        lua.doString("OF_IMAGE_GRAYSCALE = "+ofToString(OF_IMAGE_GRAYSCALE));
+        lua.doString("OF_IMAGE_COLOR = "+ofToString(OF_IMAGE_COLOR));
+        lua.doString("OF_IMAGE_COLOR_ALPHA = "+ofToString(OF_IMAGE_COLOR_ALPHA));
 		
 		// graphics
 		lua.doString("OUTPUT_W = "+ofToString(gapp->gamuzaBase.projectionScreenW));

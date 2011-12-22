@@ -10,20 +10,21 @@
 #include "ofxGLEditor.h"
 
 void ofxGLEditor::setup(string fontFile) {
-
-	string font = fontFile;
+	
+	string font = fontFile;	
 	string path = ofToDataPath(font);
 	for (int i = 1; i < 10; i++) {
-		GLEditor::InitFont(string_to_wstring(path));
+		GLEditor::InitFont(string_to_wstring(path));		
 		GLEditor* editor = new GLEditor();
 		glEditor.push_back(editor);
-
+		
 	}
-	reShape();
-
-	currentEditor = 1;
-
-
+	reShape();	
+	
+	currentEditor   = 1;
+    currentLine     = 0;
+	
+	
 }
 
 void ofxGLEditor::renderScript(){
@@ -39,11 +40,11 @@ void ofxGLEditor::renderScript(){
 }
 
 void ofxGLEditor::keyPressed(int key, bool editorOn) {
-
+	
 	bool alt = kmap.isAltDown();
 	bool shift = kmap.isShiftDown();
 	bool ctrl = kmap.isControlDown();
-
+	
 	int mod = 0;
 	if (shift) {
 		mod = 1;
@@ -52,19 +53,19 @@ void ofxGLEditor::keyPressed(int key, bool editorOn) {
 	}else if (alt) {
 		mod = 4;
 	}
-
+	
 	int special = 0;
 	if (
-		key == OF_KEY_LEFT || key == OF_KEY_UP ||
+		key == OF_KEY_LEFT || key == OF_KEY_UP || 
 		key == OF_KEY_RIGHT || key == OF_KEY_DOWN ||
 		key == OF_KEY_PAGE_UP || key == OF_KEY_PAGE_DOWN ||
 		key == OF_KEY_HOME || key == OF_KEY_END || key == OF_KEY_INSERT
-		)
+		) 
 	{
 		special = key - 256;
 		key = 0;
 	}
-
+	
 	if (alt && key == 'r') {
 		renderScript();
 	}else if (alt && key == 'b') {
@@ -100,7 +101,7 @@ void ofxGLEditor::keyPressed(int key, bool editorOn) {
 	}else if (alt && key == '9') {
 		currentEditor = 9;
 	}*/
-
+    
     if(editorOn){
         glEditor[currentEditor]->Handle(-1, key, special, 0, ofGetMouseX(), ofGetMouseY(), mod);
     }
@@ -108,7 +109,7 @@ void ofxGLEditor::keyPressed(int key, bool editorOn) {
 }
 
 void ofxGLEditor::draw() {
-
+	
 	ofPushView();
 	ofPushMatrix();
 	ofPushStyle();
@@ -116,81 +117,83 @@ void ofxGLEditor::draw() {
 	ofPopStyle();
 	ofPopMatrix();
 	ofPopView();
-
+	
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
-
+    
+    currentLine = glEditor[currentEditor]->GetCurrentLine();
+	
 }
 
 bool ofxGLEditor::isAltPressed() {
-
+	
 	bool alt = kmap.isAltDown();
 	if (alt) return true;
 	return false;
-
+	
 }
 
 void ofxGLEditor::reShape() {
-
+	
 	int w = (ofGetWindowMode() == OF_WINDOW)?ofGetWidth():ofGetScreenWidth();
 	int h = (ofGetWindowMode() == OF_WINDOW)?ofGetHeight():ofGetScreenHeight();
 	for (int i = 0; i < glEditor.size(); i++) {
-		glEditor[i]->Reshape(w*1.2, h);
+		glEditor[i]->Reshape(w*1.2, h);	
 	}
-
+	
 }
 
 void ofxGLEditor::reShape(int _w, int _h) {
-
+	
 	for (int i = 0; i < glEditor.size(); i++) {
-		glEditor[i]->Reshape(_w*1.2, _h);
+		glEditor[i]->Reshape(_w*1.2, _h);	
 	}
-
+	
 }
 
 void ofxGLEditor::reShape(int _w, int _h, int _x, int _y) {
-
+	
 	for (int i = 0; i < glEditor.size(); i++) {
-		glEditor[i]->Reshape(_w*1.2, _h, _x, _y);
+		glEditor[i]->Reshape(_w*1.2, _h, _x, _y);	
 	}
-
+	
 }
 
 void ofxGLEditor::pasteFromClipBoard() {
-
+	
 	wstring m_CopyBuffer = string_to_wstring(clipBoard.getTextFromPasteboard());
 	glEditor[currentEditor]->m_Text.insert(glEditor[currentEditor]->m_Position,m_CopyBuffer);
 	glEditor[currentEditor]->m_Selection=false;
-	glEditor[currentEditor]->m_Position+=m_CopyBuffer.size();
+	glEditor[currentEditor]->m_Position+=m_CopyBuffer.size();	
 	glEditor[currentEditor]->ProcessTabs();
-
+	
 }
 
 void ofxGLEditor::pasteFromLuaScript(string _s) {
-
+	
 	wstring m_CopyBuffer = string_to_wstring(_s);
 	glEditor[currentEditor]->m_Text.insert(glEditor[currentEditor]->m_Position,m_CopyBuffer);
 	glEditor[currentEditor]->m_Selection=false;
-	glEditor[currentEditor]->m_Position+=m_CopyBuffer.size();
+	glEditor[currentEditor]->m_Position+=m_CopyBuffer.size();	
 	glEditor[currentEditor]->ProcessTabs();
-
+	
 }
 
 void ofxGLEditor::copyToClipBoard() {
-
+    
 	string script = wstring_to_string(glEditor[currentEditor]->GetText());
     #ifndef __APPLE__
         // TODO
     #else
         clipBoard.setTextToPasteboard(script.c_str());
     #endif
-
+    
 }
 
 void ofxGLEditor::cutToClipBoard() {
-
+    
 	string script = wstring_to_string(glEditor[currentEditor]->GetText());
-
+    
     #ifndef __APPLE__
     // TODO
         glEditor[currentEditor]->cutSelection();
@@ -198,19 +201,19 @@ void ofxGLEditor::cutToClipBoard() {
         clipBoard.setTextToPasteboard(script.c_str());
         glEditor[currentEditor]->cutSelection();
     #endif
-
+    
 }
 
 void ofxGLEditor::saveToFile() {
-
+	
 	string curPath = ofToDataPath("", false);
     #ifdef TARGET_OSX
         ofSetDataPathRoot("../../../data/scripts/");
     #endif
-
+	
 	string zero = "0";
-	string y = ofToString(ofGetYear());
-	string m = ofToString(ofGetMonth());
+	string y = ofToString(ofGetYear()); 
+	string m = ofToString(ofGetMonth()); 
 	if (m.size() == 1) m = zero+m;
 	string d = ofToString(ofGetDay());
 	if (d.size() == 1) d = zero+d;
@@ -227,7 +230,7 @@ void ofxGLEditor::saveToFile() {
     #else
         string fin = ymdhms+en;
     #endif
-
+	
 	string scriptPath = fin;
 	string file = ofToDataPath(scriptPath);
 	ofstream myfile;
@@ -238,7 +241,7 @@ void ofxGLEditor::saveToFile() {
 		script += "\n";
 	}
 	myfile << script;
-	myfile.close();
+	myfile.close();		
     #ifdef TARGET_OSX
         ofSetDataPathRoot(curPath);
     #endif
@@ -246,14 +249,14 @@ void ofxGLEditor::saveToFile() {
 }
 
 void ofxGLEditor::saveToFile(string _name,string _path) {
-
+	
 	string curPath = ofToDataPath("", false);
 	ofSetDataPathRoot(_path+"/");
-
+	
 	string fin = _name;
 	string scriptPath = fin;
 	string file = ofToDataPath(scriptPath);
-
+	
 	ofstream myfile;
 	myfile.open(file.c_str(), _S_out);
 	string script;
@@ -263,16 +266,16 @@ void ofxGLEditor::saveToFile(string _name,string _path) {
 	}
 	myfile << script;
 	myfile.close();
-
+	
 	ofSetDataPathRoot(curPath);
 	cout << "script saved" << endl;
 
 }
 
 void ofxGLEditor::saveToFile(string _path) {
-
+    
 	string file = _path;
-
+    
 	ofstream myfile;
 	myfile.open(file.c_str(), _S_out);
 	string script;
@@ -282,7 +285,7 @@ void ofxGLEditor::saveToFile(string _path) {
 	}
 	myfile << script;
 	myfile.close();
-
+    
 	cout << "script saved" << endl;
-
+    
 }

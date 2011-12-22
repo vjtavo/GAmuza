@@ -6,7 +6,7 @@
 		<Option makefile_is_custom="1" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="addons/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;addons/ofxOpenCv/src/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;addons/;src/ofxControlPanel/;addons/;src/ofxControlPanel/src/;addons/ofxXmlSettings/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;addons/ofxXmlSettings/src/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;addons/ofxOsc/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;addons/ofxOsc/src/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;src/ofxAudioSample/;build config/;src/ofxCvKalman/;src/ofxFileDialog/;src/ofxGamuza/;src/ofxHalftoner/;src/ofxMissing/;src/ofxOpenCVBlobTrackingExt/;src/ofxOpenNI/;src/ofxAudioSample/src/;src/ofxFileDialog/src/;src/ofxGamuza/src/;src/ofxGamuza/src/gamuza/;src/ofxHalftoner/src/;src/ofxMissing/src/;src/ofxOpenCVBlobTrackingExt/src/;src/ofxStringEncoders/src/;src/ofxGamuza/src/audioAnalysis/;src/ofxGamuza/src/audioSequencing/;src/ofxGamuza/src/audioSynthesis/;src/ofxGamuza/src/imageAnalysis/;src/ofxGamuza/src/math/;src/ofxGamuza/src/midiUtils/;src/ofxGamuza/src/randomUtils/;src/ofxGamuza/src/sourceTracking/;addons/ofxLua/;addons/ofxLua/src/;src/ofxFft/src/;src/ofxOpenNI/src/;src/ofxStringEncoders/src/lib/;src/ofxStringEncoders/src/lib/stringencoder/;src/ofxGLEditor/src/;src/ofxKeyMap/src/;addons/ofxBullet/;addons/ofxBullet/src/;addons/ofxBullet/src/joints/;addons/ofxBullet/src/render/;addons/ofxBullet/src/shapes/;addons/ofxBullet/src/events/;addons/ofxFenster/;addons/ofxFenster/src/;src/ofxMidi/;src/ofxMidi/src/;src/ofxMidi/libs/;src/ofxCLD/;src/ofxCLD/src/;" />
+		<Option virtualFolders="addons/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;addons/ofxOpenCv/src/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;addons/;src/ofxControlPanel/;addons/;src/ofxControlPanel/src/;addons/ofxXmlSettings/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;addons/ofxXmlSettings/src/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;addons/ofxOsc/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;addons/ofxOsc/src/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;src/ofxAudioSample/;build config/;src/ofxCvKalman/;src/ofxFileDialog/;src/ofxGamuza/;src/ofxHalftoner/;src/ofxMissing/;src/ofxOpenCVBlobTrackingExt/;src/ofxOpenNI/;src/ofxAudioSample/src/;src/ofxFileDialog/src/;src/ofxGamuza/src/;src/ofxGamuza/src/gamuza/;src/ofxHalftoner/src/;src/ofxMissing/src/;src/ofxOpenCVBlobTrackingExt/src/;src/ofxStringEncoders/src/;src/ofxGamuza/src/audioAnalysis/;src/ofxGamuza/src/audioSequencing/;src/ofxGamuza/src/audioSynthesis/;src/ofxGamuza/src/imageAnalysis/;src/ofxGamuza/src/math/;src/ofxGamuza/src/midiUtils/;src/ofxGamuza/src/randomUtils/;src/ofxGamuza/src/sourceTracking/;addons/ofxLua/;addons/ofxLua/src/;src/ofxFft/src/;src/ofxOpenNI/src/;src/ofxStringEncoders/src/lib/;src/ofxStringEncoders/src/lib/stringencoder/;src/ofxGLEditor/src/;src/ofxKeyMap/src/;addons/ofxBullet/;addons/ofxBullet/src/;addons/ofxBullet/src/joints/;addons/ofxBullet/src/render/;addons/ofxBullet/src/shapes/;addons/ofxBullet/src/events/;addons/ofxFenster/;addons/ofxFenster/src/;src/ofxMidi/;src/ofxMidi/src/;src/ofxMidi/libs/;src/ofxCLD/;src/ofxCLD/src/;src/ofxGamuza/src/audioSample/;src/ofxMemoryUsage/;src/ofxMemoryUsage/src/;src/ofxVideoRecorder/;src/ofxVideoRecorder/src/;" />
 		<Build>
 			<Target title="Debug">
 				<Option output="bin/GAmuza_debug" prefix_auto="1" extension_auto="1" />
@@ -516,6 +516,12 @@
 		<Unit filename="src/ofxGamuza/src/audioAnalysis/audioInputChannel.h">
 			<Option virtualFolder="src/ofxGamuza/src/audioAnalysis/" />
 		</Unit>
+		<Unit filename="src/ofxGamuza/src/audioSample/audioSample.cpp">
+			<Option virtualFolder="src/ofxGamuza/src/audioSample/" />
+		</Unit>
+		<Unit filename="src/ofxGamuza/src/audioSample/audioSample.h">
+			<Option virtualFolder="src/ofxGamuza/src/audioSample/" />
+		</Unit>
 		<Unit filename="src/ofxGamuza/src/audioSequencing/instrumentSequencer.cpp">
 			<Option virtualFolder="src/ofxGamuza/src/audioSequencing/" />
 		</Unit>
@@ -665,6 +671,12 @@
 		</Unit>
 		<Unit filename="src/ofxKeyMap/src/ofxKeyMap.h">
 			<Option virtualFolder="src/ofxKeyMap/src/" />
+		</Unit>
+		<Unit filename="src/ofxMemoryUsage/src/ofxMemoryUsage.cpp">
+			<Option virtualFolder="src/ofxMemoryUsage/src/" />
+		</Unit>
+		<Unit filename="src/ofxMemoryUsage/src/ofxMemoryUsage.h">
+			<Option virtualFolder="src/ofxMemoryUsage/src/" />
 		</Unit>
 		<Unit filename="src/ofxMidi/libs/RtError.h">
 			<Option virtualFolder="src/ofxMidi/libs/" />
@@ -822,6 +834,15 @@
 		</Unit>
 		<Unit filename="src/ofxStringEncoders/src/ofxStringEncoders.h">
 			<Option virtualFolder="src/ofxStringEncoders/src/" />
+		</Unit>
+		<Unit filename="src/ofxVideoRecorder/src/ofxVideoRecorder.h">
+			<Option virtualFolder="src/ofxVideoRecorder/src/" />
+		</Unit>
+		<Unit filename="src/ofxVideoRecorder/src/threadedEncoding.cpp">
+			<Option virtualFolder="src/ofxVideoRecorder/src/" />
+		</Unit>
+		<Unit filename="src/ofxVideoRecorder/src/threadedEncoding.h">
+			<Option virtualFolder="src/ofxVideoRecorder/src/" />
 		</Unit>
 		<Extensions>
 			<code_completion />

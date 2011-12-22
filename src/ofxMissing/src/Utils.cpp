@@ -112,3 +112,24 @@ string md5(string input) {
 	hash = DigestEngine::digestToHex(digest);
 	return hash;
 }
+
+int gaStringReplace(string& input, string searchStr, string replaceStr){
+    
+    int qty = 0;
+    
+	size_t uPos = 0; 
+	size_t uFindLen = searchStr.length(); 
+	size_t uReplaceLen = replaceStr.length();
+    
+	if( uFindLen == 0 ){
+		return 0;
+	}
+    
+	for( ;(uPos = input.find( searchStr, uPos )) != std::string::npos; ){
+		input.replace( uPos, uFindLen, replaceStr );
+		uPos += uReplaceLen;
+        qty++;
+	}
+    
+    return qty;
+}

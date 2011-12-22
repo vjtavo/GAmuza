@@ -43,6 +43,143 @@ ofTexture gaGetWebcamMiller(int _id, int _black, float _sigma1, float _sigma2, f
 }
 
 //--------------------------------------------------------------
+// TIMELINE SECTION
+//--------------------------------------------------------------
+void gaPlayTimeline(){
+    gapp->gamuzaBase.timeline.play();
+}
+
+void gaStopTimeline(){
+    gapp->gamuzaBase.timeline.stop();
+}
+
+void gaSetTimelineDurationInFrames(int frames){
+    gapp->gamuzaBase.timeline.setDurationInFrames(frames);
+}
+
+void gaSetTimelineLoopType(int _type){
+    if(_type == OF_LOOP_NONE){
+        gapp->gamuzaBase.timeline.setLoopType(OF_LOOP_NONE);
+    }else if(_type == OF_LOOP_NORMAL){
+        gapp->gamuzaBase.timeline.setLoopType(OF_LOOP_NORMAL);
+    }
+}
+
+void gaAddTimelineKeyframes(string _name, string _file, float _min, float _max){
+    char temp[256];
+    sprintf(temp,"settings/timeline/keyframes/%s",_file.c_str());
+    gapp->gamuzaBase.timeline.addKeyframes(_name, temp, ofRange(_min, _max));
+    
+}
+
+float gaGetTimelineKeyframeValue(string _name){
+    return gapp->gamuzaBase.timeline.getKeyframeValue(_name);
+}
+
+string gaGetTimelineTrigger(){
+    return gapp->gamuzaBase.actualTriggerName;
+}
+
+//--------------------------------------------------------------
+// MIDI SECTION
+//--------------------------------------------------------------
+int gaGetMidiChannel(){
+    return gapp->gamuzaBase.midi_id;
+}
+
+int gaGetMidiByteOne(){
+    return gapp->gamuzaBase.midi_valueOne;
+}
+
+int gaGetMidiByteTwo(){
+    return gapp->gamuzaBase.midi_valueTwo;
+}
+
+float gaGetMidiValue(int _channel, int _index){ // _index is midi byteOne
+    for(int i=0; i<gapp->gamuzaBase.midiMapping.size();i++){
+        if(gapp->gamuzaBase.midiMapping[i].x == _channel && gapp->gamuzaBase.midiMapping[i].y == _index){
+            return gapp->gamuzaBase.midiMapping[i].z/127.0f;
+            break;
+        }
+    }
+}
+
+//--------------------------------------------------------------
+// AUDIO SAMPLE SECTION
+//--------------------------------------------------------------
+void gaSetupSample(string _f){
+	if(gapp->gamuzaBase.audioActivated && gapp->gamuzaBase.audioOutputChannels > 0){
+		gapp->gamuzaBase.addAudioSample(_f);
+	}
+}
+
+void gaSamplePlay(int _pos){
+	if(gapp->gamuzaBase.audioActivated && gapp->gamuzaBase.audioOutputChannels > 0){
+		if(_pos < gapp->gamuzaBase.audioSamples.size()){
+			gapp->gamuzaBase.audioSamples[_pos].play();
+		}
+	}
+}
+
+void gaSampleStop(int _pos){
+	if(gapp->gamuzaBase.audioActivated && gapp->gamuzaBase.audioOutputChannels > 0){
+		if(_pos < gapp->gamuzaBase.audioSamples.size()){
+			gapp->gamuzaBase.audioSamples[_pos].stop();
+		}
+	}
+}
+
+void gaSetSampleVolume(int _pos, float _vol){
+	if(gapp->gamuzaBase.audioActivated && gapp->gamuzaBase.audioOutputChannels > 0){
+		if(_pos < gapp->gamuzaBase.audioSamples.size()){
+			if(_vol > 1.0 || _vol < -1.0){
+				gapp->gamuzaBase.audioSamples[_pos].setVolume(1.0);
+			}else{
+				gapp->gamuzaBase.audioSamples[_pos].setVolume(_vol);
+			}
+		}
+	}
+}
+
+void gaSetSampleLooping(int _pos, bool _l){
+	if(gapp->gamuzaBase.audioActivated && gapp->gamuzaBase.audioOutputChannels > 0){
+		if(_pos < gapp->gamuzaBase.audioSamples.size()){
+			gapp->gamuzaBase.audioSamples[_pos].setLooping(_l);
+		}
+	}
+}
+
+void gaSetSamplePaused(int _pos, bool _l){
+	if(gapp->gamuzaBase.audioActivated && gapp->gamuzaBase.audioOutputChannels > 0){
+		if(_pos < gapp->gamuzaBase.audioSamples.size()){
+			gapp->gamuzaBase.audioSamples[_pos].setPaused(_l);
+		}
+	}
+}
+
+void gaSetSampleSpeed(int _pos, float _speed){
+	if(gapp->gamuzaBase.audioActivated && gapp->gamuzaBase.audioOutputChannels > 0){
+		if(_pos < gapp->gamuzaBase.audioSamples.size()){
+			if(_speed > 1.0){
+				gapp->gamuzaBase.audioSamples[_pos].setSpeed(1.0);
+			}else if(_speed < -1.0){
+                gapp->gamuzaBase.audioSamples[_pos].setSpeed(-1.0);
+            }else{
+				gapp->gamuzaBase.audioSamples[_pos].setSpeed(_speed);
+			}
+		}
+	}
+}
+
+void gaDrawSampleWave(int _pos, int x, int y, int w, int h){
+	if(gapp->gamuzaBase.audioActivated && gapp->gamuzaBase.audioOutputChannels > 0){
+		if(_pos < gapp->gamuzaBase.audioSamples.size()){
+			gapp->gamuzaBase.audioSamples[_pos].drawWaveform(x,y,w,h);
+		}
+	}
+}
+
+//--------------------------------------------------------------
 // AUDIO SYNTH SECTION
 //--------------------------------------------------------------
 void gaSetupOSC(int _wt, float _freq){
@@ -501,7 +638,7 @@ float gaCamMotionX(int _dID){
 float gaCamMotionY(int _dID){
 	if(gapp->gamuzaBase.trackingActivated && _dID < gapp->gamuzaBase.numCamInputs  && _dID >= 0){
 		if(gapp->gamuzaBase.inputCam[_dID].captureVideo){
-			return gapp->gamuzaBase.inputCam[_dID]._osc_MDCM.x;
+			return gapp->gamuzaBase.inputCam[_dID]._osc_MDCM.y;
 		}else{
 			return 0.0f;
 		}

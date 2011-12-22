@@ -1,19 +1,9 @@
 #ifndef _OFXAUDIOSAMPLE
 #define _OFXAUDIOSAMPLE
 
-// sound stream capabilities from libsndfile
 #include "sndfile.hh"
 
 #include "ofMain.h"
-
-typedef struct{
-	
-	double minL;
-	double maxL;
-	double minR;
-	double maxR;
-	
-}MiniMaxima;
 
 class ofxAudioSample{
 	
@@ -21,63 +11,51 @@ class ofxAudioSample{
 	
 		
 		ofxAudioSample();
-		ofxAudioSample(string tmpPath);
-	
 		~ofxAudioSample();
 	
-		string	getPath() { return myPath;}
-		bool    getIsLooping();
-		bool    getIsLoaded();
-		bool    getIsPlaying();
-		bool    getIsPaused();
-		double	getPosition();
-		double  getSpeed();
-		
-		void	setPath(string newPath);
-		void	setLooping(bool loop);
-		void	setPosition(double _position);
-		void    setPaused(bool bPaused);
-		void    setSpeed(double speed);
-		
-		bool	load(string tmpPath);
-		bool	read();
+		void	load(string tmpPath, float _hSampleRate);
+        
+        float   update();
 		void	play();
 		void    stop();
-		double  update();
+    
+        void	setLooping(bool loop);
+        void	setPosition(float _position);
+        void    setPaused(bool bPaused);
+        void    setSpeed(float speed);
 		
-		bool	save();
-		char*	getSummary();
 		int		getChannels();
 		int		getSampleRate();
 		long	getLength();
-		
-		void	generateWaveForm(vector<MiniMaxima> * _WaveForm);
-		void	drawWaveForm(int _x, int _y, int _w, int _h, vector<MiniMaxima> * _WaveForm);
-		
-		
-		char* 	myData;
+        float	getPosition();
+        float   getSpeed();
+        bool    getIsPlaying();
+    
+        void    drawWaveForm(int _x, int _y, int _w, int _h);
+        
+    
+        int             myFormat;
+        int             myChannels;
+        int				mySampleRate;
+        int             bufferSize;
+        float           resampligFactor;
 
 	private:
-	
-		enum SoundFlags { NONE = 0, LOADED = 1, PLAYING = 2, PAUSED = 4, LOOPING = 8 };
-		//Good = Open | Edit | Save | Close,
-		//Bad = Corrupt | Busy
 		
 		string			myPath;
-		int				myChunkSize;
-		int				mySubChunk1Size;
-		short			myFormat;
-		short			myChannels;
-		int				mySampleRate;
-		int				myByteRate;
-		short			myBlockAlign;
-		short			myBitsPerSample;
-		int				myDataSize;
-		double			position;
-		double			speed;
-		double			output;
+    
+		float			position;
+		float			speed;
+        float           mainSpeed;
+		float			output;
 		bool			isLooping;
+        bool            isPlaying;
+        bool            isPaused;
 		unsigned char	soundStatus;
+        
+        float*          readBuffer;
+        vector<float>   samples;
+        vector<ofVec2f> _waveForm;
 	
 };
 

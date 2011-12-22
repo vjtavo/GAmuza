@@ -1,5 +1,5 @@
 /*
- GAmuza v.03 see <http://gamuza.d3cod3.org>
+ GAmuza v.03 see <http://www.gamuza.cc>
  
  GAmuza is released under the MIT License.
  

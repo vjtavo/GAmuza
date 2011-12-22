@@ -24,6 +24,7 @@
 
 // GUI
 #include "ofxControlPanel.h"		// graphical user interface library [from Theo Watson]
+#include "ofxTimeline.h"            // Lightweight SDK for creating graphic timeline tools
 
 // Multiple Windows handling
 //#include "ofxFensterManager.h"
@@ -40,20 +41,30 @@
 
 // Audio output classes
 #include "ofxAudioSample.h"			// reading&writing audio sample from hard drive with libsndfile
+#include "ofxPd.h"                  // a Pure Data addon for OpenFrameworks  - wrapper for libpd
 
 // Midi input/output
-#include "ofxMidi.h"
+#include "ofxMidi.h"                // MIDI input/output
+
+// Video Exporter
+#include "ofxVideoRecorder.h"       // Video recorder
+#include "ofxLibsndFileRecorder.h"  // Audio recorder
+#include "threadedEncoding.h"       // threaded encoding class for video/audio encoding with ffmpeg
 
 // SYSTEM
+#include "ofxMemoryUsage.h"         // System memory info
 #include "ofxMissing.h"				// Date/Time, INI Reader, Recursive file listing. Roxlu missing utils
 #include "ofxFileDialog.h"			// open/save file dialog
 #include "ofxStringEncoders.h"		// Html string encoders (UTF8, unquote)
 
 // PHYSICS
-#include "ofxBullet.h"				// OpenFrameworks add-on for Bullet Physics
+#include "ofxBullet.h"				// Bullet Physics Engine
+
+// MATH
+#include "ofxGaussian.h"            // A Gaussian random number generator
 
 // Pixels manipulators
-#include "ofxHalftoner.h"
+#include "ofxHalftoner.h"           // 80's copy-machine art
 
 //////////////////////////////////////
 // unofficial code
@@ -71,3 +82,4 @@
 #include "gaAmplifier.h"
 #include "gaOscillator.h"
 #include "audioModule.h"
+#include "audioSample.h"

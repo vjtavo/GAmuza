@@ -19,7 +19,9 @@ void gamuzaMain::setupAudio(){
 	outputBufferCounter		= 0;
 	inputBufferCounter		= 0;
 	audioModulesNum			= 0;
+    audioSamplesNum         = 0;
 	outputBufferCopy		= new float[audioBufferSize*audioOutputChannels];
+    exportAudio             = false;
 	
 	printf("\n");
 	soundStream.setDeviceID(audioDevID);
@@ -36,6 +38,7 @@ void gamuzaMain::setupAudio(){
 	if(audioOutputChannels > 0){
 		gamuzaDSP.setupDSP(audioOutputChannels);
 		gamuzaAMP.setup(audioOutputChannels);
+        exportAudio             = true;
 	}
 	//////////////////////////////////////////
 	
@@ -75,16 +78,33 @@ void gamuzaMain::audioOut(float * output, int bufferSize, int nChannels){
 		if(audioOutputChannels > 0){
 			gamuzaDSP.clearBuffer(output, bufferSize);
 			///////////////////////////////////////////
-			// audio synthesis here
+            
+			// audio synthesis
 			for(int i = 0; i < audioModules.size(); i++){
 				audioModules[i].addToSoundBuffer(output, bufferSize, gamuzaDSP.numOscInCh);
 			}
+            
+            // audio samples
+            for(int i = 0; i < audioSamples.size(); i++){
+                if(audioSamples[i].getIsPlaying()){
+                    audioSamples[i].addToSoundBuffer(output, bufferSize);
+                }
+            }
+            
+            // audio export
+            if(isExporting){
+                audioExport.addSamples(output,bufferSize*nChannels);
+            }
+            
 			///////////////////////////////////////////
 			gamuzaAMP.addToSoundBuffer(output, bufferSize, mainVolume);
-			
+            
+            ///////////////////////////////////////////
+            // visualizing output signal
 			if(ofGetFrameNum()%2 == 0){
 				memcpy(outputBufferCopy, output, bufferSize * nChannels * sizeof(float));
 			}
+            ///////////////////////////////////////////
 			
 			outputBufferCounter++;
 		}
@@ -115,9 +135,25 @@ void gamuzaMain::addAudioModule(int _wT, float _freq,int _ch){
 }
 
 //--------------------------------------------------------------
+void gamuzaMain::addAudioSample(string _file){
+	audioSample	aS;
+	aS.setup(_file,audioOutputChannels,audioSamplingRate);
+	audioSamples.push_back(aS);
+	audioSamplesNum++;
+}
+
+//--------------------------------------------------------------
 void gamuzaMain::resetAudioOutput(){
-	audioModules.clear();
+    if(audioModules.size() > 0){
+        audioModules.clear();
+    }
+    if(audioSamples.size() > 0){
+        audioSamples.clear();
+    }
 	audioModulesNum = 0;
+    audioSamplesNum = 0;
+    
+    
 	gamuzaDSP.resetOsc();
 }
 

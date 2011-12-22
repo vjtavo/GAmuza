@@ -5,206 +5,155 @@
 ofxAudioSample::ofxAudioSample(){
     position = 0;
     speed = 1.0;
-    soundStatus = NONE;
-}
-
-//--------------------------------------------------------------
-ofxAudioSample::ofxAudioSample(string tmpPath){
-    position = 0;
-    speed = 1.0;
-    soundStatus = NONE;
-	
-    myPath = tmpPath;
-    read();
+    mainSpeed = 1.0;
+    resampligFactor = 1.0;
+    isLooping   = false;
+    isPlaying   = false;
+    isPaused    = false;
 }
 
 //--------------------------------------------------------------
 ofxAudioSample::~ofxAudioSample(){
-    delete myData;
-    myChunkSize = NULL;
-    mySubChunk1Size = NULL;
-    myFormat = NULL;
-    myChannels = NULL;
-    mySampleRate = NULL;
-    myByteRate = NULL;
-    myBlockAlign = NULL;
-    myBitsPerSample = NULL;
-    myDataSize = NULL;
+    
 }
 
 //--------------------------------------------------------------
-void ofxAudioSample::setPath(string tmpPath){
-    myPath = tmpPath;
-	
-}
-
-//--------------------------------------------------------------
-void ofxAudioSample::setLooping(bool loop){
-    if(loop) {
-        soundStatus |= LOOPING;
+void ofxAudioSample::load(string tmpPath, float _hSampleRate) {
+    
+	myPath = ofToDataPath(tmpPath,true).c_str();
+    
+    SndfileHandle sndFile = SndfileHandle(myPath);
+    
+    myFormat        = sndFile.format();
+    myChannels      = sndFile.channels();
+    mySampleRate    = sndFile.samplerate();
+    
+    resampligFactor = _hSampleRate/mySampleRate;
+    
+    speed           = mainSpeed/resampligFactor;
+    
+    bufferSize = 4096 * myChannels;
+    
+    readBuffer = new float[bufferSize];
+    
+    ofVec2f _wF;
+    int     readcount;
+    int     readpointer;
+    
+    // convert all multichannel files to mono by averaging the channels
+    float monoAverage;
+    
+    while(readcount = sndFile.readf(readBuffer, 4096)){
+        readpointer = 0;
+        _wF.set(0,0);
+        for (int i = 0; i < readcount; i++) {
+            // for each frame...
+            monoAverage = 0;
+            for(int j = 0; j < myChannels; j++) {
+                monoAverage += readBuffer[readpointer + j];
+            }
+            monoAverage /= myChannels;
+            readpointer += myChannels;
+            // add the averaged sample to our vector of samples
+            samples.push_back(monoAverage);
+            
+            // add to the waveform data
+            _wF.x = MIN(_wF.x, monoAverage);
+            _wF.y = MAX(_wF.y, monoAverage);
+        }
+        _waveForm.push_back(_wF);
     }
-    else {
-        soundStatus &= ~LOOPING;
+    
+    position = 0;
+    
+}
+
+//--------------------------------------------------------------
+float ofxAudioSample::update(){
+    
+    if(!isPlaying){
+        output = 0;
+    }else if(isPlaying && isPaused){
+        output = 0;
+    }else if(isPlaying && !isPaused){
+        
+        // update position
+        position += speed;
+        
+        // check if reached EOF
+        if(position > samples.size()) {
+            if(isLooping) {
+                position=0.0;
+            }else{
+                isPlaying = false;
+                return 0;
+            }
+        }
+        
+        //check if position less than zero (reverse)
+        if (position < 0) {
+            if(isLooping) {
+                position = samples.size();
+            }else{
+                isPlaying = false;
+                return 0;
+            }
+        }
+        
+        output = samples[1+(long)position];
+        
     }
-}
-
-//--------------------------------------------------------------
-bool ofxAudioSample::getIsLooping(){
-    if(soundStatus & LOOPING) return true;
-    else return false;
-}
-
-//--------------------------------------------------------------
-bool ofxAudioSample::getIsLoaded(){
-    if(soundStatus & LOADED) return true;
-    else return false;
-}
-
-//--------------------------------------------------------------
-bool ofxAudioSample::getIsPlaying(){
-    if(soundStatus & PLAYING) return true;
-    else return false;
-}
-
-//--------------------------------------------------------------
-bool ofxAudioSample::getIsPaused(){
-    if(soundStatus & PAUSED) return true;
-    else return false;
-}
-
-//--------------------------------------------------------------
-bool ofxAudioSample::load(string tmpPath) {
-    myPath = tmpPath;
-	bool result = read();
-	return result;
-}
-
-//--------------------------------------------------------------
-void ofxAudioSample::generateWaveForm(vector<MiniMaxima> * _waveForm){
-	
-	_waveForm->clear();
-	
-	bool loopState = getIsLooping();
-	setLooping(false);
-	bool playState = getIsPlaying();
-	double tmpSpeed = getSpeed();
-	setSpeed(1.0f);
-    play();
-	// waveform display method based on this discussion http://answers.google.com/answers/threadview/id/66003.html
-	
-    double sampleL, sampleR;
-	while ((long)position<getLength()) {
-		
-		MiniMaxima mm;
-		mm.minL = mm.minR = mm.maxL = mm.maxR = 0;
-		
-		for (int i = 0; i < 256; i++){
-			
-		    if(myChannels == 1) {
-                sampleL = update();
-                sampleR = sampleL;
-		    }
-		    else {
-                sampleL = update()*0.5;
-                sampleR = update()*0.5;
-		    }
-			
-			mm.minL = MIN(mm.minL, sampleL);
-			mm.minR = MIN(mm.minR, sampleR);
-			mm.maxL = MAX(mm.maxL, sampleL);
-			mm.maxR = MAX(mm.maxR, sampleR);
-			
-		}
-		
-		_waveForm->push_back(mm);
-		
- 		//cout << mm.minR << " :: " << mm.maxR << " :: " << mm.minL << " :: " << mm.maxL << endl;
-	}
-	
-	position = 0;
-	setLooping(loopState);
-	setSpeed(tmpSpeed);
-	if(playState) play();
-}
-
-//--------------------------------------------------------------
-void ofxAudioSample::drawWaveForm(int _x, int _y, int _w, int _h, vector<MiniMaxima> * _waveForm){
-	
-	float waveFormZoomX = (float)_waveForm->size()/(float)_w;
-	
-	glPushMatrix();
-	
-	glTranslated(_x, _y, 0);
-	
-	for (unsigned int i = 1; i < _waveForm->size(); i++){
-	    if(myChannels == 1) {
-            ofSetColor(0, 0, 255);
-            ofLine((i-1)/waveFormZoomX, _h + (int)(_waveForm->at(i-1).minR*_h), i/waveFormZoomX, _h +  (int)(_waveForm->at(i).maxR*_h));
-            ofLine(i/waveFormZoomX, _h + (int)(_waveForm->at(i).maxR*_h), i/waveFormZoomX, _h + (int) (_waveForm->at(i).minR*_h));
-			
-            //ofLine((i-1)/waveFormZoomX, (float)_h+_waveForm->at(i-1).minR*(float)_h, i/waveFormZoomX, (float)_h+_waveForm->at(i).maxR*(float)_h);
-			// ofLine((i)/waveFormZoomX, (float)_h+_waveForm->at(i).maxR*(float)_h, (i)/waveFormZoomX, (float)_h+_waveForm->at(i).minR*(float)_h);
-	    } else {
-            ofSetColor(255, 0, 0);
-            //ofLine((i-1)/waveFormZoomX, _waveForm->at(i).minR*(float)_h, i/waveFormZoomX, _waveForm->at(i).maxR*(float)_h);
-            ofLine((i-1)/waveFormZoomX, (int)(_waveForm->at(i-1).minL*_h), i/waveFormZoomX, (int)(_waveForm->at(i).maxL*_h));
-            ofLine(i/waveFormZoomX, (int)(_waveForm->at(i).maxL*_h), i/waveFormZoomX, (int) (_waveForm->at(i).minL*_h));
-			
-            ofSetColor(0, 0, 255);
-            ofLine((i-1)/waveFormZoomX, _h + (int)(_waveForm->at(i-1).minR*_h), i/waveFormZoomX, _h +  (int)(_waveForm->at(i).maxR*_h));
-            ofLine(i/waveFormZoomX, _h + (int)(_waveForm->at(i).maxR*_h), i/waveFormZoomX, _h + (int) (_waveForm->at(i).minR*_h));
-	    }
-	}
-	
-	ofSetColor(0, 255, 0);
-	
-	float waveFormDisplayScale = getLength()/_w;
-	
-    if(myChannels == 1) {
-        ofLine(position/waveFormDisplayScale, -(float)_h*0.0, position/waveFormDisplayScale, (float)_h*2.0);
-    }
-    else
-    {
-        ofLine(position/waveFormDisplayScale, -(float)_h*0.5, position/waveFormDisplayScale, (float)_h*1.5);
-    }
-	
-	glPopMatrix();
+    
+    return(output);
+    
 }
 
 //--------------------------------------------------------------
 void ofxAudioSample::stop(){
     position = 0;
-    soundStatus &= ~PAUSED;
-    soundStatus &= ~PLAYING;
+    isPlaying = false;
 }
 
 //--------------------------------------------------------------
 void ofxAudioSample::play(){
-    if(speed > 0)
+    if(speed > 0){
         position = 0;
-    else
+    }else{
         position = getLength();
-    soundStatus |= PLAYING;
+    }
+    isPlaying = true;
 }
 
 //--------------------------------------------------------------
 void ofxAudioSample::setPaused(bool bPaused){
-    if(bPaused) {
-        soundStatus |= PAUSED;
+    isPaused    = bPaused;
+}
+
+//--------------------------------------------------------------
+void ofxAudioSample::setSpeed(float spd){
+    mainSpeed = spd;
+    speed     = mainSpeed/resampligFactor;
+}
+
+//--------------------------------------------------------------
+void ofxAudioSample::setLooping(bool loop){
+    if(loop) {
+        isLooping   = true;
     }
     else {
-        soundStatus &= ~PAUSED;
+        isLooping   = false;
     }
 }
 
 //--------------------------------------------------------------
-void ofxAudioSample::setSpeed(double spd){
-    speed = spd;
+void ofxAudioSample::setPosition(float _position){
+	float pct = ofClamp(_position,0.0,1.0);
+	position = pct * getLength();
 }
 
 //--------------------------------------------------------------
-double ofxAudioSample::getSpeed(){
-    return speed;
+float ofxAudioSample::getSpeed(){
+    return mainSpeed;
 }
 
 //--------------------------------------------------------------
@@ -213,70 +162,22 @@ int ofxAudioSample::getSampleRate(){
 }
 
 //--------------------------------------------------------------
-double ofxAudioSample::update(){
-    if(!(soundStatus & PLAYING)) return 0;
-    if(soundStatus & PAUSED) return 0;
-    if(!getIsLoaded()) return 0;
-	
-    long length=getLength();
-	double remainder;
-	short* buffer = (short *)myData;
-	position=(position+speed);
-	remainder = position - (long) position;
-	
-    // check if reached EOF
-	if ((long) position>length) {
-	    if(getIsLooping()) {
-            position=0;
-	    }
-        else {
-            soundStatus &= ~PLAYING;
-            return 0;
-	    }
-	}
-	
-    //check if position less than zero (reverse)
-	if ((long) position < 0) {
-	    if(getIsLooping()) {
-            position = length;
-	    }
-        else {
-            soundStatus &= ~PLAYING;
-            return 0;
-	    }
-	}
-	
-	output = (double) ((1.0-remainder) * buffer[1+ (long) position] + remainder * buffer[2+(long) position])/32767.0;//linear interpolation
-	
-	return(output);
+bool ofxAudioSample::getIsPlaying(){
+    return isPlaying;
 }
 
 //--------------------------------------------------------------
 long ofxAudioSample::getLength(){
 	long length;
-	length=myDataSize*0.5;
+	length=samples.size();
 	return(length);
 }
 
 //--------------------------------------------------------------
-double ofxAudioSample::getPosition(){
-    double pos = position/getLength();
+float ofxAudioSample::getPosition(){
+    float pos = position/getLength();
     pos = ofClamp(pos,0.0,1.0);
 	return pos;
-}
-
-//--------------------------------------------------------------
-void ofxAudioSample::setPosition(double _position){
-	double pct = ofClamp(_position,0.0,1.0);
-	position = pct * getLength();
-}
-
-//--------------------------------------------------------------
-char* ofxAudioSample::getSummary(){
-    char *summary = new char[250];
-    sprintf(summary, " Format: %d\n Channels: %d\n SampleRate: %d\n ByteRate: %d\n BlockAlign: %d\n BitsPerSample: %d\n DataSize: %d\n", myFormat, myChannels, mySampleRate, myByteRate, myBlockAlign, myBitsPerSample, myDataSize);
-    std::cout << myDataSize;
-    return summary;
 }
 
 //--------------------------------------------------------------
@@ -285,91 +186,26 @@ int ofxAudioSample::getChannels(){
 }
 
 //--------------------------------------------------------------
-bool ofxAudioSample::save(){
-    ofToDataPath(myPath);
-    fstream myFile (myPath.c_str(), ios::out | ios::binary);
-	
-    // write the wav file per the wav file format
-    myFile.seekp (0, ios::beg);
-    myFile.write ("RIFF", 4);
-    myFile.write ((char*) &myChunkSize, 4);
-    myFile.write ("WAVE", 4);
-    myFile.write ("fmt ", 4);
-    myFile.write ((char*) &mySubChunk1Size, 4);
-    myFile.write ((char*) &myFormat, 2);
-    myFile.write ((char*) &myChannels, 2);
-    myFile.write ((char*) &mySampleRate, 4);
-    myFile.write ((char*) &myByteRate, 4);
-    myFile.write ((char*) &myBlockAlign, 2);
-    myFile.write ((char*) &myBitsPerSample, 2);
-    myFile.write ("data", 4);
-    myFile.write ((char*) &myDataSize, 4);
-    myFile.write (myData, myDataSize);
-	
-    return true;
-}
-
-//--------------------------------------------------------------
-bool ofxAudioSample::read(){
-    myPath = ofToDataPath(myPath,true).c_str();
-    ifstream inFile( myPath.c_str(), ios::in | ios::binary);
-	
-    ofLog(OF_LOG_NOTICE, "Reading file %s",myPath.c_str());
-	
-    if(!inFile.is_open())
-    {
-        ofLog(OF_LOG_ERROR,"Error opening file. File not loaded.");
-        return false;
-    }
-	
-    char id[4];
-    inFile.read((char*) &id, 4);
-    if(strncmp(id,"RIFF",4) != 0)
-    {
-        ofLog(OF_LOG_ERROR,"Error reading sample file. File is not a RIFF (.wav) file");
-        return false;
-    }
-	
-    inFile.seekg(4, ios::beg);
-    inFile.read( (char*) &myChunkSize, 4 ); // read the ChunkSize
-	
-    inFile.seekg(16, ios::beg);
-    inFile.read( (char*) &mySubChunk1Size, 4 ); // read the SubChunk1Size
-	
-    //inFile.seekg(20, ios::beg);
-    inFile.read( (char*) &myFormat, sizeof(short) ); // read the file format.  This should be 1 for PCM
-    if(myFormat != 1) {
-        ofLog(OF_LOG_ERROR, "File format should be PCM, sample file failed to load.");
-        return false;
-    }
-	
-    //inFile.seekg(22, ios::beg);
-    inFile.read( (char*) &myChannels, sizeof(short) ); // read the # of channels (1 or 2)
-	
-    //inFile.seekg(24, ios::beg);
-    inFile.read( (char*) &mySampleRate, sizeof(int) ); // read the Samplerate
-	
-    //inFile.seekg(28, ios::beg);
-    inFile.read( (char*) &myByteRate, sizeof(int) ); // read the byterate
-	
-    //inFile.seekg(32, ios::beg);
-    inFile.read( (char*) &myBlockAlign, sizeof(short) ); // read the blockalign
-	
-    //inFile.seekg(34, ios::beg);
-    inFile.read( (char*) &myBitsPerSample, sizeof(short) ); // read the bitsperSample
-	
-    inFile.seekg(40, ios::beg);
-    inFile.read( (char*) &myDataSize, sizeof(int) ); // read the size of the data
-    //cout << myDataSize << endl;
-
-    // read the data chunk
-    myData = new char[myDataSize];
-    inFile.seekg(44, ios::beg);
-    inFile.read(myData, myDataSize);
-
-    inFile.close(); // close the input file
-
-    soundStatus |= LOADED;
-
-    return true; // this should probably be something more descriptive
+void ofxAudioSample::drawWaveForm(int _x, int _y, int _w, int _h){
+    
+    float waveFormZoomX = (float)_waveForm.size()/(float)(_w+1.0);
+    float waveFormDisplayScale = samples.size()/(_w+1.0);
+    
+	ofPushMatrix();
+    ofTranslate(_x, _y, 0);
+    
+    ofEnableAlphaBlending();
+	for (unsigned int i = 1; i < _waveForm.size(); i++){
+            ofSetColor(255,231,118,120);
+            ofLine((i-1)/waveFormZoomX, _h + (int)(_waveForm[i-1].x*_h), i/waveFormZoomX, _h +  (int)(_waveForm[i].y*_h));
+            ofSetColor(118,118,118,70);
+            ofLine(i/waveFormZoomX, _h + (int)(_waveForm[i].y*_h), i/waveFormZoomX, _h + (int) (_waveForm[i].x*_h));
+	}
+    ofDisableAlphaBlending();
+    
+	ofSetColor(216,64,64);
+    ofLine(position/waveFormDisplayScale, -(float)_h*0.0, position/waveFormDisplayScale, (float)_h*2.0);
+    
+	ofPopMatrix();
+    
 }

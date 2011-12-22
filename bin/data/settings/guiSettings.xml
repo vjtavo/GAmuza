@@ -494,31 +494,31 @@
     <val_0>15.335667</val_0>
 </CF_TOLERANCE_7>
 <OUTPUT_FBO_BRIGHTNESS>
-    <val_0>1.000000</val_0>
+    <val_0>1,000000</val_0>
 </OUTPUT_FBO_BRIGHTNESS>
 <OUTPUT_FBO_SATURATION>
-    <val_0>1.000000</val_0>
+    <val_0>1,000000</val_0>
 </OUTPUT_FBO_SATURATION>
 <OUTPUT_FBO_CONTRAST>
-    <val_0>1.000000</val_0>
+    <val_0>1,000000</val_0>
 </OUTPUT_FBO_CONTRAST>
 <OUTPUT_FBO_DESATURATE>
     <val_0>0.000000</val_0>
 </OUTPUT_FBO_DESATURATE>
 <COMPUTE_FBO_TEXTURE>
-    <val_0>1.000000</val_0>
+    <val_0>1,000000</val_0>
 </COMPUTE_FBO_TEXTURE>
 <DRAW_FBO_GRID>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </DRAW_FBO_GRID>
 <DRAW_FBO_CALIB_SCREEN>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </DRAW_FBO_CALIB_SCREEN>
 <FBO_CALIB_SCREEN_SEL>
-    <val_0>1.000000</val_0>
+    <val_0>1,000000</val_0>
 </FBO_CALIB_SCREEN_SEL>
 <RESET_FBO_MAPPING_COORDS>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </RESET_FBO_MAPPING_COORDS>
 <RESET_INPUT_WARPING_DEV_6>
     <val_0>0.000000</val_0>
@@ -527,7 +527,7 @@
     <val_0>0.000000</val_0>
 </RESET_INPUT_WARPING_DEV_7>
 <USE_VSYNC>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </USE_VSYNC>
 <BG_USE_ERODE_DILATE_6>
     <val_0>1.000000</val_0>
@@ -566,109 +566,109 @@
     <val_0>0.000000</val_0>
 </USE_KALMAN_FILTER_7>
 <USE_AUDIO_INPUT_0>
-    <val_0>1.000000</val_0>
+    <val_0>1,000000</val_0>
 </USE_AUDIO_INPUT_0>
 <USE_AUDIO_INPUT_1>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </USE_AUDIO_INPUT_1>
 <VOLUME_AUDIO_INPUT_0>
-    <val_0>0.802000</val_0>
+    <val_0>1,000000</val_0>
 </VOLUME_AUDIO_INPUT_0>
 <MUTE_AUDIO_INPUT_0>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </MUTE_AUDIO_INPUT_0>
 <REC_NOISE_FILTER_0>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </REC_NOISE_FILTER_0>
 <NOISE_REDUX_FACTOR_0>
-    <val_0>4.950000</val_0>
+    <val_0>4,950000</val_0>
 </NOISE_REDUX_FACTOR_0>
 <VOLUME_AUDIO_INPUT_1>
-    <val_0>0.791000</val_0>
+    <val_0>0,791000</val_0>
 </VOLUME_AUDIO_INPUT_1>
 <MUTE_AUDIO_INPUT_1>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </MUTE_AUDIO_INPUT_1>
 <REC_NOISE_FILTER_1>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </REC_NOISE_FILTER_1>
 <NOISE_REDUX_FACTOR_1>
-    <val_0>6.050000</val_0>
+    <val_0>6,050000</val_0>
 </NOISE_REDUX_FACTOR_1>
 <EQ_BAND1_CENTER_0>
-    <val_0>71.111115</val_0>
+    <val_0>71,111115</val_0>
 </EQ_BAND1_CENTER_0>
 <EQ_BAND1_AMPLITUDE_0>
-    <val_0>-0.450000</val_0>
+    <val_0>-0,450000</val_0>
 </EQ_BAND1_AMPLITUDE_0>
 <EQ_BAND1_WIDTH_0>
-    <val_0>45.517555</val_0>
+    <val_0>45,517555</val_0>
 </EQ_BAND1_WIDTH_0>
 <EQ_BAND2_CENTER_0>
-    <val_0>55.466667</val_0>
+    <val_0>55,466667</val_0>
 </EQ_BAND2_CENTER_0>
 <EQ_BAND2_AMPLITUDE_0>
-    <val_0>1.400000</val_0>
+    <val_0>1,400000</val_0>
 </EQ_BAND2_AMPLITUDE_0>
 <EQ_BAND2_WIDTH_0>
-    <val_0>43.384384</val_0>
+    <val_0>43,384384</val_0>
 </EQ_BAND2_WIDTH_0>
 <EQ_BAND3_CENTER_0>
-    <val_0>234.666672</val_0>
+    <val_0>234,666672</val_0>
 </EQ_BAND3_CENTER_0>
 <EQ_BAND3_AMPLITUDE_0>
-    <val_0>0.500000</val_0>
+    <val_0>0,500000</val_0>
 </EQ_BAND3_AMPLITUDE_0>
 <EQ_BAND3_WIDTH_0>
-    <val_0>17.075335</val_0>
+    <val_0>17,075335</val_0>
 </EQ_BAND3_WIDTH_0>
 <EQ_BAND1_CENTER_1>
-    <val_0>108.088890</val_0>
+    <val_0>108,088890</val_0>
 </EQ_BAND1_CENTER_1>
 <EQ_BAND1_AMPLITUDE_1>
-    <val_0>1.000000</val_0>
+    <val_0>1,000000</val_0>
 </EQ_BAND1_AMPLITUDE_1>
 <EQ_BAND1_WIDTH_1>
-    <val_0>6.409500</val_0>
+    <val_0>6,409500</val_0>
 </EQ_BAND1_WIDTH_1>
 <EQ_BAND2_CENTER_1>
-    <val_0>68.266670</val_0>
+    <val_0>68,266670</val_0>
 </EQ_BAND2_CENTER_1>
 <EQ_BAND2_AMPLITUDE_1>
-    <val_0>0.400000</val_0>
+    <val_0>0,400000</val_0>
 </EQ_BAND2_AMPLITUDE_1>
 <EQ_BAND2_WIDTH_1>
-    <val_0>4.276334</val_0>
+    <val_0>4,276334</val_0>
 </EQ_BAND2_WIDTH_1>
 <EQ_BAND3_CENTER_1>
-    <val_0>200.533340</val_0>
+    <val_0>200,533340</val_0>
 </EQ_BAND3_CENTER_1>
 <EQ_BAND3_AMPLITUDE_1>
-    <val_0>1.300000</val_0>
+    <val_0>1,300000</val_0>
 </EQ_BAND3_AMPLITUDE_1>
 <EQ_BAND3_WIDTH_1>
-    <val_0>30.585388</val_0>
+    <val_0>30,585388</val_0>
 </EQ_BAND3_WIDTH_1>
 <USE_KALMAN_FILTER_AUDIOCH_0>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </USE_KALMAN_FILTER_AUDIOCH_0>
 <SMOOTHING_FACTOR_AUDIOCH_0>
-    <val_0>0.167889</val_0>
+    <val_0>0,167889</val_0>
 </SMOOTHING_FACTOR_AUDIOCH_0>
 <USE_KALMAN_FILTER_AUDIOCH_1>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </USE_KALMAN_FILTER_AUDIOCH_1>
 <SMOOTHING_FACTOR_AUDIOCH_1>
-    <val_0>0.124333</val_0>
+    <val_0>0,124333</val_0>
 </SMOOTHING_FACTOR_AUDIOCH_1>
 <USE_SECONDARY_SCREEN>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </USE_SECONDARY_SCREEN>
 <USE_LIVECODING>
-    <val_0>1.000000</val_0>
+    <val_0>1,000000</val_0>
 </USE_LIVECODING>
 <OUTPUT_FBO_FILMBLEACH>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </OUTPUT_FBO_FILMBLEACH>
 <ARDUINO_ANALOG_PIN_0_MODE>
     <val_0>0.000000</val_0>
@@ -725,19 +725,19 @@
     <val_0>1.000000</val_0>
 </ARDUINO_DIGITAL_PIN_13_MODE>
 <OUTPUT_FBO_FILM_TECHNICOLOR>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </OUTPUT_FBO_FILM_TECHNICOLOR>
 <OUTPUT_FBO_FILM_WHITEDIFFUSION>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </OUTPUT_FBO_FILM_WHITEDIFFUSION>
 <OUTPUT_FBO_FILM_EXPOSURE>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </OUTPUT_FBO_FILM_EXPOSURE>
 <OUTPUT_FBO_FILM_DIFFUSION>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </OUTPUT_FBO_FILM_DIFFUSION>
 <OUTPUT_FBO_GAMMA>
-    <val_0>1.000000</val_0>
+    <val_0>1,000000</val_0>
 </OUTPUT_FBO_GAMMA>
 <USE_ARDUINO>
     <val_0>1.000000</val_0>
@@ -855,10 +855,10 @@
     <val_0>0.000000</val_0>
 </COMPUTE_OF_SENSOR_KINECT>
 <OPEN_SCRIPT_FILE_DIALOG>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </OPEN_SCRIPT_FILE_DIALOG>
 <SAVE_SCRIPT_FILE_DIALOG>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </SAVE_SCRIPT_FILE_DIALOG>
 <USE_OSC>
     <val_0>1.000000</val_0>
@@ -909,154 +909,154 @@
     <val_0>1.000000</val_0>
 </ARDUINO_SEND_OSC_ADP>
 <USE_DEVICE_0>
-    <val_0>0.000000</val_0>
+    <val_0>1,000000</val_0>
 </USE_DEVICE_0>
 <UNDISTORT_INPUT_0>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </UNDISTORT_INPUT_0>
 <RESET_INPUT_WARPING_DEV_0>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </RESET_INPUT_WARPING_DEV_0>
 <BG_CAPTURE_0>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </BG_CAPTURE_0>
 <BG_USE_STRECH_0>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </BG_USE_STRECH_0>
 <USE_COLOR_TRACKING_0>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </USE_COLOR_TRACKING_0>
 <FLIP_SOURCE_USE_0>
-    <val_0>2.000000</val_0>
+    <val_0>2,000000</val_0>
 </FLIP_SOURCE_USE_0>
 <INPUT_BLUR_0>
-    <val_0>3.000000</val_0>
+    <val_0>3,000000</val_0>
 </INPUT_BLUR_0>
 <SOURCE_COLOR_CORRECTION_USE_0>
-    <val_0>3.000000</val_0>
+    <val_0>0,000000</val_0>
 </SOURCE_COLOR_CORRECTION_USE_0>
 <CONTRAST_0>
-    <val_0>0.311111</val_0>
+    <val_0>0,000000</val_0>
 </CONTRAST_0>
 <BRIGHTNESS_0>
-    <val_0>1.022222</val_0>
+    <val_0>1,000000</val_0>
 </BRIGHTNESS_0>
 <GAMMA_0>
-    <val_0>0.691056</val_0>
+    <val_0>0,010000</val_0>
 </GAMMA_0>
 <BGSUB_TECH_0>
-    <val_0>3.000000</val_0>
+    <val_0>5,000000</val_0>
 </BGSUB_TECH_0>
 <BGSUB_THRESHOLD_0>
-    <val_0>40.355556</val_0>
+    <val_0>16,461111</val_0>
 </BGSUB_THRESHOLD_0>
 <BGSUB_BLUR_0>
-    <val_0>0.733333</val_0>
+    <val_0>0,000000</val_0>
 </BGSUB_BLUR_0>
 <BG_USE_ERODE_DILATE_0>
-    <val_0>2.000000</val_0>
+    <val_0>2,000000</val_0>
 </BG_USE_ERODE_DILATE_0>
 <BGSUB_ERODE_0>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </BGSUB_ERODE_0>
 <BGSUB_DILATE_0>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </BGSUB_DILATE_0>
 <USE_KALMAN_FILTER_0>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </USE_KALMAN_FILTER_0>
 <SMOOTHING_FACTOR_0>
-    <val_0>0.075333</val_0>
+    <val_0>0,010000</val_0>
 </SMOOTHING_FACTOR_0>
 <HUE_0>
-    <val_0>0.127778</val_0>
+    <val_0>0,000000</val_0>
 </HUE_0>
 <HUE_WIDTH_0>
-    <val_0>0.227778</val_0>
+    <val_0>0,000000</val_0>
 </HUE_WIDTH_0>
 <SAT_0>
-    <val_0>0.238889</val_0>
+    <val_0>0,000000</val_0>
 </SAT_0>
 <SAT_WIDTH_0>
-    <val_0>0.250000</val_0>
+    <val_0>0,000000</val_0>
 </SAT_WIDTH_0>
 <VAL_0>
-    <val_0>0.272222</val_0>
+    <val_0>0,000000</val_0>
 </VAL_0>
 <VAL_WIDTH_0>
-    <val_0>0.311111</val_0>
+    <val_0>0,000000</val_0>
 </VAL_WIDTH_0>
 <HSV_BLUR_0>
-    <val_0>1.000000</val_0>
+    <val_0>1,000000</val_0>
 </HSV_BLUR_0>
 <HSV_USE_ERODE_DILATE_0>
-    <val_0>2.000000</val_0>
+    <val_0>2,000000</val_0>
 </HSV_USE_ERODE_DILATE_0>
 <HSV_ERODE_0>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </HSV_ERODE_0>
 <HSV_DILATE_0>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </HSV_DILATE_0>
 <MIN_BLOB_AREA_0>
-    <val_0>446.266663</val_0>
+    <val_0>446,000000</val_0>
 </MIN_BLOB_AREA_0>
 <MAX_BLOB_AREA_0>
-    <val_0>80555.554688</val_0>
+    <val_0>80555,000000</val_0>
 </MAX_BLOB_AREA_0>
 <CF_DETAIL_0>
-    <val_0>1.000000</val_0>
+    <val_0>1,000000</val_0>
 </CF_DETAIL_0>
 <CF_SMOOTH_PCT_0>
-    <val_0>0.130000</val_0>
+    <val_0>0,010000</val_0>
 </CF_SMOOTH_PCT_0>
 <CF_TOLERANCE_0>
-    <val_0>20.000000</val_0>
+    <val_0>20,000000</val_0>
 </CF_TOLERANCE_0>
 <M_THRESHOLD_0>
-    <val_0>100.000000</val_0>
+    <val_0>100,000000</val_0>
 </M_THRESHOLD_0>
 <M_NOISE_COMP_0>
-    <val_0>10.000000</val_0>
+    <val_0>10,000000</val_0>
 </M_NOISE_COMP_0>
 <MOTION_ON_HORIZON_0>
-    <val_0>20.000000</val_0>
+    <val_0>20,000000</val_0>
 </MOTION_ON_HORIZON_0>
 <MOTION_OFF_HORIZON_0>
-    <val_0>50.000000</val_0>
+    <val_0>50,000000</val_0>
 </MOTION_OFF_HORIZON_0>
 <BT_BLUR_0>
-    <val_0>1.000000</val_0>
+    <val_0>1,000000</val_0>
 </BT_BLUR_0>
 <BT_USE_ERODE_DILATE_0>
-    <val_0>2.000000</val_0>
+    <val_0>2,000000</val_0>
 </BT_USE_ERODE_DILATE_0>
 <BT_ERODE_0>
-    <val_0>1.000000</val_0>
+    <val_0>1,000000</val_0>
 </BT_ERODE_0>
 <BT_DILATE_0>
-    <val_0>1.000000</val_0>
+    <val_0>1,000000</val_0>
 </BT_DILATE_0>
 <BT_BALANCE1_0>
-    <val_0>10.000000</val_0>
+    <val_0>10,000000</val_0>
 </BT_BALANCE1_0>
 <BT_BALANCE2_0>
-    <val_0>10.000000</val_0>
+    <val_0>10,000000</val_0>
 </BT_BALANCE2_0>
 <COMPUTE_CF_0>
-    <val_0>1.000000</val_0>
+    <val_0>1,000000</val_0>
 </COMPUTE_CF_0>
 <COMPUTE_CG_0>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </COMPUTE_CG_0>
 <COMPUTE_OF_0>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </COMPUTE_OF_0>
 <COMPUTE_FT_0>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </COMPUTE_FT_0>
 <COMPUTE_TA_0>
-    <val_0>0.000000</val_0>
+    <val_0>0,000000</val_0>
 </COMPUTE_TA_0>
 <WEBCAM_ID7_SEND_OSC_MD>
     <val_0>0.000000</val_0>
@@ -1389,7 +1389,7 @@
     <val_0>0.010000</val_0>
 </SMOOTHING_FACTOR_AUDIOCH_3>
 <GAMUZA_MAIN_OUTPUT_VOLUME>
-    <val_0>1.000000</val_0>
+    <val_0>1,000000</val_0>
 </GAMUZA_MAIN_OUTPUT_VOLUME>
 <USE_DEVICE_3>
     <val_0>0.000000</val_0>
@@ -1541,3 +1541,27 @@
 <COMPUTE_TA_3>
     <val_0>0.000000</val_0>
 </COMPUTE_TA_3>
+<RENDER_SCRIPT>
+    <val_0>0,000000</val_0>
+</RENDER_SCRIPT>
+<ACTIVATE_LIVE_EDITOR>
+    <val_0>1,000000</val_0>
+</ACTIVATE_LIVE_EDITOR>
+<VIEW_LIVE_PREVIEW>
+    <val_0>1,000000</val_0>
+</VIEW_LIVE_PREVIEW>
+<VIEW_LIVE_CODE>
+    <val_0>0,000000</val_0>
+</VIEW_LIVE_CODE>
+<EXPORT_VIDEO_FPS_SEL>
+    <val_0>4,000000</val_0>
+</EXPORT_VIDEO_FPS_SEL>
+<EXPORT_VIDEO_COMPRESSION_SEL>
+    <val_0>1,000000</val_0>
+</EXPORT_VIDEO_COMPRESSION_SEL>
+<EXPORT_VIDEO_FILE_DIALOG>
+    <val_0>0,000000</val_0>
+</EXPORT_VIDEO_FILE_DIALOG>
+<STOP_EXPORT_VIDEO>
+    <val_0>0,000000</val_0>
+</STOP_EXPORT_VIDEO>

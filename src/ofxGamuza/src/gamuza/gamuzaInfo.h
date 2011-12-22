@@ -1,6 +1,6 @@
 /***********************************************************************
 
- GAmuza v.03 see <http://www.d3cod3.cc>
+ GAmuza v.03 see <http://www.gamuza.cc>
  HYBRID LIVE CODING Modular Application for interactive design development&teaching
  developed with	OpenFrameworks 007[with some tweaks]
  +
@@ -8,7 +8,11 @@
 
  [coders list]
 	Memo		Akten			<http://www.memo.tv/>
+    Arturo		Castro			<http://arturocastro.net/>
 	Zach		Gage			<http://www.stfj.net/>
+    James		George			<http://jamesgeorge.org/>
+    Akira		Hayasaka		<http://www.ampontang.com/en>
+    Golan		Levin			<http://www.flong.com>
 	Zachary		Lieberman		<http://www.thesystemis.com/>
 	Rui			Madeira			<http://www.rui-m.com/>
 	Kyle		McDonald		<http://kylemcdonald.net/>
@@ -17,14 +21,14 @@
 	Theo		Watson			<http://muonics.net/>
 	Dan			Wilcox			<http://danomatika.com>
 
-
- Created by Emanuele Mazza on 8/11.
+ 
+ Idea&Development by Emanuele Mazza.
 
  -----------------------------------
 
  GAmuza is released under the MIT License.
  
- Copyright (c) 2011 Emanuele Mazza <http://www.d3cod3.cc>
+ Copyright (c) 2011 Emanuele Mazza <http://www.d3cod3.org>
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
