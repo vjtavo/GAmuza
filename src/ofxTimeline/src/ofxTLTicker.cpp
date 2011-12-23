@@ -1,9 +1,9 @@
 /**
  * ofxTimeline
- *	
+ *
  * Copyright (c) 2011 James George
  * http://jamesgeorge.org + http://flightphase.com
- * http://github.com/obviousjim + http://github.com/flightphase 
+ * http://github.com/obviousjim + http://github.com/flightphase
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -28,7 +28,7 @@
  *
  * ----------------------
  *
- * ofxTimeline 
+ * ofxTimeline
  * Lightweight SDK for creating graphic timeline tools in openFrameworks
  */
 
@@ -47,19 +47,19 @@ void ofxTLTicker::setup(){
 }
 
 void ofxTLTicker::draw(){
-	
+
 	ofPushStyle();
-	
+
 	if(timeline->getIsFrameBased()){
-		
+
 		int curStartFrame = ofMap(zoomBounds.min, 0, 1.0, 0, timeline->getDurationInFrames());
 		int curEndFrame = ofMap(zoomBounds.max, 0, 1.0, 0, timeline->getDurationInFrames());
 		int framesInView = curEndFrame-curStartFrame;
-	
+
 		float framesPerPixel = framesInView / totalDrawRect.width;
 		int frameStepSize = 1;
-		
-		
+
+
 		//TODO make adaptive
 		//draw ticker marks
 		for(int i = curStartFrame; i <= curEndFrame; i++){
@@ -73,51 +73,57 @@ void ofxTLTicker::draw(){
 			else {
 				heightMultiplier = .75;
 				ofSetLineWidth(1);
+				#ifdef TARGET_LINUX
+                ofSetLineWidth(2);
+                #endif
 			}
-			
+
 			ofLine(x, bounds.y+bounds.height*heightMultiplier, x, bounds.y+bounds.height);
 		}
-		
+
 
 		//draw current frame
 		int currentFrameX = screenXForIndex(timeline->getCurrentFrame());
 		string text = ofToString(timeline->getCurrentFrame());
 		int textH = 10;
-		int textW = (text.size()+1)*7;		
+		int textW = (text.size()+1)*7;
 		ofSetColor(timeline->getColors().backgroundColor);
 		ofRect(currentFrameX, bounds.y, textW, textH);
 		ofSetColor(timeline->getColors().textColor);
 		ofDrawBitmapString(text, currentFrameX+5, bounds.y+textH);
 
-		
+
 		if(timeline->getIsPlaying()){
 			ofSetColor(timeline->getColors().keyColor);
 		}
 		else{
 			ofSetColor(timeline->getColors().outlineColor);
 		}
-		
+
 		//draw playhead line
 		ofSetLineWidth(1);
+		#ifdef TARGET_LINUX
+		ofSetLineWidth(2);
+		#endif
 		ofLine(currentFrameX, totalDrawRect.y, currentFrameX, totalDrawRect.y+totalDrawRect.height);
-		
-		
+
+
 		//highlite current mouse position
 		if(hover){
 			ofEnableAlphaBlending();
 			//draw background rect
 			ofSetColor(timeline->getColors().backgroundColor);
-			
+
 			int curHoverFrame = indexForScreenX(ofGetMouseX());
 			text = ofToString(curHoverFrame);
 			textH = 10;
 			textW = (text.size()+1)*7;
 			ofRect(ofGetMouseX(), bounds.y+textH, textW, textH);
-			
+
 			//draw playhead line
 			ofSetColor(timeline->getColors().textColor);
 			ofDrawBitmapString(text, ofGetMouseX()+5, bounds.y+textH*2);
-			
+
 			ofSetColor(timeline->getColors().highlightColor);
 			ofSetLineWidth(1);
 			ofLine(ofGetMouseX(), totalDrawRect.y, ofGetMouseX(), totalDrawRect.y+totalDrawRect.height);
@@ -131,9 +137,9 @@ void ofxTLTicker::draw(){
 	ofNoFill();
 	ofSetColor(200, 180, 40);
 	ofRect(bounds);
-	
+
 	ofPopStyle();
-	
+
 }
 
 void ofxTLTicker::mouseMoved(ofMouseEventArgs& args){
@@ -151,7 +157,7 @@ void ofxTLTicker::mousePressed(ofMouseEventArgs& args){
 void ofxTLTicker::mouseDragged(ofMouseEventArgs& args){
 	if(dragging){
 		updateTimelinePosition();
-	}	
+	}
 }
 
 void ofxTLTicker::mouseReleased(ofMouseEventArgs& args){
@@ -172,5 +178,5 @@ void ofxTLTicker::updateTimelinePosition(){
 		//TODO: timebased scrubbing
 //		timeline->setCurrentTime(<#float time#>)
 	}
-	
+
 }
