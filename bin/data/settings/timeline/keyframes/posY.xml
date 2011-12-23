@@ -1,19 +1,19 @@
 <keyframes>
     <key>
-        <x>0,000000</x>
-        <y>0,000000</y>
+        <x>0.000000</x>
+        <y>0.000000</y>
         <easefunc>5</easefunc>
         <easetype>0</easetype>
     </key>
     <key>
-        <x>0,316912</x>
-        <y>0,784091</y>
+        <x>0.316912</x>
+        <y>0.784091</y>
         <easefunc>10</easefunc>
         <easetype>0</easetype>
     </key>
     <key>
-        <x>1,000000</x>
-        <y>1,000000</y>
+        <x>1.000000</x>
+        <y>1.000000</y>
         <easefunc>0</easefunc>
         <easetype>0</easetype>
     </key>
