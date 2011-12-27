@@ -5,12 +5,12 @@
 #include "gamuzaArduino.h"
 #include "gamuzaMidi.h"
 #include "gamuzaOSC.h"
-
+	
 //--------------------------------------------------------------
 void gamuzaMain::setup(){
-
+	
 	flagSystemLoaded	= false; // first line of gamuza setup
-
+	
 	//////////////////////////////////////////////
 	// load settings from xml
 	loadGamuzaSettings();
@@ -31,25 +31,25 @@ void gamuzaMain::setup(){
 	ofEnableSmoothing();
 	ofSetLogLevel(OF_LOG_VERBOSE);
 	//////////////////////////////////////////////
-
+	
 	//////////////////////////////////////////////
 	// AUDIO
     exportAudio             = false;
-
+    
 	if(audioActivated){
 		gamuzaSetup.lock();
 		setupAudio();
 		gamuzaSetup.unlock();
 	}
 	//////////////////////////////////////////////
-
+    
     //////////////////////////////////////////////
 	// MIDI
     gamuzaSetup.lock();
     setupMidi();
     gamuzaSetup.unlock();
     //////////////////////////////////////////////
-
+	
 	//////////////////////////////////////////////
 	// OPENNI
 	if(openniActivated){
@@ -58,14 +58,14 @@ void gamuzaMain::setup(){
 		gamuzaSetup.unlock();
 	}
 	//////////////////////////////////////////////
-
+	
 	//////////////////////////////////////////////
 	// FBO second screen output texture
 	gamuzaSetup.lock();
 	setupFBO();
 	gamuzaSetup.unlock();
 	//////////////////////////////////////////////
-
+	
 	//////////////////////////////////////////////
 	// OSC data sending @ host_number(IP),host_port
 	if(oscActivated){
@@ -74,7 +74,7 @@ void gamuzaMain::setup(){
 		gamuzaSetup.unlock();
 	}
 	//////////////////////////////////////////////
-
+	
 	//////////////////////////////////////////////
 	// ARDUINO
 	if(arduinoActivated){
@@ -83,7 +83,7 @@ void gamuzaMain::setup(){
 		gamuzaSetup.unlock();
 	}
 	//////////////////////////////////////////////
-
+	
 	//////////////////////////////////////////////
 	// GUI
 	// include setup of webcams & audio inputs
@@ -91,7 +91,7 @@ void gamuzaMain::setup(){
 	setupGui();
 	gamuzaSetup.unlock();
 	//////////////////////////////////////////////
-
+    
     //////////////////////////////////////////////
     // VIDEO EXPORT
     gamuzaExportFPS     = FPS;
@@ -101,12 +101,12 @@ void gamuzaMain::setup(){
     ramMemory.setup();
     threadMovieEncoding.setup(audioOutputChannels);
 	//////////////////////////////////////////////
-
+	
 	//////////////////////////////////////////////
 	// SYSTEM
 	currentSavedFrame   = 0;
     //////////////////////////////////////////////
-
+	
 	//////////////////////////////////////////////
 	// set log level to error only
 	ofSetLogLevel(OF_LOG_ERROR);
@@ -116,7 +116,7 @@ void gamuzaMain::setup(){
 
 //--------------------------------------------------------------
 void gamuzaMain::update(){
-
+	
 	//////////////////////////////////////////////
 	// INIT PROGRAM | splash image control
 	if(ofGetElapsedTimeMillis() > splashWait){
@@ -132,27 +132,27 @@ void gamuzaMain::update(){
 				}
 				computeAudioInput	= true;
 				computeAudioOutput	= true;
-
+				
 			}
 		}
 		//////////////////////////////////////////////
 		// Main settings control
 		ofSetVerticalSync(useVSync);
 		//////////////////////////////////////////////
-
+		
 		//////////////////////////////////////////////
 		// GUI update
 		updateGui();
 		gui.update();
 		//////////////////////////////////////////////
-
+		
 		//////////////////////////////////////////////
 		// OPENNI
 		if(openniActivated && sensorKinect.useKinect){
 			sensorKinect.updateDevice();
 		}
 		//////////////////////////////////////////////
-
+		
 		//////////////////////////////////////////////
 		// WEBCAM input devices update
 		if(trackingActivated){
@@ -163,38 +163,38 @@ void gamuzaMain::update(){
 			}
 		}
 		//////////////////////////////////////////////
-
+		
 		//////////////////////////////////////////////
 		// ARDUINO update
 		if(arduinoActivated && useArduino){
 			updateArduino();
 		}
 		//////////////////////////////////////////////
-
+		
 		//////////////////////////////////////////////
 		// OSC update
 		if(oscActivated && useOsc){
 			updateOSC();
 		}
 		//////////////////////////////////////////////
-
+        
 	}
 	//////////////////////////////////////////////
-
+	
 	//////////////////////////////////////////////
 	// SYSTEM
 	gamuzaRealFPS = ofGetFrameRate();
     ramMemory.update();
     gamuzaMem = ramMemory.getUsedMemory();
 	//////////////////////////////////////////////
-
+	
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::draw(){
-
+	
 	if(splashFinish){
-
+		
 		ofBackground(0,0,0);
 		//////////////////////////////////////////////
 		// GUI draw
@@ -203,12 +203,12 @@ void gamuzaMain::draw(){
 			drawGui();
 		}
 		//////////////////////////////////////////////
-
+		
 		//////////////////////////////////////////////
 		// FBO texture draw
 		drawFBO();
 		//////////////////////////////////////////////
-
+        
         ////////////////////////////////////
         // TIMELINE
         if(showTimeline && useLiveCoding && !isFullscreen){
@@ -222,12 +222,12 @@ void gamuzaMain::draw(){
             ofRect(0,0,mainScreenW-1,mainScreenH);
             ofDisableAlphaBlending();
         }
-
+        
         if(useLiveCoding){
             timeline.draw();
         }
         ////////////////////////////////////
-
+		
 	}else{
 		ofBackground(20,20,20);
 		ofEnableAlphaBlending();
@@ -254,7 +254,7 @@ void gamuzaMain::draw(){
 
 //--------------------------------------------------------------
 void gamuzaMain::keyPressed(int key){
-
+	
 	// LIVE CODING
 	if(computeFBOTexture && useLiveCoding){
         if(!showTimeline){
@@ -262,46 +262,46 @@ void gamuzaMain::keyPressed(int key){
         }
 		lua.scriptKeyPressed(key);
 	}
-
+    
     liveKey= key;
-
+	
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::keyReleased(int key){
-
+	
 	bool alt = gamuzaKmap.isAltDown();
-
+	
 	// fullscreen toggle
 	if(alt && (key == 'f' || key == 'F')){
 		gamuzaFullscreen();
 	}
-
+	
 	// LIVE CODING
 	if(alt && (key == 'j' || key == 'J')){
 		liveCodingMode = !liveCodingMode;
 	}
-
+	
 	// show/hide script code
 	if(alt && (key == 'w' || key == 'W')){
 		viewCode = !viewCode;
 	}
-
+	
 	// open file dialog
 	if(alt && (key == 'd' || key == 'D')){
 		openFileDialog();
 	}
-
+	
 	// save frame
 	if(alt && (key == 'o' || key == 'O')){
 		saveFrame();
 	}
-
+	
 	// print frame
 	if(alt && (key == 'p' || key == 'P')){
 		printFrame();
 	}
-
+    
     if(useLiveCoding){
         // toggle the visualization of the timeline
         if(alt && (key == 't' || key == 'T')){
@@ -319,75 +319,87 @@ void gamuzaMain::keyReleased(int key){
             timeline.togglePlay();
         }
     }
-
+    
     // LIVE CODING
 	if(computeFBOTexture && useLiveCoding){
 		lua.scriptKeyReleased(key);
 	}
-
+    
     liveKey = key;
-
+	
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::mouseMoved(int x, int y){
-
+	
 	//////////////////////////////TESTING
-	//printf("%i - %i\n",x,y);
+	//printf("%f - %f\n",scaledMouseX,scaledMouseY);
 	//////////////////////////////TESTING
-
+    
+    // scaled mouse position
+    if(liveCodingMode && !isFullscreen){
+        scaledMouseX = (float) x*1.0 - lcPrevX;
+        scaledMouseY = (float) y*1.0 - lcPrevY;
+    }else if(liveCodingMode && isFullscreen){
+        scaledMouseX = (float) (((x*1.0) - lcPrevX)/lcPrevW)*projectionScreenW;
+        scaledMouseY = (float) (((y*1.0) - lcPrevY)/lcPrevH)*projectionScreenH;
+    }else{
+        scaledMouseX = (float) (((x*1.0) - 246.0 - guiPosX)/previewW)*projectionScreenW;
+        scaledMouseY = (float) (((y*1.0) - previewY - guiPosY)/previewH)*projectionScreenH;
+    }
+	
 	// mapping grid
 	if(drawGrid){
 		finalTextureMapping.mouseMoved(x, y);
 	}
-
+	
 	// Live Coding
 	if(computeFBOTexture && useLiveCoding){
 		lua.scriptMouseMoved(x, y);
 	}
-
+	
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::mouseDragged(int x, int y, int button){
-
+	
 	// gui interface
     if(!liveCodingMode && !showTimeline){
         gui.mouseDragged(x, y, button);
     }
-
+	
 	if(openniActivated){
 		if(gui.getSelectedPanel() == sensorKinectIndex){
 			sensorKinect.mouseDragged(x-guiPosX, y-guiPosY, button);
 		}
 	}
-
+	
 	if(trackingActivated){
 		if(gui.getSelectedPanel() >= webcamsStartIndex && gui.getSelectedPanel() < webcamsStartIndex + numCamInputs){
 			inputCam[gui.getSelectedPanel()-webcamsStartIndex].mouseDragged(x-guiPosX, y-guiPosY, button);
 		}
 	}
-
+	
 	// Mapping
 	if(drawGrid){
 		finalTextureMapping.mouseDragged(x, y);
 	}
-
+	
 	// Live Coding
 	if(computeFBOTexture && useLiveCoding){
 		lua.scriptMouseDragged(x, y, button);
 	}
-
+	
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::mousePressed(int x, int y, int button){
-
+	
 	// gui interface
     if(!liveCodingMode  && !showTimeline){
         gui.mousePressed(x, y, button);
     }
-
+	
 	//////////////////////////////////////////////////
 	// save EXTRA GUI settings
 	if(gui.saveDown && gui.getSelectedPanel() == 0){
@@ -395,7 +407,7 @@ void gamuzaMain::mousePressed(int x, int y, int button){
 			saveMappingSettings = true;
 		}
 	}
-
+	
 	if(openniActivated){
 		if(gui.getSelectedPanel() == sensorKinectIndex){
 			sensorKinect.mousePressed(x-guiPosX, y-guiPosY, button);
@@ -404,18 +416,18 @@ void gamuzaMain::mousePressed(int x, int y, int button){
 			}
 		}
 	}
-
+	
 	if(trackingActivated){
 		if(gui.getSelectedPanel() >= webcamsStartIndex && gui.getSelectedPanel() < webcamsStartIndex + numCamInputs){
 			inputCam[gui.getSelectedPanel()-webcamsStartIndex].mousePressed(x-guiPosX, y-guiPosY, button);
-
+			
 			if(gui.saveDown){
 				inputCam[gui.getSelectedPanel()-webcamsStartIndex].saveAllSettings = true;
 			}
-
+			
 		}
 	}
-
+	
 	if(arduinoActivated){
 		if(gui.saveDown && gui.getSelectedPanel() == arduinoIndex){
 			if(useArduino){
@@ -425,64 +437,64 @@ void gamuzaMain::mousePressed(int x, int y, int button){
 	}
 	// save EXTRA GUI settings
 	//////////////////////////////////////////////////
-
+	
 	// Mapping
 	if(drawGrid){
 		finalTextureMapping.mousePressed(x, y);
 	}
-
+	
 	// Live Coding
 	if(computeFBOTexture && useLiveCoding){
 		lua.scriptMousePressed(x, y, button);
 	}
-
+	
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::mouseReleased(int x, int y, int button){
-
+	
 	// gui interface
     if(!liveCodingMode  && !showTimeline){
         gui.mouseReleased();
     }
-
+	
 	if(openniActivated){
 		if(gui.getSelectedPanel() == sensorKinectIndex){
 			sensorKinect.mouseReleased(x-guiPosX, y-guiPosY, button);
 		}
 	}
-
+	
 	if(trackingActivated){
 		if(gui.getSelectedPanel() >= webcamsStartIndex && gui.getSelectedPanel() < webcamsStartIndex + numCamInputs){
 			inputCam[gui.getSelectedPanel()-webcamsStartIndex].mouseReleased(x-guiPosX, y-guiPosY, button);
 		}
 	}
-
+	
 	// Mapping
 	if(drawGrid){
 		finalTextureMapping.mouseReleased(x, y);
 	}
-
+	
 	// Live Coding
 	if(computeFBOTexture && useLiveCoding){
 		lua.scriptMouseReleased(x, y, button);
 	}
-
+	
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::windowResized(int w, int h){
-
+	
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::dragEvent(ofDragInfo dragInfo){
-
+	
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::gotMessage(ofMessage msg){
-
+	
 }
 
 //--------------------------------------------------------------
@@ -492,18 +504,18 @@ void gamuzaMain::receivedTrigger(ofxTLTriggerEventArgs& trigger){
 
 //--------------------------------------------------------------
 void gamuzaMain::saveFrame(){
-
+	
 	string _d = getDateTimeAsString("%d_%m_%Y");
 	string start = "export/frames/frame"+ofToString(currentSavedFrame);
 	string fin = start+"_"+_d+".jpg";
-
+	
 	currentSavedFrame++;
-
+	
 	tempFrame.grabScreen(mainScreenW+1,0,projectionScreenW,projectionScreenH);
 	tempFrame.saveImage(fin.c_str());
-
+	
 	printf("Frame SAVED\n");
-
+	
 	logger.log(99," Frame SAVED");
 }
 
@@ -512,21 +524,21 @@ void gamuzaMain::printFrame(){
 	#if defined (TARGET_OSX) || defined(TARGET_LINUX)
 		tempFrame.grabScreen(mainScreenW+1,0,projectionScreenW,projectionScreenH);
 		tempFrame.saveImage("export/frames/printFrame.jpg");
-
+	
 		string commandStr = "lp ../../../data/export/frames/printFrame.jpg";
 		system(commandStr.c_str());
-
+	
 		printf("Sending frame for Printing\n");
-
+	
 		logger.log(99," Sending frame for Printing");
 	#endif
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::openFileDialog(){
-
+    
     string URL;
-
+    
     int response = ofxFileDialog::openFile(URL);
     if(response){
         loadScript(URL);
@@ -537,15 +549,15 @@ void gamuzaMain::openFileDialog(){
     }else{
         logger.log(99, " OPEN SCRIPT Canceled.");
     }
-
+    
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::saveFileDialog(){
-
+    
     string folderURL;
     string fileName;
-
+    
     int response = ofxFileDialog::saveFile(folderURL, fileName);
     if(response){
     #ifdef TARGET_OSX
@@ -553,29 +565,29 @@ void gamuzaMain::saveFileDialog(){
         logger.log(99, " SAVE SCRIPT:");
         liveCoding.saveToFile(fileName,folderURL);
     #endif
-
+        
     #ifdef TARGET_LINUX
         logger.log(99, " %s", fileName.c_str());
         logger.log(99, " SAVE SCRIPT:");
         liveCoding.saveToFile(folderURL);
     #endif
-
+        
         scriptsLister.refreshDir();
-
+        
     }else{
         logger.log(99, " SAVE SCRIPT Canceled");
     }
-
+    
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::exportVideoFileDialog(){
-
+    
     string folderURL;
     string fileName;
     char temp[256];
     char temp2[256];
-
+    
     int response = ofxFileDialog::saveFile(folderURL, fileName);
     if(response){
         #ifdef TARGET_OSX
@@ -584,36 +596,36 @@ void gamuzaMain::exportVideoFileDialog(){
         sprintf(temp,"%s/%s",folderURL.c_str(),fileName.c_str());
         sprintf(temp2,"%s/%s.aif",folderURL.c_str(),fileName.c_str());
         #endif
-
+        
         #ifdef TARGET_LINUX
         logger.log(99, " %s", fileName.c_str());
         logger.log(99, " EXPORT VIDEO: ");
         sprintf(temp,"%s",folderURL.c_str());
         sprintf(temp2,"%s.aif",folderURL.c_str());
         #endif
-
+        
         // setup video export
         movieExport.setup(temp,projectionScreenW,projectionScreenH,gamuzaExportFPS,exportCodec);
-
+        
         // setup audio export
         if(exportAudio){
             audioExport.setup(temp2,GAMUZA_AUDIO_EXPORT_FORMAT,audioSamplingRate,audioOutputChannels);
         }
-
+        
         isExporting         = true;
         logger.log(99," Exporting Video to RAM...");
     }else{
         isExporting         = false;
     }
-
+    
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::stopExportVideo(){
-
+    
     isExporting         = false;
     isEncoding          = true;
-
+    
     if(movieExport.isInitialized()){
         // stop video export
         movieExport.close();
@@ -624,32 +636,32 @@ void gamuzaMain::stopExportVideo(){
     }
     // encode movie file & mux it with audio file (with ffmpeg)
     threadMovieEncoding.encodeThreaded(movieExport.getFileName(),audioExport.getFileName(),gamuzaExportFPS,exportCodec,exportAudio);
-
+    
     logger.log(99," Video Encoded");
     isEncoding          = false;
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::exit(){
-
+	
 	// close arduino connection
 	if(arduinoActivated){
 		arduino.disconnect();
 	}
-
+	
 	// call the script's exit() function
 	lua.scriptExit();
-
+	
 	// clear the lua state
 	lua.clear();
-
+	
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::loadGamuzaSettings(){
-
+	
 	setting_data.loadFile(GAMUZA_SETTINGS);
-
+	
 	//////////////////////////////////////////////
 	// get SCREENS settings
 	mainScreenW				= setting_data.getValue("ms_width",0,0);
@@ -658,23 +670,23 @@ void gamuzaMain::loadGamuzaSettings(){
 	projectionScreenH		= setting_data.getValue("ps_height",0,0);
 	INVprojectionScreenW	= 1.0f/projectionScreenW;
 	INVprojectionScreenH	= 1.0f/projectionScreenH;
-
+	
 	FPS = setting_data.getValue("fps",0,0);
 	//////////////////////////////////////////////
-
+	
 	//////////////////////////////////////////////
 	// get AUTOMATION settings
 	autoPilot				= setting_data.getValue("auto_pilot",0,0);
 	autoLoadScript			= setting_data.getValue("autoload_script",0,0);
 	autoScriptFile			= setting_data.getValue("script_file"," ",0);
 	//////////////////////////////////////////////
-
+	
 	//////////////////////////////////////////////
 	// get SENSOR KINECT TRACKING settings
 	useKinectInfrared		= setting_data.getValue("use_infrared",0,0);
 	sensorKinectLedState	= setting_data.getValue("led_state",0,0);
 	//////////////////////////////////////////////
-
+	
 	//////////////////////////////////////////////
 	// get WEBCAM TRACKING settings
 	trackingActivated		= setting_data.getValue("tracking_activated",0,0);
@@ -683,21 +695,21 @@ void gamuzaMain::loadGamuzaSettings(){
 	workingW				= setting_data.getValue("capture_width",0,0);
 	workingH				= setting_data.getValue("capture_height",0,0);
 	totPixels				= workingW*workingH;
-
+	
 	haarFinderFile			= setting_data.getValue("haar_finder_file"," ",0);
 	//////////////////////////////////////////////
-
+	
 	//////////////////////////////////////////////
 	// get output FBO texture settings
 	useVideoFile			= setting_data.getValue("use_video_file",0,0);
 	fboVideoFile			= setting_data.getValue("fbo_video_file"," ",0);
 	//////////////////////////////////////////////
-
+	
 	//////////////////////////////////////////////
 	// get MAPPING settings
 	gridRes					= setting_data.getValue("grid_res",0,0);
 	fboNumSamples			= setting_data.getValue("fbo_num_samples",0,0);
-
+	
 	if(gridRes > 20){
 		gridRes = 20;
 	}
@@ -705,7 +717,7 @@ void gamuzaMain::loadGamuzaSettings(){
 		gridRes = 1;
 	}
 	//////////////////////////////////////////////
-
+	
 	//////////////////////////////////////////////
 	// get AUDIO settings
 	audioActivated			= setting_data.getValue("audio_activated",0,0);
@@ -716,31 +728,31 @@ void gamuzaMain::loadGamuzaSettings(){
 	audioBufferSize			= setting_data.getValue("buffer_size",0,0);
 	audioNumBuffers			= setting_data.getValue("num_buffers",0,0);
 	fftWindowUse			= setting_data.getValue("fft_window",0,0);
-
+	
 	if(!audioActivated){
 		audioInputChannels = 0;
 		audioOutputChannels = 0;
 	}
 	//////////////////////////////////////////////
-
+    
     //////////////////////////////////////////////
 	// get MIDI settings
     midiPortNumber          = setting_data.getValue("midi_port",0,0);
     //////////////////////////////////////////////
-
+	
 	//////////////////////////////////////////////
 	// get ARDUINO settings
 	arduinoActivated		= setting_data.getValue("arduino_activated",0,0);
 	serialDevice			= setting_data.getValue("serial_device_name"," ",0);
 	baudRate				= setting_data.getValue("baud_rate",0,0);
 	//////////////////////////////////////////////
-
+	
 	//////////////////////////////////////////////
 	// get OSC settings
 	oscActivated			= setting_data.getValue("osc_activated",0,0);
 	host_number				= setting_data.getValue("host_ip"," ",0);
 	host_port				= setting_data.getValue("host_port"," ",0);
 	//////////////////////////////////////////////
-
+	
 }
 

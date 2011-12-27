@@ -170,9 +170,12 @@ class gamuzaMain : public ofBaseApp, public ofxMidiListener{
 		ofTexture				emptyTexture;
         ofxTimeline             timeline;
         string                  actualTriggerName;
-	
+        
+        float					previewW,previewH,previewY;
+        float					lcPrevW, lcPrevH, lcPrevX, lcPrevY;
 		float					guiPosX;
 		float					guiPosY;
+        float                   scaledMouseX,scaledMouseY;
 		bool					isFullscreen;
         bool                    showTimeline;
 		//////////////////////////////////////////////

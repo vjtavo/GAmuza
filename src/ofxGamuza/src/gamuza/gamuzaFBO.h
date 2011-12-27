@@ -13,9 +13,6 @@ bool					useVideoFile;
 float					videoFileW;
 float					videoFileH;
 
-int						previewW,previewH,previewY;
-int						lcPrevW, lcPrevH, lcPrevX, lcPrevY;
-
 ofImage					calibImage;
 ofImage					calibImageBW;
 ofImage					capDevNO;
