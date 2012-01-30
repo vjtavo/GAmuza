@@ -14,6 +14,7 @@ class ofxAudioSample{
 		~ofxAudioSample();
 	
 		void	load(string tmpPath, float _hSampleRate);
+        void	load(vector<float> _buf, int recSize);
         
         float   update();
 		void	play();
@@ -32,6 +33,7 @@ class ofxAudioSample{
         bool    getIsPlaying();
     
         void    drawWaveForm(int _x, int _y, int _w, int _h);
+        void    drawHead(int _x, int _y, int _w, int _h);
         
     
         int             myFormat;
@@ -54,6 +56,7 @@ class ofxAudioSample{
 		unsigned char	soundStatus;
         
         float*          readBuffer;
+    
         vector<float>   samples;
         vector<ofVec2f> _waveForm;
 	

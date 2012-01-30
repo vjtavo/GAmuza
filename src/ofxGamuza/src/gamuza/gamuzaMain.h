@@ -38,6 +38,7 @@ class gamuzaMain : public ofBaseApp, public ofxMidiListener{
 		void addAudioModule(int _wT, float _freq);
 		void addAudioModule(int _wT, float _freq, int _ch);
         void addAudioSample(string _file);
+        void addInputRecording();
 		void resetAudioOutput();
     
         // MIDI functions
@@ -197,6 +198,7 @@ class gamuzaMain : public ofBaseApp, public ofxMidiListener{
 		// Live Coding vars
 		ofxGLEditor				liveCoding;
 		ofxLua					lua;
+        scroller                scriptScroll;
         int                     liveKey;
 		//////////////////////////////////////////////
 	
@@ -231,6 +233,13 @@ class gamuzaMain : public ofBaseApp, public ofxMidiListener{
     
         vector<audioSample>     audioSamples;
         int                     audioSamplesNum;
+        
+        vector<audioSample>     inputRecSamples;
+        int                     inputRecordingsNum;
+        vector<float>           recBuffer;
+        int                     recSize;
+        int                     recChannel;
+        bool                    recordingInput;
     
 		float					*outputBufferCopy;
 		float					mainVolume;

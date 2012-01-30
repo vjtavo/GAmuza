@@ -20,8 +20,12 @@ void gamuzaMain::setupAudio(){
 	inputBufferCounter		= 0;
 	audioModulesNum			= 0;
     audioSamplesNum         = 0;
+    inputRecordingsNum      = 0;
 	outputBufferCopy		= new float[audioBufferSize*audioOutputChannels];
     exportAudio             = false;
+    recSize                 = 0;
+    recChannel              = 0;
+    recordingInput          = false;
 	
 	printf("\n");
 	soundStream.setDeviceID(audioDevID);
@@ -58,6 +62,14 @@ void gamuzaMain::audioIn(float * input, int bufferSize, int nChannels){
 			for(int i = 0; i < audioInputChannels; i++){
 				if(inputAudioCH[i].captureAudio && inputAudioCH[i].computeChannel){
 					inputAudioCH[i].captureChannel(input);
+                    
+                    // input recording (MONO CHANNEL)
+                    if(recordingInput && i == recChannel){
+                        for (int j = 0; j < bufferSize; j++){
+                            recBuffer.push_back(input[j*nChannels + recChannel]);
+                        }
+                    }
+                    
 				}
 			}
 			///////////////////////////////////////////
@@ -91,6 +103,13 @@ void gamuzaMain::audioOut(float * output, int bufferSize, int nChannels){
                 }
             }
             
+            // audio input recordings
+            for(int i = 0; i < inputRecSamples.size(); i++){
+                if(inputRecSamples[i].getIsPlaying()){
+                    inputRecSamples[i].addToSoundBuffer(output, bufferSize);
+                }
+            }
+            
             // audio export
             if(isExporting){
                 audioExport.addSamples(output,bufferSize*nChannels);
@@ -109,8 +128,6 @@ void gamuzaMain::audioOut(float * output, int bufferSize, int nChannels){
 			outputBufferCounter++;
 		}
 	}
-	
-	
 	
 }
 
@@ -143,6 +160,18 @@ void gamuzaMain::addAudioSample(string _file){
 }
 
 //--------------------------------------------------------------
+void gamuzaMain::addInputRecording(){
+    if(recBuffer.size() > 0){
+        audioSample	iR;
+        iR.setup(recBuffer,recSize,audioOutputChannels);
+        inputRecSamples.push_back(iR);
+        inputRecordingsNum++;
+        recBuffer.clear();
+    }
+    recSize         = 0;
+}
+
+//--------------------------------------------------------------
 void gamuzaMain::resetAudioOutput(){
     if(audioModules.size() > 0){
         audioModules.clear();
@@ -150,9 +179,18 @@ void gamuzaMain::resetAudioOutput(){
     if(audioSamples.size() > 0){
         audioSamples.clear();
     }
+    if(inputRecSamples.size() > 0){
+        inputRecSamples.clear();
+    }
+    if(recBuffer.size() > 0){
+		recBuffer.clear();
+    }
+    
+    recSize         = 0;
+    
 	audioModulesNum = 0;
     audioSamplesNum = 0;
-    
+    inputRecordingsNum = 0;
     
 	gamuzaDSP.resetOsc();
 }

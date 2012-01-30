@@ -141,6 +141,7 @@ public:
 
 	int GetCurrentLine();
 	void SetCurrentLine(int line);
+    int getNumLines();
 
 	void BBExpand(float x, float y);
 	void BBClear() { m_BBMinX=m_BBMinY=m_BBMaxX=m_BBMaxY=0; }

@@ -1501,6 +1501,10 @@ void gamuzaMain::drawGui(){
 	// LIVE CODING
     ofSetColor(255, 255, 255);
     if(!gui.minimize && viewCode && gui.getSelectedPanel() == 0){
+        sprintf(temp,"mousex: %.1f",scaledMouseX);
+        fontSmall.drawString(temp,246,480);
+        sprintf(temp,"mousey: %.1f",scaledMouseY);
+        fontSmall.drawString(temp,346,480);
         sprintf(temp,"script line: %i",liveCoding.currentLine+2);
         fontSmall.drawString(temp,664,480);
     }
@@ -1721,6 +1725,16 @@ void gamuzaMain::gamuzaFullscreen(){
 		gui.setDimensions(MAIN_WINDOW_W-2, MAIN_WINDOW_H-6);
         timeline.setWidth(mainScreenW-6);
 	}
+    
+    if(liveCodingMode && isFullscreen){
+        scriptScroll.reset(lcPrevX-20,1,20,lcPrevH-1);
+    }else if(!liveCodingMode && isFullscreen){
+        scriptScroll.reset(224+guiPosX,previewY+guiPosY,20,previewH);
+    }else if(liveCodingMode && !isFullscreen){
+        scriptScroll.reset(lcPrevX-20,1,20,lcPrevH-1);
+    }else{
+        scriptScroll.reset(224,previewY,20,previewH);
+    }
 	
 }
 

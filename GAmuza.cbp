@@ -6,7 +6,7 @@
 		<Option makefile_is_custom="1" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="addons/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;addons/ofxOpenCv/src/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;addons/;src/ofxControlPanel/;addons/;src/ofxControlPanel/src/;addons/ofxXmlSettings/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;addons/ofxXmlSettings/src/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;addons/ofxOsc/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;addons/ofxOsc/src/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;src/ofxAudioSample/;build config/;src/ofxCvKalman/;src/ofxFileDialog/;src/ofxGamuza/;src/ofxHalftoner/;src/ofxMissing/;src/ofxOpenCVBlobTrackingExt/;src/ofxOpenNI/;src/ofxAudioSample/src/;src/ofxFileDialog/src/;src/ofxGamuza/src/;src/ofxGamuza/src/gamuza/;src/ofxHalftoner/src/;src/ofxMissing/src/;src/ofxOpenCVBlobTrackingExt/src/;src/ofxStringEncoders/src/;src/ofxGamuza/src/audioAnalysis/;src/ofxGamuza/src/audioSequencing/;src/ofxGamuza/src/audioSynthesis/;src/ofxGamuza/src/imageAnalysis/;src/ofxGamuza/src/math/;src/ofxGamuza/src/midiUtils/;src/ofxGamuza/src/randomUtils/;src/ofxGamuza/src/sourceTracking/;addons/ofxLua/;addons/ofxLua/src/;src/ofxFft/src/;src/ofxOpenNI/src/;src/ofxStringEncoders/src/lib/;src/ofxStringEncoders/src/lib/stringencoder/;src/ofxGLEditor/src/;src/ofxKeyMap/src/;addons/ofxBullet/;addons/ofxBullet/src/;addons/ofxBullet/src/joints/;addons/ofxBullet/src/render/;addons/ofxBullet/src/shapes/;addons/ofxBullet/src/events/;addons/ofxFenster/;addons/ofxFenster/src/;src/ofxMidi/;src/ofxMidi/src/;src/ofxMidi/libs/;src/ofxCLD/;src/ofxCLD/src/;src/ofxGamuza/src/audioSample/;src/ofxMemoryUsage/;src/ofxMemoryUsage/src/;src/ofxVideoRecorder/;src/ofxVideoRecorder/src/;" />
+		<Option virtualFolders="addons/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;addons/ofxOpenCv/src/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;addons/;src/ofxControlPanel/;addons/;src/ofxControlPanel/src/;addons/ofxXmlSettings/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;addons/ofxXmlSettings/src/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;addons/ofxOsc/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;addons/ofxOsc/src/;src/;src/ofxKeyMap/;src/ofxGLEditor/;src/ofxFft/;src/ofxStringEncoders/;src/ofxAudioSample/;build config/;src/ofxCvKalman/;src/ofxFileDialog/;src/ofxGamuza/;src/ofxHalftoner/;src/ofxMissing/;src/ofxOpenCVBlobTrackingExt/;src/ofxOpenNI/;src/ofxAudioSample/src/;src/ofxFileDialog/src/;src/ofxGamuza/src/;src/ofxGamuza/src/gamuza/;src/ofxHalftoner/src/;src/ofxMissing/src/;src/ofxOpenCVBlobTrackingExt/src/;src/ofxStringEncoders/src/;src/ofxGamuza/src/audioAnalysis/;src/ofxGamuza/src/audioSequencing/;src/ofxGamuza/src/audioSynthesis/;src/ofxGamuza/src/imageAnalysis/;src/ofxGamuza/src/math/;src/ofxGamuza/src/midiUtils/;src/ofxGamuza/src/randomUtils/;src/ofxGamuza/src/sourceTracking/;addons/ofxLua/;addons/ofxLua/src/;src/ofxFft/src/;src/ofxOpenNI/src/;src/ofxGLEditor/src/;src/ofxKeyMap/src/;addons/ofxBullet/;addons/ofxBullet/src/;addons/ofxBullet/src/joints/;addons/ofxBullet/src/render/;addons/ofxBullet/src/shapes/;addons/ofxBullet/src/events/;addons/ofxFenster/;addons/ofxFenster/src/;src/ofxMidi/;src/ofxMidi/src/;src/ofxMidi/libs/;src/ofxCLD/;src/ofxCLD/src/;src/ofxGamuza/src/audioSample/;src/ofxMemoryUsage/;src/ofxMemoryUsage/src/;src/ofxVideoRecorder/;src/ofxVideoRecorder/src/;src/ofxTimeline/;src/ofxTimeline/src/;addons/ofx3DModelLoader/;addons/ofxNetwork/;addons/ofxVectorGraphics/;addons/ofxVectorGraphics/src/;addons/ofx3DModelLoader/src/;addons/ofxNetwork/src/;" />
 		<Build>
 			<Target title="Debug">
 				<Option output="bin/GAmuza_debug" prefix_auto="1" extension_auto="1" />
@@ -27,6 +27,15 @@
 				<Option projectLinkerOptionsRelation="2" />
 			</Target>
 		</Build>
+		<Unit filename="../../../addons/ofx3DModelLoader/src/ofx3DBaseLoader.h">
+			<Option virtualFolder="addons/ofx3DModelLoader/src/" />
+		</Unit>
+		<Unit filename="../../../addons/ofx3DModelLoader/src/ofx3DModelLoader.h">
+			<Option virtualFolder="addons/ofx3DModelLoader/src/" />
+		</Unit>
+		<Unit filename="../../../addons/ofx3DModelLoader/src/ofx3dModelLoader.cpp">
+			<Option virtualFolder="addons/ofx3DModelLoader/src/" />
+		</Unit>
 		<Unit filename="../../../addons/ofxBullet/src/events/ofxBulletCollisionData.h">
 			<Option virtualFolder="addons/ofxBullet/src/events/" />
 		</Unit>
@@ -135,6 +144,36 @@
 		<Unit filename="../../../addons/ofxLua/src/ofxLuaWrapper.h">
 			<Option virtualFolder="addons/ofxLua/src/" />
 		</Unit>
+		<Unit filename="../../../addons/ofxNetwork/src/ofxNetwork.h">
+			<Option virtualFolder="addons/ofxNetwork/src/" />
+		</Unit>
+		<Unit filename="../../../addons/ofxNetwork/src/ofxNetworkUtils.h">
+			<Option virtualFolder="addons/ofxNetwork/src/" />
+		</Unit>
+		<Unit filename="../../../addons/ofxNetwork/src/ofxTCPClient.cpp">
+			<Option virtualFolder="addons/ofxNetwork/src/" />
+		</Unit>
+		<Unit filename="../../../addons/ofxNetwork/src/ofxTCPClient.h">
+			<Option virtualFolder="addons/ofxNetwork/src/" />
+		</Unit>
+		<Unit filename="../../../addons/ofxNetwork/src/ofxTCPManager.cpp">
+			<Option virtualFolder="addons/ofxNetwork/src/" />
+		</Unit>
+		<Unit filename="../../../addons/ofxNetwork/src/ofxTCPManager.h">
+			<Option virtualFolder="addons/ofxNetwork/src/" />
+		</Unit>
+		<Unit filename="../../../addons/ofxNetwork/src/ofxTCPServer.cpp">
+			<Option virtualFolder="addons/ofxNetwork/src/" />
+		</Unit>
+		<Unit filename="../../../addons/ofxNetwork/src/ofxTCPServer.h">
+			<Option virtualFolder="addons/ofxNetwork/src/" />
+		</Unit>
+		<Unit filename="../../../addons/ofxNetwork/src/ofxUDPManager.cpp">
+			<Option virtualFolder="addons/ofxNetwork/src/" />
+		</Unit>
+		<Unit filename="../../../addons/ofxNetwork/src/ofxUDPManager.h">
+			<Option virtualFolder="addons/ofxNetwork/src/" />
+		</Unit>
 		<Unit filename="../../../addons/ofxOpenCv/src/ofxCvBlob.h">
 			<Option virtualFolder="addons/ofxOpenCv/src/" />
 		</Unit>
@@ -218,6 +257,12 @@
 		</Unit>
 		<Unit filename="../../../addons/ofxOsc/src/ofxOscSender.h">
 			<Option virtualFolder="addons/ofxOsc/src/" />
+		</Unit>
+		<Unit filename="../../../addons/ofxVectorGraphics/src/ofxVectorGraphics.cpp">
+			<Option virtualFolder="addons/ofxVectorGraphics/src/" />
+		</Unit>
+		<Unit filename="../../../addons/ofxVectorGraphics/src/ofxVectorGraphics.h">
+			<Option virtualFolder="addons/ofxVectorGraphics/src/" />
 		</Unit>
 		<Unit filename="../../../addons/ofxXmlSettings/src/ofxXmlSettings.cpp">
 			<Option virtualFolder="addons/ofxXmlSettings/src/" />
@@ -819,21 +864,107 @@
 		<Unit filename="src/ofxOpenNI/src/ofxUserGenerator.h">
 			<Option virtualFolder="src/ofxOpenNI/src/" />
 		</Unit>
-		<Unit filename="src/ofxStringEncoders/src/lib/stringencoders/modp_b64.c">
-			<Option compilerVar="CC" />
-			<Option virtualFolder="src/ofxStringEncoders/src/lib/stringencoder/" />
-		</Unit>
-		<Unit filename="src/ofxStringEncoders/src/lib/stringencoders/modp_b64.h">
-			<Option virtualFolder="src/ofxStringEncoders/src/lib/stringencoder/" />
-		</Unit>
-		<Unit filename="src/ofxStringEncoders/src/lib/stringencoders/modp_b64_data.h">
-			<Option virtualFolder="src/ofxStringEncoders/src/lib/stringencoder/" />
-		</Unit>
 		<Unit filename="src/ofxStringEncoders/src/ofxStringEncoders.cpp">
 			<Option virtualFolder="src/ofxStringEncoders/src/" />
 		</Unit>
 		<Unit filename="src/ofxStringEncoders/src/ofxStringEncoders.h">
 			<Option virtualFolder="src/ofxStringEncoders/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLColors.cpp">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLColors.h">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLElement.cpp">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLElement.h">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLElementHeader.cpp">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLElementHeader.h">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLEvents.cpp">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLEvents.h">
+			<Option virtualFolder="src/ofxTimeline/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLImageSequence.cpp">
+			<Option virtualFolder="src/ofxTimeline/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLImageSequence.h">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLImageSequenceFrame.cpp">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLImageSequenceFrame.h">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLKeyframer.cpp">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLKeyframer.h">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLPage.cpp">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLPage.h">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLPageTabs.cpp">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLPageTabs.h">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLSwitcher.cpp">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLSwitcher.h">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLTicker.cpp">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLTicker.h">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLTrigger.cpp">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLTrigger.h">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLVideoPlayer.cpp">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLVideoPlayer.h">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLVideoThumb.cpp">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLVideoThumb.h">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLZoomer.cpp">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTLZoomer.h">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTimeline.cpp">
+			<Option virtualFolder="src/ofxTimeline/src/" />
+		</Unit>
+		<Unit filename="src/ofxTimeline/src/ofxTimeline.h">
+			<Option virtualFolder="src/ofxTimeline/src/" />
 		</Unit>
 		<Unit filename="src/ofxVideoRecorder/src/ofxVideoRecorder.h">
 			<Option virtualFolder="src/ofxVideoRecorder/src/" />

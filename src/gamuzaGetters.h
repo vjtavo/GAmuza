@@ -30,6 +30,12 @@ ofTexture gaGetWebcamTexture(int _id){
 	}
 }
 
+ofPixelsRef gaGetWebcamPixelsRef(int _id){
+	if(_id < gapp->gamuzaBase.numCamInputs && _id >= 0 && gapp->gamuzaBase.trackingActivated && gapp->gamuzaBase.inputCam[_id].captureVideo){
+		return gapp->gamuzaBase.inputCam[_id].vidGrabber.getPixelsRef();
+	}
+}
+
 //--------------------------------------------------------------
 // PIXELS MANIPULATION SECTION
 //--------------------------------------------------------------
@@ -105,6 +111,91 @@ float gaGetMidiValue(int _channel, int _index){ // _index is midi byteOne
 }
 
 //--------------------------------------------------------------
+// AUDIO INPUT RECORDING SECTION
+//--------------------------------------------------------------
+void gaStartInputRecording(int _ch){
+	if(gapp->gamuzaBase.audioActivated && _ch < gapp->gamuzaBase.audioInputChannels && gapp->gamuzaBase.audioInputChannels > 0){
+		if(gapp->gamuzaBase.inputAudioCH[_ch].captureAudio && gapp->gamuzaBase.recordingInput == false){
+            gapp->gamuzaBase.recChannel = _ch;
+			gapp->gamuzaBase.recordingInput = true;
+		}
+	}
+}
+
+void gaStopInputRecording(){
+	if(gapp->gamuzaBase.audioActivated && gapp->gamuzaBase.audioInputChannels > 0){
+		gapp->gamuzaBase.recordingInput = false;
+        gapp->gamuzaBase.addInputRecording();
+	}
+}
+
+void gaInputRecPlay(int _pos){
+	if(gapp->gamuzaBase.audioActivated && gapp->gamuzaBase.audioOutputChannels > 0){
+		if(_pos < gapp->gamuzaBase.inputRecSamples.size()){
+			gapp->gamuzaBase.inputRecSamples[_pos].play();
+		}
+	}
+}
+
+void gaInputRecStop(int _pos){
+	if(gapp->gamuzaBase.audioActivated && gapp->gamuzaBase.audioOutputChannels > 0){
+		if(_pos < gapp->gamuzaBase.inputRecSamples.size()){
+			gapp->gamuzaBase.inputRecSamples[_pos].stop();
+		}
+	}
+}
+
+void gaSetInputRecVolume(int _pos, float _vol){
+	if(gapp->gamuzaBase.audioActivated && gapp->gamuzaBase.audioOutputChannels > 0){
+		if(_pos < gapp->gamuzaBase.inputRecSamples.size()){
+			if(_vol > 1.0 || _vol < -1.0){
+				gapp->gamuzaBase.inputRecSamples[_pos].setVolume(1.0);
+			}else{
+				gapp->gamuzaBase.inputRecSamples[_pos].setVolume(_vol);
+			}
+		}
+	}
+}
+
+void gaSetInputRecLooping(int _pos, bool _l){
+	if(gapp->gamuzaBase.audioActivated && gapp->gamuzaBase.audioOutputChannels > 0){
+		if(_pos < gapp->gamuzaBase.inputRecSamples.size()){
+			gapp->gamuzaBase.inputRecSamples[_pos].setLooping(_l);
+		}
+	}
+}
+
+void gaSetInputRecPaused(int _pos, bool _l){
+	if(gapp->gamuzaBase.audioActivated && gapp->gamuzaBase.audioOutputChannels > 0){
+		if(_pos < gapp->gamuzaBase.inputRecSamples.size()){
+			gapp->gamuzaBase.inputRecSamples[_pos].setPaused(_l);
+		}
+	}
+}
+
+void gaSetInputRecSpeed(int _pos, float _speed){
+	if(gapp->gamuzaBase.audioActivated && gapp->gamuzaBase.audioOutputChannels > 0){
+		if(_pos < gapp->gamuzaBase.inputRecSamples.size()){
+			if(_speed > 1.0){
+				gapp->gamuzaBase.inputRecSamples[_pos].setSpeed(1.0);
+			}else if(_speed < -1.0){
+                gapp->gamuzaBase.inputRecSamples[_pos].setSpeed(-1.0);
+            }else{
+				gapp->gamuzaBase.inputRecSamples[_pos].setSpeed(_speed);
+			}
+		}
+	}
+}
+
+void gaDrawInputRecHead(int _pos, int x, int y, int w, int h){
+	if(gapp->gamuzaBase.audioActivated && gapp->gamuzaBase.audioOutputChannels > 0){
+		if(_pos < gapp->gamuzaBase.inputRecSamples.size()){
+			gapp->gamuzaBase.inputRecSamples[_pos].drawHead(x,y,w,h);
+		}
+	}
+}
+
+//--------------------------------------------------------------
 // AUDIO SAMPLE SECTION
 //--------------------------------------------------------------
 void gaSetupSample(string _f){
@@ -175,6 +266,14 @@ void gaDrawSampleWave(int _pos, int x, int y, int w, int h){
 	if(gapp->gamuzaBase.audioActivated && gapp->gamuzaBase.audioOutputChannels > 0){
 		if(_pos < gapp->gamuzaBase.audioSamples.size()){
 			gapp->gamuzaBase.audioSamples[_pos].drawWaveform(x,y,w,h);
+		}
+	}
+}
+
+void gaDrawSampleHead(int _pos, int x, int y, int w, int h){
+	if(gapp->gamuzaBase.audioActivated && gapp->gamuzaBase.audioOutputChannels > 0){
+		if(_pos < gapp->gamuzaBase.audioSamples.size()){
+			gapp->gamuzaBase.audioSamples[_pos].drawHead(x,y,w,h);
 		}
 	}
 }
@@ -1040,6 +1139,10 @@ float* gaGetFFTBins(int _ch){
 //--------------------------------------------------------------
 // ARDUINO SECTION
 //--------------------------------------------------------------
+string gaGetSerialDevName(){
+	return gapp->gamuzaBase.serialDevice;
+}
+
 float gaGetAArduinoPin(int _pin){
 	if(gapp->gamuzaBase.arduinoActivated && _pin >= 0 && _pin <= 5){
 		return gapp->gamuzaBase._osc_analogPinValues[_pin];
@@ -1047,6 +1150,7 @@ float gaGetAArduinoPin(int _pin){
 		return 0.0f;
 	}
 }
+
 int gaGetDArduinoPin(int _pin){
 	if(gapp->gamuzaBase.arduinoActivated && _pin >= 2 && _pin <= 13){
 		return gapp->gamuzaBase._osc_digitalPinValuesInput[_pin-2];

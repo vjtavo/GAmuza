@@ -15,8 +15,11 @@
 #include "ofMain.h"
 
 // official addons
+#include "ofx3DModelLoader.h"
+#include "ofxNetwork.h"
 #include "ofxOpenCv.h"				// computer vision library
 #include "ofxOsc.h"					// Open Sound Control communication library
+#include "ofxVectorGraphics.h"
 #include "ofxXmlSettings.h"			// read/write on/to xml file library
 
 //////////////////////////////////////
@@ -39,12 +42,15 @@
 // live coding language
 #include "ofxLua.h"					// Lua embedded scripting interpreter
 
-// Audio output classes
+// AUDIO
 #include "ofxAudioSample.h"			// reading&writing audio sample from hard drive with libsndfile
 #include "ofxPd.h"                  // a Pure Data addon for OpenFrameworks  - wrapper for libpd
 
 // Midi input/output
 #include "ofxMidi.h"                // MIDI input/output
+
+// DMX input/output
+#include "ofxDmx.h"                 // DMX input/output
 
 // Video Exporter
 #include "ofxVideoRecorder.h"       // Video recorder
@@ -56,6 +62,7 @@
 #include "ofxMissing.h"				// Date/Time, INI Reader, Recursive file listing. Roxlu missing utils
 #include "ofxFileDialog.h"			// open/save file dialog
 #include "ofxStringEncoders.h"		// Html string encoders (UTF8, unquote)
+#include "ofxSubtitles.h"           // load/save .srt subtitles files
 
 // PHYSICS
 #include "ofxBullet.h"				// Bullet Physics Engine
@@ -63,11 +70,35 @@
 // MATH
 #include "ofxGaussian.h"            // A Gaussian random number generator
 
+// LOGIC
+#include "ofxLogicMachine.h"
+
 // Pixels manipulators
 #include "ofxHalftoner.h"           // 80's copy-machine art
+#include "ofxChromaKey.h"
+#include "ofxDither.h"
+#include "ofxFX.h"
+
+// Text Font addons
+#include "ofxArcText.h"
+#include "ofxFTGLFont.h"
+#include "ofxWordPalette.h"
+
+// Graphics
+#include "ofxVoronoiGL.h"
+#include "ofxSlitScan.h"            // simple utility for creating slit scan effects and video time delays
+
+// NET
+#include "ofxTwitter.h"
+
+// 3D
+#include "ofxSkyBox.h"
 
 //////////////////////////////////////
 // unofficial code
+
+// GUI classes
+#include "scroller.h"               // a simple scroller class
 
 // webcam input classes
 #include "sourceTracking.h"			// video input source class [from Emanuele Mazza]

@@ -36,18 +36,27 @@ USER_CFLAGS += -I /usr/include/nite
 
 # GAmuza
 USER_CFLAGS += -I src
+USER_CFLAGS += -I src/ofxArcText/src
 USER_CFLAGS += -I src/ofxAudioSample/src
 USER_CFLAGS += -I src/ofxAudioSample/libs/libsndfile/include
+USER_CFLAGS += -I src/ofxChromaKey/src
 USER_CFLAGS += -I src/ofxCLD/src
 USER_CFLAGS += -I src/ofxControlPanel/src
 USER_CFLAGS += -I src/ofxCvKalman
+USER_CFLAGS += -I src/ofxDither/src
+USER_CFLAGS += -I src/ofxDmx/src
 USER_CFLAGS += -I src/ofxFft/src
 USER_CFLAGS += -I src/ofxFileDialog/src
+USER_CFLAGS += -I src/ofxFTGL/src
+USER_CFLAGS += -I src/ofxFTGL/libs
+USER_CFLAGS += -I src/ofxFTGL/libs/FTGL/src
+USER_CFLAGS += -I src/ofxFX/src
 USER_CFLAGS += -I src/ofxGamuza/src/audioAnalysis
 USER_CFLAGS += -I src/ofxGamuza/src/audioSample
 USER_CFLAGS += -I src/ofxGamuza/src/audioSequencing
 USER_CFLAGS += -I src/ofxGamuza/src/audioSynthesis
 USER_CFLAGS += -I src/ofxGamuza/src/gamuza
+USER_CFLAGS += -I src/ofxGamuza/src/gui
 USER_CFLAGS += -I src/ofxGamuza/src/imageAnalysis
 USER_CFLAGS += -I src/ofxGamuza/src/math
 USER_CFLAGS += -I src/ofxGamuza/src/midiUtils
@@ -58,6 +67,7 @@ USER_CFLAGS += -I src/ofxGLEditor/src
 USER_CFLAGS += -I src/ofxHalftoner/src
 USER_CFLAGS += -I src/ofxKeyMap/src
 USER_CFLAGS += -I src/ofxLibsndfileRecorder/src
+USER_CFLAGS += -I src/ofxLogicMachine/src
 USER_CFLAGS += -I src/ofxMemoryUsage/src
 USER_CFLAGS += -I src/ofxMidi/src
 USER_CFLAGS += -I src/ofxMidi/libs
@@ -67,12 +77,20 @@ USER_CFLAGS += -I src/ofxPd/src
 USER_CFLAGS += -I src/ofxPd/src/pd/libpd_wrapper
 USER_CFLAGS += -I src/ofxPd/src/pd/pure-data/src
 USER_CFLAGS += -I src/ofxRange/src
+USER_CFLAGS += -I src/ofxSkyBox/src
+USER_CFLAGS += -I src/ofxSlitScan/src
 USER_CFLAGS += -I src/ofxStringEncoders/src
+USER_CFLAGS += -I src/ofxSubtitles/src
 USER_CFLAGS += -I src/ofxTextInputField/src
 USER_CFLAGS += -I src/ofxTimeline/src
 USER_CFLAGS += -I src/ofxTween/src
 USER_CFLAGS += -I src/ofxTween/src/Easings
+USER_CFLAGS += -I src/ofxTwitterStream/src
+USER_CFLAGS += -I src/ofxTwitterStream/src/lib/jansson
+USER_CFLAGS += -I src/ofxTwitterStream/src/lib/stringencoders
 USER_CFLAGS += -I src/ofxVideoRecorder/src
+USER_CFLAGS += -I src/ofxVoronoiGL/src
+USER_CFLAGS += -I src/ofxWordPalette/src
 
 # OFXPD
 USER_CFLAGS += -DHAVE_UNISTD_H -DUSEAPI_DUMMY -DPD -shared
@@ -111,6 +129,9 @@ USER_LIBS += -lX11
 
 # OFXPD
 USER_LIBS += -ldl -lm
+
+# ofxFTGLFont
+USER_LIBS += -lftgl
 
 # --------------------------------------------------------
 # change this to add different compiler optimizations to your project

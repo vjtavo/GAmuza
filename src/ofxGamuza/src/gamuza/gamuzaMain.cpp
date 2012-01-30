@@ -280,6 +280,15 @@ void gamuzaMain::keyReleased(int key){
 	// LIVE CODING
 	if(alt && (key == 'j' || key == 'J')){
 		liveCodingMode = !liveCodingMode;
+        if(liveCodingMode && isFullscreen){
+            scriptScroll.reset(lcPrevX-20,1,20,lcPrevH-1);
+        }else if(!liveCodingMode && isFullscreen){
+            scriptScroll.reset(224+guiPosX,previewY+guiPosY,20,previewH);
+        }else if(liveCodingMode && !isFullscreen){
+            scriptScroll.reset(lcPrevX-20,1,20,lcPrevH-1);
+        }else{
+            scriptScroll.reset(224,previewY,20,previewH);
+        }
 	}
 	
 	// show/hide script code
@@ -356,6 +365,7 @@ void gamuzaMain::mouseMoved(int x, int y){
 	// Live Coding
 	if(computeFBOTexture && useLiveCoding){
 		lua.scriptMouseMoved(x, y);
+        scriptScroll.mouseMoved(x,y);
 	}
 	
 }
@@ -388,6 +398,8 @@ void gamuzaMain::mouseDragged(int x, int y, int button){
 	// Live Coding
 	if(computeFBOTexture && useLiveCoding){
 		lua.scriptMouseDragged(x, y, button);
+        scriptScroll.mouseDragged(x,y);
+        liveCoding.glEditor[liveCoding.currentEditor]->SetCurrentLine(floor(scriptScroll.normPos*liveCoding.glEditor[liveCoding.currentEditor]->getNumLines()));
 	}
 	
 }
@@ -446,6 +458,7 @@ void gamuzaMain::mousePressed(int x, int y, int button){
 	// Live Coding
 	if(computeFBOTexture && useLiveCoding){
 		lua.scriptMousePressed(x, y, button);
+        scriptScroll.mousePressed(x,y);
 	}
 	
 }

@@ -48,6 +48,32 @@ class ofGamuzaWrapper{
          ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		 /// \section vector
          
+         ///////////////////////////////////////////////////////////////////////////////////
+		 /// \section std::vector<ofVec2f>
+         
+         /*class_<std::vector<ofVec2f> >("vector2f")
+         .def(constructor<>())
+         .def("assign", &std::vector<ofVec2f>::assign)
+         .def("at", &std::vector<ofVec2f>::at)
+         .def("back", &std::vector<ofVec2f>::back)
+         .def("begin", &std::vector<ofVec2f>::begin)
+         .def("capacity", &std::vector<ofVec2f>::capacity)
+         .def("clear", &std::vector<ofVec2f>::clear)
+         .def("empty", &std::vector<ofVec2f>::empty)
+         .def("end", &std::vector<ofVec2f>::end)
+         .def("erase", &std::vector<ofVec2f>::erase)
+         .def("front", &std::vector<ofVec2f>::front)
+         .def("get_allocator", &std::vector<ofVec2f>::get_allocator)
+         .def("insert", &std::vector<ofVec2f>::insert)
+         .def("max_size", &std::vector<ofVec2f>::max_size)
+         .def("pop_back", &std::vector<ofVec2f>::pop_back)
+         .def("push_back", &std::vector<ofVec2f>::push_back)
+         .def("rbegin", &std::vector<ofVec2f>::rbegin)
+         .def("rend", &std::vector<ofVec2f>::rend)
+         .def("reserve", &std::vector<ofVec2f>::reserve)
+         .def("resize", &std::vector<ofVec2f>::resize)
+         .def("size", &std::vector<ofVec2f>::size)
+         .def("swap", &std::vector<ofVec2f>::swap),*/
          
          ///////////////////////////////////////////////////////////////////////////////////
 		 /// \section std::vector<int>
@@ -530,8 +556,8 @@ class ofGamuzaWrapper{
          .def("limit", (ofVec2f(ofVec2f::*)(float)) &ofVec2f::limit)
          .def("getPerpendicular", (ofVec2f(ofVec2f::*)(void)) &ofVec2f::getPerpendicular)
          .def("perpendicular", (ofVec2f(ofVec2f::*)(void)) &ofVec2f::perpendicular)
-         .def("length", (ofVec2f(ofVec2f::*)(void)) &ofVec2f::length)
-         .def("squareLength", (ofVec2f(ofVec2f::*)(void)) &ofVec2f::squareLength)
+         .def("length", (float(ofVec2f::*)(void)) &ofVec2f::length)
+         .def("squareLength", (float(ofVec2f::*)(void)) &ofVec2f::squareLength)
          .def("angle", (float(ofVec2f::*)(const ofVec2f&)) &ofVec2f::angle)
          .def("angleRad", (float(ofVec2f::*)(const ofVec2f&)) &ofVec2f::angleRad)
          .def("dot", (float(ofVec2f::*)(const ofVec2f&)) &ofVec2f::dot)
@@ -597,8 +623,8 @@ class ofGamuzaWrapper{
          .def("limit", (ofVec3f(ofVec3f::*)(float)) &ofVec3f::limit)
          .def("getPerpendicular", (ofVec3f(ofVec3f::*)(void)) &ofVec3f::getPerpendicular)
          .def("perpendicular", (ofVec3f(ofVec3f::*)(void)) &ofVec3f::perpendicular)
-         .def("length", (ofVec3f(ofVec3f::*)(void)) &ofVec3f::length)
-         .def("squareLength", (ofVec3f(ofVec3f::*)(void)) &ofVec3f::squareLength)
+         .def("length", (float(ofVec3f::*)(void)) &ofVec3f::length)
+         .def("squareLength", (float(ofVec3f::*)(void)) &ofVec3f::squareLength)
          .def("angle", (float(ofVec3f::*)(const ofVec3f&)) &ofVec3f::angle)
          .def("angleRad", (float(ofVec3f::*)(const ofVec3f&)) &ofVec3f::angleRad)
          .def("dot", (float(ofVec3f::*)(const ofVec3f&)) &ofVec3f::dot)
@@ -659,8 +685,8 @@ class ofGamuzaWrapper{
          .def("normalize", (ofVec4f(ofVec4f::*)(void)) &ofVec4f::normalize)
          .def("getLimited", (ofVec4f(ofVec4f::*)(float)) &ofVec4f::getLimited)
          .def("limit", (ofVec4f(ofVec4f::*)(float)) &ofVec4f::limit)
-         .def("length", (ofVec4f(ofVec4f::*)(void)) &ofVec4f::length)
-         .def("squareLength", (ofVec4f(ofVec4f::*)(void)) &ofVec4f::squareLength)
+         .def("length", (float(ofVec4f::*)(void)) &ofVec4f::length)
+         .def("squareLength", (float(ofVec4f::*)(void)) &ofVec4f::squareLength)
          .def("dot", (float(ofVec4f::*)(const ofVec4f&)) &ofVec4f::dot)
          .def("rescaled", (ofVec4f(ofVec4f::*)(const float)) &ofVec4f::rescaled)
          .def("rescale", (ofVec4f(ofVec4f::*)(const float)) &ofVec4f::rescale)
@@ -925,6 +951,8 @@ class ofGamuzaWrapper{
          .def("setTextureMinMagFilter", (void(ofTexture::*)(GLint,GLint)) &ofTexture::setTextureMinMagFilter)
          .def("setCompression", (void(ofTexture::*)(ofTexCompression)) &ofTexture::setCompression)
          .def("isAllocated", (bool(ofTexture::*)(void)) &ofTexture::isAllocated)
+         .def("bind", &ofTexture::bind)
+         .def("unbind", &ofTexture::unbind)
 		 .def("getWidth", &ofTexture::getWidth)
 		 .def("getHeight", &ofTexture::getHeight),
          
@@ -1326,7 +1354,7 @@ class ofGamuzaWrapper{
 		 .def("clear", (void(ofImage::*)(void)) &ofImage::clear)
          .def("clone", (void(ofImage::*)(const ofImage&)) &ofImage::clone)
          .def("setUseTexture", (void(ofImage::*)(bool)) &ofImage::setUseTexture)
-         //.def("getTextureReference", (ofTexture(ofImage::*)(void)) &ofImage::getTextureReference)                 UNSTABLE
+         .def("getTextureReference", (ofTexture&(ofImage::*)(void)) &ofImage::getTextureReference)
 		 .def("loadImage", (bool(ofImage::*)(string)) &ofImage::loadImage)
          // .def("saveImage", (bool(ofImage::*)(string)) &ofImage::saveImage)                                       NOT AVAILABLE
 		 .def("getPixels", (unsigned char*(ofImage::*)(void)) &ofImage::getPixels)
@@ -1787,7 +1815,330 @@ class ofGamuzaWrapper{
 		module(lua, "ofx")
 		[
          
+         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         // OFX3DMODELLOADER
+         
          ///////////////////////////////
+         // ofx3DBaseLoader
+         class_<ofx3DBaseLoader>("3DBaseLoader")
+         .def(constructor<>())
+         .def("loadModel", (void(ofx3DBaseLoader::*)(string,float)) &ofx3DBaseLoader::loadModel)
+         .def("loadModel", (void(ofx3DBaseLoader::*)(string)) &ofx3DBaseLoader::loadModel)
+         .def("draw", (void(ofx3DBaseLoader::*)(void)) &ofx3DBaseLoader::draw)
+         .def_readonly("hasTexture", &ofx3DBaseLoader::hasTexture),
+         
+         ///////////////////////////////
+         // ofx3DModelLoader
+         class_<ofx3DModelLoader>("3DModelLoader")
+         .def(constructor<>())
+         .def("loadModel", (void(ofx3DModelLoader::*)(string,float)) &ofx3DModelLoader::loadModel)
+         .def("setPosition", (void(ofx3DModelLoader::*)(float,float,float)) &ofx3DModelLoader::setPosition)
+         .def("setScale", (void(ofx3DModelLoader::*)(float,float,float)) &ofx3DModelLoader::setScale)
+         .def("setRotation", (void(ofx3DModelLoader::*)(int,float,float,float,float)) &ofx3DModelLoader::setRotation)
+         .def("draw", (void(ofx3DModelLoader::*)(void)) &ofx3DModelLoader::draw)
+         .def_readonly("rotAngle", &ofx3DModelLoader::rotAngle)
+         .def_readonly("rotAxis", &ofx3DModelLoader::rotAxis)
+         .def_readonly("scale", &ofx3DModelLoader::scale)
+         .def_readonly("pos", &ofx3DModelLoader::pos)
+         .def_readonly("numRotations", &ofx3DModelLoader::numRotations)
+         .def_readonly("model", &ofx3DModelLoader::model),
+         
+         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         // OFXNETWORK
+         
+         ///////////////////////////////
+         // ofxTCPClient
+         class_<ofxTCPClient>("TCPClient")
+         .def(constructor<>())
+         .def("setVerbose", (void(ofxTCPClient::*)(bool)) &ofxTCPClient::setVerbose)
+         .def("setup", (bool(ofxTCPClient::*)(string,int,bool)) &ofxTCPClient::setup)
+         .def("setMessageDelimiter", (void(ofxTCPClient::*)(string)) &ofxTCPClient::setMessageDelimiter)
+         .def("close", (bool(ofxTCPClient::*)(void)) &ofxTCPClient::close)
+         .def("send", (bool(ofxTCPClient::*)(string)) &ofxTCPClient::send)
+         .def("sendRaw", (bool(ofxTCPClient::*)(string)) &ofxTCPClient::sendRaw)
+         .def("getNumReceivedBytes", (int(ofxTCPClient::*)(void)) &ofxTCPClient::getNumReceivedBytes)
+         .def("sendRawBytes", (bool(ofxTCPClient::*)(const char*, const int)) &ofxTCPClient::sendRawBytes)
+         .def("receive", (string(ofxTCPClient::*)(void)) &ofxTCPClient::receive)
+         .def("receiveRaw", (string(ofxTCPClient::*)(void)) &ofxTCPClient::receiveRaw)
+         .def("receiveRawBytes", (int(ofxTCPClient::*)(const char*,int)) &ofxTCPClient::receiveRawBytes)
+         .def("isConnected", (bool(ofxTCPClient::*)(void)) &ofxTCPClient::isConnected)
+         .def("getPort", (int(ofxTCPClient::*)(void)) &ofxTCPClient::getPort)
+         .def("getIP", (string(ofxTCPClient::*)(void)) &ofxTCPClient::getIP)
+         .def("setup", (bool(ofxTCPClient::*)(int,bool)) &ofxTCPClient::setup)
+         .def_readonly("TCPClient", &ofxTCPClient::TCPClient),
+         
+         ///////////////////////////////
+         // ofxUDPManager
+         class_<ofxUDPManager>("UDPManager")
+         .def(constructor<>())
+         .def("Close", (bool(ofxUDPManager::*)(void)) &ofxUDPManager::Close)
+         .def("Create", (bool(ofxUDPManager::*)(void)) &ofxUDPManager::Create)
+         .def("Connect", (bool(ofxUDPManager::*)(const char*,unsigned short)) &ofxUDPManager::Connect)
+         .def("ConnectMcast", (bool(ofxUDPManager::*)(const char*,unsigned short)) &ofxUDPManager::ConnectMcast)
+         .def("Bind", (bool(ofxUDPManager::*)(unsigned short)) &ofxUDPManager::Bind)
+         .def("BindMcast", (bool(ofxUDPManager::*)(const char*,unsigned short)) &ofxUDPManager::BindMcast)
+         .def("Send", (int(ofxUDPManager::*)(const char*,const int)) &ofxUDPManager::Send)
+         .def("SendAll", (int(ofxUDPManager::*)(const char*,const int)) &ofxUDPManager::SendAll)
+         .def("Receive", (int(ofxUDPManager::*)(const char*,const int)) &ofxUDPManager::Receive)
+         .def("SetTimeoutSend", (void(ofxUDPManager::*)(int)) &ofxUDPManager::SetTimeoutSend)
+         .def("SetTimeoutReceive", (void(ofxUDPManager::*)(int)) &ofxUDPManager::SetTimeoutReceive)
+         .def("GetTimeoutSend", (int(ofxUDPManager::*)(void)) &ofxUDPManager::GetTimeoutSend)
+         .def("GetTimeoutReceive", (int(ofxUDPManager::*)(void)) &ofxUDPManager::GetTimeoutReceive)
+         .def("GetRemoteAddr", (bool(ofxUDPManager::*)(const char*)) &ofxUDPManager::GetRemoteAddr)
+         .def("SetReceiveBufferSize", (bool(ofxUDPManager::*)(int)) &ofxUDPManager::SetReceiveBufferSize)
+         .def("SetSendBufferSize", (bool(ofxUDPManager::*)(int)) &ofxUDPManager::SetSendBufferSize)
+         .def("GetReceiveBufferSize", (int(ofxUDPManager::*)(void)) &ofxUDPManager::GetReceiveBufferSize)
+         .def("GetSendBufferSize", (int(ofxUDPManager::*)(void)) &ofxUDPManager::GetSendBufferSize)
+         .def("SetReuseAddress", (bool(ofxUDPManager::*)(bool)) &ofxUDPManager::SetReuseAddress)
+         .def("SetEnableBroadcast", (bool(ofxUDPManager::*)(bool)) &ofxUDPManager::SetEnableBroadcast)
+         .def("SetNonBlocking", (bool(ofxUDPManager::*)(bool)) &ofxUDPManager::SetNonBlocking)
+         .def("GetMaxMsgSize", (int(ofxUDPManager::*)(void)) &ofxUDPManager::GetMaxMsgSize)
+         .def("GetTTL", (int(ofxUDPManager::*)(void)) &ofxUDPManager::GetTTL)
+         .def("SetTTL", (bool(ofxUDPManager::*)(int)) &ofxUDPManager::SetTTL),
+         
+         ///////////////////////////////
+         // ofxTCPManager
+         class_<ofxTCPManager>("TCPManager")
+         .def(constructor<>())
+         .def("Close", (bool(ofxTCPManager::*)(void)) &ofxTCPManager::Close)
+         .def("Create", (bool(ofxTCPManager::*)(void)) &ofxTCPManager::Create)
+         .def("Listen", (bool(ofxTCPManager::*)(int)) &ofxTCPManager::Listen)
+         .def("Connect", (bool(ofxTCPManager::*)(const char*,unsigned short)) &ofxTCPManager::Connect)
+         .def("Bind", (bool(ofxTCPManager::*)(unsigned short)) &ofxTCPManager::Bind)
+         .def("Accept", (bool(ofxTCPManager::*)(ofxTCPManager&)) &ofxTCPManager::Accept)
+         .def("Send", (int(ofxTCPManager::*)(const char*,const int)) &ofxTCPManager::Send)
+         .def("SendAll", (int(ofxTCPManager::*)(const char*,const int)) &ofxTCPManager::SendAll)
+         .def("Receive", (int(ofxTCPManager::*)(const char*,const int)) &ofxTCPManager::Receive)
+         .def("ReceiveAll", (int(ofxTCPManager::*)(const char*,const int)) &ofxTCPManager::ReceiveAll)
+         .def("Write", (int(ofxTCPManager::*)(const char*,const int)) &ofxTCPManager::Write)
+         .def("GetRemoteAddr", &ofxTCPManager::GetRemoteAddr)
+         .def("GetInetAddr", &ofxTCPManager::GetInetAddr)
+         .def("SetTimeoutSend", (void(ofxTCPManager::*)(int)) &ofxTCPManager::SetTimeoutSend)
+         .def("SetTimeoutReceive", (void(ofxTCPManager::*)(int)) &ofxTCPManager::SetTimeoutReceive)
+         .def("SetTimeoutAccept", (void(ofxTCPManager::*)(int)) &ofxTCPManager::SetTimeoutAccept)
+         .def("GetTimeoutSend", (int(ofxTCPManager::*)(void)) &ofxTCPManager::GetTimeoutSend)
+         .def("GetTimeoutReceive", (int(ofxTCPManager::*)(void)) &ofxTCPManager::GetTimeoutReceive)
+         .def("GetTimeoutAccept", (int(ofxTCPManager::*)(void)) &ofxTCPManager::GetTimeoutAccept)
+         .def("SetReceiveBufferSize", (bool(ofxTCPManager::*)(int)) &ofxTCPManager::SetReceiveBufferSize)
+         .def("SetSendBufferSize", (bool(ofxTCPManager::*)(int)) &ofxTCPManager::SetSendBufferSize)
+         .def("GetReceiveBufferSize", (int(ofxTCPManager::*)(void)) &ofxTCPManager::GetReceiveBufferSize)
+         .def("GetSendBufferSize", (int(ofxTCPManager::*)(void)) &ofxTCPManager::GetSendBufferSize)
+         .def("GetMaxConnections", (int(ofxTCPManager::*)(void)) &ofxTCPManager::GetMaxConnections)
+         .def("SetNonBlocking", (bool(ofxTCPManager::*)(bool)) &ofxTCPManager::SetNonBlocking)
+         .def("CheckHost", (bool(ofxTCPManager::*)(const char*)) &ofxTCPManager::CheckHost)
+         .def("CleanUp", (void(ofxTCPManager::*)(void)) &ofxTCPManager::CleanUp),
+         
+         ///////////////////////////////
+         // ofxTCPServer
+         class_<ofxTCPServer>("TCPServer")
+         .def(constructor<>())
+         .def("setVerbose", (void(ofxTCPServer::*)(bool)) &ofxTCPServer::setVerbose)
+         .def("setup", (bool(ofxTCPServer::*)(int,bool)) &ofxTCPServer::setup)
+         .def("setMessageDelimiter", (void(ofxTCPServer::*)(string)) &ofxTCPServer::setMessageDelimiter)
+         .def("close", (bool(ofxTCPServer::*)(void)) &ofxTCPServer::close)
+         .def("disconnectClient", (bool(ofxTCPServer::*)(int)) &ofxTCPServer::disconnectClient)
+         .def("getNumClients", (int(ofxTCPServer::*)(void)) &ofxTCPServer::getNumClients)
+         .def("getLastID", (int(ofxTCPServer::*)(void)) &ofxTCPServer::getLastID)
+         .def("getPort", (int(ofxTCPServer::*)(void)) &ofxTCPServer::getPort)
+         .def("isConnected", (bool(ofxTCPServer::*)(void)) &ofxTCPServer::isConnected)
+         .def("getClientPort", (int(ofxTCPServer::*)(int)) &ofxTCPServer::getClientPort)
+         .def("getClientIP", (string(ofxTCPServer::*)(int)) &ofxTCPServer::getClientIP)
+         .def("isClientSetup", (bool(ofxTCPServer::*)(int)) &ofxTCPServer::isClientSetup)
+         .def("isClientConnected", (bool(ofxTCPServer::*)(int)) &ofxTCPServer::isClientConnected)
+         .def("send", (bool(ofxTCPServer::*)(int,string)) &ofxTCPServer::send)
+         .def("sendToAll", (bool(ofxTCPServer::*)(string)) &ofxTCPServer::sendToAll)
+         .def("sendRawBytes", (bool(ofxTCPServer::*)(int, const char*, const int)) &ofxTCPServer::sendRawBytes)
+         .def("sendRawBytesToAll", (bool(ofxTCPServer::*)(const char*, const int)) &ofxTCPServer::sendRawBytesToAll)
+         .def("getNumReceivedBytes", (int(ofxTCPServer::*)(int)) &ofxTCPServer::getNumReceivedBytes)
+         .def("receive", (string(ofxTCPServer::*)(int)) &ofxTCPServer::receive)
+         .def("receiveRawBytes", (void(ofxTCPServer::*)(int, const char*, int)) &ofxTCPServer::receiveRawBytes)
+         .def_readonly("TCPServer", &ofxTCPServer::TCPServer)
+		 .def_readonly("TCPConnections", &ofxTCPServer::TCPConnections),
+         
+         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         // OFXVECTORGRAPHICS
+         
+         class_<ofxVectorGraphics>("vectorGraphics")
+         .def(constructor<>())
+         .def("beginEPS", (void(ofxVectorGraphics::*)(string,int,int,int,int)) &ofxVectorGraphics::beginEPS)
+         .def("endEPS", (void(ofxVectorGraphics::*)(void)) &ofxVectorGraphics::endEPS)
+         .def("enableDraw", (void(ofxVectorGraphics::*)(void)) &ofxVectorGraphics::enableDraw)
+         .def("disableDraw", (void(ofxVectorGraphics::*)(void)) &ofxVectorGraphics::disableDraw)
+         .def("enableCenterRect", (void(ofxVectorGraphics::*)(void)) &ofxVectorGraphics::enableCenterRect)
+         .def("disableCenterRect", (void(ofxVectorGraphics::*)(void)) &ofxVectorGraphics::disableCenterRect)
+         .def("fill", (void(ofxVectorGraphics::*)(void)) &ofxVectorGraphics::fill)
+         .def("noFill", (void(ofxVectorGraphics::*)(void)) &ofxVectorGraphics::noFill)
+         .def("setLineWidth", (void(ofxVectorGraphics::*)(float)) &ofxVectorGraphics::setLineWidth)
+         .def("setColor", (void(ofxVectorGraphics::*)(int,int,int)) &ofxVectorGraphics::setColor)
+         .def("setColor", (void(ofxVectorGraphics::*)(int)) &ofxVectorGraphics::setColor)
+         .def("changeColor", (void(ofxVectorGraphics::*)(float,float,float)) &ofxVectorGraphics::changeColor)
+         .def("rect", (void(ofxVectorGraphics::*)(float,float,float,float)) &ofxVectorGraphics::rect)
+         .def("triangle", (void(ofxVectorGraphics::*)(float,float,float,float,float,float)) &ofxVectorGraphics::triangle)
+         .def("circle", (void(ofxVectorGraphics::*)(float,float,float)) &ofxVectorGraphics::circle)
+         .def("ellipse", (void(ofxVectorGraphics::*)(float,float,float,float)) &ofxVectorGraphics::ellipse)
+         .def("line", (void(ofxVectorGraphics::*)(float,float,float,float)) &ofxVectorGraphics::line)
+         .def("arc", (void(ofxVectorGraphics::*)(float,float,float,float,float)) &ofxVectorGraphics::arc)
+         .def("bezier", (void(ofxVectorGraphics::*)(float,float,float,float,float,float,float,float)) &ofxVectorGraphics::bezier)
+         .def("curve", (void(ofxVectorGraphics::*)(float,float,float,float,float,float,float,float)) &ofxVectorGraphics::curve)
+         .def("beginShape", (void(ofxVectorGraphics::*)(void)) &ofxVectorGraphics::beginShape)
+         .def("polyVertex", (void(ofxVectorGraphics::*)(float,float)) &ofxVectorGraphics::polyVertex)
+         .def("bezierVertex", (void(ofxVectorGraphics::*)(float,float,float,float,float,float)) &ofxVectorGraphics::bezierVertex)
+         .def("curveVertex", (void(ofxVectorGraphics::*)(float,float)) &ofxVectorGraphics::curveVertex)
+         .def("endShape", (void(ofxVectorGraphics::*)(bool)) &ofxVectorGraphics::endShape)
+         .def_readonly("creeps", &ofxVectorGraphics::creeps),
+         
+         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         // OFXOPENCV
+         
+         ///////////////////////////////
+         // ofxCvColorImage
+         
+         class_<ofxCvColorImage>("cvColorImage")
+         .def(constructor<>())
+         .def(constructor<const ofxCvColorImage&>())
+         
+         .def("allocate", (void(ofxCvColorImage::*)(int,int)) &ofxCvColorImage::allocate)
+         .def("clear", (void(ofxCvColorImage::*)(void)) &ofxCvColorImage::clear)
+         .def("getWidth", (float(ofxCvColorImage::*)(void)) &ofxCvColorImage::getWidth)
+         .def("getHeight", (float(ofxCvColorImage::*)(void)) &ofxCvColorImage::getHeight)
+         .def("setUseTexture", (void(ofxCvColorImage::*)(bool)) &ofxCvColorImage::setUseTexture)
+         .def("getTextureReference", (ofTexture&(ofxCvColorImage::*)(void)) &ofxCvColorImage::getTextureReference)
+         .def("flagImageChanged", (void(ofxCvColorImage::*)(void)) &ofxCvColorImage::flagImageChanged)
+         .def("setROI", (void(ofxCvColorImage::*)(int,int,int,int)) &ofxCvColorImage::setROI)
+         .def("setROI", (void(ofxCvColorImage::*)(const ofRectangle&)) &ofxCvColorImage::setROI)
+         .def("getROI", (ofRectangle(ofxCvColorImage::*)(void)) &ofxCvColorImage::getROI)
+         .def("resetROI", (void(ofxCvColorImage::*)(void)) &ofxCvColorImage::resetROI)
+         .def("getIntersectionROI", (ofRectangle(ofxCvColorImage::*)(const ofRectangle&,const ofRectangle&)) &ofxCvColorImage::getIntersectionROI)
+         .def("setFromPixels", (void(ofxCvColorImage::*)(const ofPixels&)) &ofxCvColorImage::setFromPixels)
+         .def("setRoiFromPixels", (void(ofxCvColorImage::*)(const ofPixels&)) &ofxCvColorImage::setRoiFromPixels)
+         .def("updateTexture", (void(ofxCvColorImage::*)(void)) &ofxCvColorImage::updateTexture)
+         .def("draw", (void(ofxCvColorImage::*)(float,float)) &ofxCvColorImage::draw)
+         .def("draw", (void(ofxCvColorImage::*)(float,float,float,float)) &ofxCvColorImage::draw)
+         .def("draw", (void(ofxCvColorImage::*)(const ofRectangle&)) &ofxCvColorImage::draw)
+         .def("drawROI", (void(ofxCvColorImage::*)(float,float)) &ofxCvColorImage::drawROI)
+         .def("drawROI", (void(ofxCvColorImage::*)(float,float,float,float)) &ofxCvColorImage::drawROI)
+         .def("setAnchorPercent", (void(ofxCvColorImage::*)(float,float)) &ofxCvColorImage::setAnchorPercent)
+         .def("setAnchorPoint", (void(ofxCvColorImage::*)(float,float)) &ofxCvColorImage::setAnchorPoint)
+         .def("resetAnchor", (void(ofxCvColorImage::*)(void)) &ofxCvColorImage::resetAnchor)
+         .def("erode", (void(ofxCvColorImage::*)(void)) &ofxCvColorImage::erode)
+         .def("dilate", (void(ofxCvColorImage::*)(void)) &ofxCvColorImage::dilate)
+         .def("blur", (void(ofxCvColorImage::*)(int)) &ofxCvColorImage::blur)
+         .def("blurGaussian", (void(ofxCvColorImage::*)(int)) &ofxCvColorImage::blurGaussian)
+         .def("invert", (void(ofxCvColorImage::*)(void)) &ofxCvColorImage::invert)
+         .def("mirror", (void(ofxCvColorImage::*)(bool,bool)) &ofxCvColorImage::mirror)
+         .def("translate", (void(ofxCvColorImage::*)(float,float)) &ofxCvColorImage::translate)
+         .def("rotate", (void(ofxCvColorImage::*)(float,float,float)) &ofxCvColorImage::rotate)
+         .def("scale", (void(ofxCvColorImage::*)(float,float)) &ofxCvColorImage::scale)
+         .def("transform", (void(ofxCvColorImage::*)(float,float,float,float,float,float,float)) &ofxCvColorImage::transform)
+         .def("undistort", (void(ofxCvColorImage::*)(float,float,float,float,float,float,float,float)) &ofxCvColorImage::undistort)
+         .def("warpPerspective", (void(ofxCvColorImage::*)(const ofPoint&,const ofPoint&,const ofPoint&,const ofPoint&)) &ofxCvColorImage::warpPerspective)
+         .def("warpIntoMe", (void(ofxCvColorImage::*)(ofxCvImage&,const ofPoint,const ofPoint)) &ofxCvColorImage::warpIntoMe)
+         .def("countNonZeroInRegion", (void(ofxCvColorImage::*)(int,int,int,int)) &ofxCvColorImage::countNonZeroInRegion)
+         
+         .def("set", (void(ofxCvColorImage::*)(float)) &ofxCvColorImage::set)
+         .def("set", (void(ofxCvColorImage::*)(int,int,int)) &ofxCvColorImage::set)
+         .def("setFromGrayscalePlanarImages", (void(ofxCvColorImage::*)(ofxCvGrayscaleImage&,ofxCvGrayscaleImage&,ofxCvGrayscaleImage&)) &ofxCvColorImage::setFromGrayscalePlanarImages)
+         .def("convertToGrayscalePlanarImages", (void(ofxCvColorImage::*)(ofxCvGrayscaleImage&,ofxCvGrayscaleImage&,ofxCvGrayscaleImage&)) &ofxCvColorImage::convertToGrayscalePlanarImages)
+         .def("convertToGrayscalePlanarImages", (void(ofxCvColorImage::*)(ofxCvGrayscaleImage&,int)) &ofxCvColorImage::convertToGrayscalePlanarImages)
+         .def("contrastStretch", (void(ofxCvColorImage::*)(void)) &ofxCvColorImage::contrastStretch)
+         .def("convertToRange", (void(ofxCvColorImage::*)(float,float)) &ofxCvColorImage::convertToRange)
+         .def("resize", (void(ofxCvColorImage::*)(int,int)) &ofxCvColorImage::resize)
+         .def("scaleIntoMe", &scaleIntoMeColor)
+         .def("convertRgbToHsv", (void(ofxCvColorImage::*)(void)) &ofxCvColorImage::convertRgbToHsv)
+         .def("convertHsvToRgb", (void(ofxCvColorImage::*)(void)) &ofxCvColorImage::convertHsvToRgb)
+         .def_readonly("width", &ofxCvColorImage::width)
+		 .def_readonly("height", &ofxCvColorImage::height)
+         .def_readonly("bAllocated", &ofxCvColorImage::bAllocated),
+         
+         ///////////////////////////////
+         // ofxCvGrayscaleImage
+         
+         class_<ofxCvGrayscaleImage>("cvGrayscaleImage")
+         .def(constructor<>())
+         .def(constructor<const ofxCvGrayscaleImage&>())
+         
+         .def("allocate", (void(ofxCvGrayscaleImage::*)(int,int)) &ofxCvGrayscaleImage::allocate)
+         .def("clear", (void(ofxCvGrayscaleImage::*)(void)) &ofxCvGrayscaleImage::clear)
+         .def("getWidth", (float(ofxCvGrayscaleImage::*)(void)) &ofxCvGrayscaleImage::getWidth)
+         .def("getHeight", (float(ofxCvGrayscaleImage::*)(void)) &ofxCvGrayscaleImage::getHeight)
+         .def("setUseTexture", (void(ofxCvGrayscaleImage::*)(bool)) &ofxCvGrayscaleImage::setUseTexture)
+         .def("getTextureReference", (ofTexture&(ofxCvGrayscaleImage::*)(void)) &ofxCvGrayscaleImage::getTextureReference)
+         .def("flagImageChanged", (void(ofxCvGrayscaleImage::*)(void)) &ofxCvGrayscaleImage::flagImageChanged)
+         .def("setROI", (void(ofxCvGrayscaleImage::*)(int,int,int,int)) &ofxCvGrayscaleImage::setROI)
+         .def("setROI", (void(ofxCvGrayscaleImage::*)(const ofRectangle&)) &ofxCvGrayscaleImage::setROI)
+         .def("getROI", (ofRectangle(ofxCvGrayscaleImage::*)(void)) &ofxCvGrayscaleImage::getROI)
+         .def("resetROI", (void(ofxCvGrayscaleImage::*)(void)) &ofxCvGrayscaleImage::resetROI)
+         .def("getIntersectionROI", (ofRectangle(ofxCvGrayscaleImage::*)(const ofRectangle&,const ofRectangle&)) &ofxCvGrayscaleImage::getIntersectionROI)
+         .def("setFromPixels", (void(ofxCvGrayscaleImage::*)(const ofPixels&)) &ofxCvGrayscaleImage::setFromPixels)
+         .def("setRoiFromPixels", (void(ofxCvGrayscaleImage::*)(const ofPixels&)) &ofxCvGrayscaleImage::setRoiFromPixels)
+         .def("updateTexture", (void(ofxCvGrayscaleImage::*)(void)) &ofxCvGrayscaleImage::updateTexture)
+         .def("draw", (void(ofxCvGrayscaleImage::*)(float,float)) &ofxCvGrayscaleImage::draw)
+         .def("draw", (void(ofxCvGrayscaleImage::*)(float,float,float,float)) &ofxCvGrayscaleImage::draw)
+         .def("draw", (void(ofxCvGrayscaleImage::*)(const ofRectangle&)) &ofxCvGrayscaleImage::draw)
+         .def("drawROI", (void(ofxCvGrayscaleImage::*)(float,float)) &ofxCvGrayscaleImage::drawROI)
+         .def("drawROI", (void(ofxCvGrayscaleImage::*)(float,float,float,float)) &ofxCvGrayscaleImage::drawROI)
+         .def("setAnchorPercent", (void(ofxCvGrayscaleImage::*)(float,float)) &ofxCvGrayscaleImage::setAnchorPercent)
+         .def("setAnchorPoint", (void(ofxCvGrayscaleImage::*)(float,float)) &ofxCvGrayscaleImage::setAnchorPoint)
+         .def("resetAnchor", (void(ofxCvGrayscaleImage::*)(void)) &ofxCvGrayscaleImage::resetAnchor)
+         .def("erode", (void(ofxCvGrayscaleImage::*)(void)) &ofxCvGrayscaleImage::erode)
+         .def("dilate", (void(ofxCvGrayscaleImage::*)(void)) &ofxCvGrayscaleImage::dilate)
+         .def("blur", (void(ofxCvGrayscaleImage::*)(int)) &ofxCvGrayscaleImage::blur)
+         .def("blurGaussian", (void(ofxCvGrayscaleImage::*)(int)) &ofxCvGrayscaleImage::blurGaussian)
+         .def("invert", (void(ofxCvGrayscaleImage::*)(void)) &ofxCvGrayscaleImage::invert)
+         .def("mirror", (void(ofxCvGrayscaleImage::*)(bool,bool)) &ofxCvGrayscaleImage::mirror)
+         .def("translate", (void(ofxCvGrayscaleImage::*)(float,float)) &ofxCvGrayscaleImage::translate)
+         .def("rotate", (void(ofxCvGrayscaleImage::*)(float,float,float)) &ofxCvGrayscaleImage::rotate)
+         .def("scale", (void(ofxCvGrayscaleImage::*)(float,float)) &ofxCvGrayscaleImage::scale)
+         .def("transform", (void(ofxCvGrayscaleImage::*)(float,float,float,float,float,float,float)) &ofxCvGrayscaleImage::transform)
+         .def("undistort", (void(ofxCvGrayscaleImage::*)(float,float,float,float,float,float,float,float)) &ofxCvGrayscaleImage::undistort)
+         .def("warpPerspective", (void(ofxCvGrayscaleImage::*)(const ofPoint&,const ofPoint&,const ofPoint&,const ofPoint&)) &ofxCvGrayscaleImage::warpPerspective)
+         .def("warpIntoMe", (void(ofxCvGrayscaleImage::*)(ofxCvImage&,const ofPoint,const ofPoint)) &ofxCvGrayscaleImage::warpIntoMe)
+         .def("countNonZeroInRegion", (void(ofxCvGrayscaleImage::*)(int,int,int,int)) &ofxCvGrayscaleImage::countNonZeroInRegion)
+         
+         .def("set", (void(ofxCvGrayscaleImage::*)(float)) &ofxCvGrayscaleImage::set)
+         .def("setFromCvColorImage", (void(ofxCvGrayscaleImage::*)(ofxCvColorImage&)) &ofxCvGrayscaleImage::setFromCvColorImage)
+         .def("absDiff", (void(ofxCvGrayscaleImage::*)(ofxCvGrayscaleImage&)) &ofxCvGrayscaleImage::absDiff)
+         .def("absDiff", (void(ofxCvGrayscaleImage::*)(ofxCvGrayscaleImage&,ofxCvGrayscaleImage&)) &ofxCvGrayscaleImage::absDiff)
+         .def("contrastStretch", (void(ofxCvGrayscaleImage::*)(void)) &ofxCvGrayscaleImage::contrastStretch)
+         .def("convertToRange", (void(ofxCvGrayscaleImage::*)(float,float)) &ofxCvGrayscaleImage::convertToRange)
+         .def("threshold", (void(ofxCvGrayscaleImage::*)(int,bool)) &ofxCvGrayscaleImage::threshold)
+         .def("adaptiveThreshold", (void(ofxCvGrayscaleImage::*)(int,int,bool,bool)) &ofxCvGrayscaleImage::adaptiveThreshold)
+         .def("brightnessContrast", (void(ofxCvGrayscaleImage::*)(float,float)) &ofxCvGrayscaleImage::brightnessContrast)
+         .def("resize", (void(ofxCvGrayscaleImage::*)(int,int)) &ofxCvGrayscaleImage::resize)
+         .def("scaleIntoMe", &scaleIntoMeGray)
+         .def("blurHeavily", (void(ofxCvGrayscaleImage::*)(void)) &ofxCvGrayscaleImage::blurHeavily)
+         .def("erode_3x3", (void(ofxCvGrayscaleImage::*)(void)) &ofxCvGrayscaleImage::erode_3x3)
+         .def("dilate_3x3", (void(ofxCvGrayscaleImage::*)(void)) &ofxCvGrayscaleImage::dilate_3x3)
+         .def("setFromColorImage", (void(ofxCvGrayscaleImage::*)(ofxCvFloatImage&)) &ofxCvGrayscaleImage::setFromColorImage)
+         .def_readonly("width", &ofxCvGrayscaleImage::width)
+		 .def_readonly("height", &ofxCvGrayscaleImage::height)
+         .def_readonly("bAllocated", &ofxCvGrayscaleImage::bAllocated),
+         //////////////////////////////////////////////////////////////////////////////////////////////////
+         
+         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         // OFXARCTEXT --> extending ofTrueTypeFont
+         class_<ofxArcText>("arcText")
+         .def(constructor<>())
+         .def(constructor<bool>())
+         
+         .def("loadFont", &loadArcFont2)
+		 .def("loadFont", &loadArcFont4)
+         .def("stringWidth", (float(ofTrueTypeFont::*)(string)) &ofTrueTypeFont::stringWidth)
+		 .def("stringHeight", (float(ofTrueTypeFont::*)(string)) &ofTrueTypeFont::stringHeight)
+         .def("getStringBoundingBox", (ofRectangle(ofTrueTypeFont::*)(string,float,float)) &ofTrueTypeFont::getStringBoundingBox)
+         .def("getSize", (int(ofTrueTypeFont::*)(void)) &ofTrueTypeFont::getSize)
+		 .def("getLetterSpacing", (float(ofTrueTypeFont::*)(void)) &ofTrueTypeFont::getLetterSpacing)
+		 .def("setLetterSpacing", (void(ofTrueTypeFont::*)(float)) &ofTrueTypeFont::setLetterSpacing)
+		 .def("getSpaceSize", (float(ofTrueTypeFont::*)(void)) &ofTrueTypeFont::getSpaceSize)
+		 .def("setSpaceSize", (void(ofTrueTypeFont::*)(float)) &ofTrueTypeFont::setSpaceSize)
+		 .def("getNumCharacters", (int(ofTrueTypeFont::*)(void)) &ofTrueTypeFont::getNumCharacters)
+		 .def("getStringAsPoints", (ofTTFCharacter(ofTrueTypeFont::*)(string)) &ofTrueTypeFont::getStringAsPoints)
+         
+         .def("drawString", (void(ofxArcText::*)(string,float,float,float)) &ofxArcText::drawString)
+         .def("getCharacterWidth", (float(ofxArcText::*)(char)) &ofxArcText::getCharacterWidth),
+         //////////////////////////////////////////////////////////////////////////////////////////////////
+         
+         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
          // OFXBULLET ---------------------------------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>(UNSTABLE)
          class_<ofxBulletWorldRigid>("bulletWorldRigid")
          .def(constructor<>())
@@ -1824,18 +2175,311 @@ class ofGamuzaWrapper{
          .def("isInside", (bool(ofxBulletBox::*)(const ofVec3f&,float)) &ofxBulletBox::isInside),
          //////////////////////////////////////////////////////////////////////////////////////////////////
          
-         ///////////////////////////////
+         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         // OFXCHROMAKEY --> extending ofImage
+         class_<ofxChromaKey>("chromaKey")
+         .def(constructor<>())
+         .def("setPixels", (void(ofxChromaKey::*)(ofPixelsRef)) &ofxChromaKey::setPixels)
+         .def("setPixels", (void(ofxChromaKey::*)(unsigned char*,int,int)) &ofxChromaKey::setPixels)
+         .def("learnBgColor", (void(ofxChromaKey::*)(ofPixelsRef)) &ofxChromaKey::learnBgColor)
+         .def("setBgColor", (void(ofxChromaKey::*)(ofColor)) &ofxChromaKey::setBgColor)
+         .def("getBgColor", (ofColor(ofxChromaKey::*)(void)) &ofxChromaKey::getBgColor)
+         .def("setThreshold", (void(ofxChromaKey::*)(float)) &ofxChromaKey::setThreshold)
+         .def("drawBgColor", (void(ofxChromaKey::*)(int,int,int,int)) &ofxChromaKey::drawBgColor)
+         .def("draw", (void(ofxChromaKey::*)(int,int,int,int,bool)) &ofxChromaKey::draw)
+         .def("getThreshold", (float(ofxChromaKey::*)(void)) &ofxChromaKey::getThreshold),
+         //////////////////////////////////////////////////////////////////////////////////////////////////
+         
+         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         // OFXDITHER
+         class_<ofxDither>("dither")
+         .def(constructor<>())
+         .def("ordered", &ditherOrdered)
+         .def("floyd_steinberg", (void(ofxDither::*)(ofImage&,ofImage&)) &ofxDither::dither_floyd_steinberg)
+         .def("atkinson", (void(ofxDither::*)(ofImage&,ofImage&)) &ofxDither::dither_atkinson),
+         //////////////////////////////////////////////////////////////////////////////////////////////////
+         
+         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         // OFXDMX
+         class_<ofxDmx>("dmx")
+         .def(constructor<>())
+         .def("connect", (bool(ofxDmx::*)(int,unsigned int)) &ofxDmx::connect)
+         .def("connect", (bool(ofxDmx::*)(string,unsigned int)) &ofxDmx::connect)
+         .def("disconnect", (void(ofxDmx::*)(void)) &ofxDmx::disconnect)
+         .def("setLevel", (bool(ofxDmx::*)(unsigned int,unsigned char)) &ofxDmx::setLevel)
+         .def("clear", (void(ofxDmx::*)(void)) &ofxDmx::clear)
+         .def("getLevel", (unsigned char(ofxDmx::*)(unsigned int)) &ofxDmx::getLevel)
+         .def("update", (void(ofxDmx::*)(bool)) &ofxDmx::update)
+         .def("setChannels", (void(ofxDmx::*)(unsigned int)) &ofxDmx::setChannels)
+         .def("isConnected", (bool(ofxDmx::*)(void)) &ofxDmx::isConnected),
+         //////////////////////////////////////////////////////////////////////////////////////////////////
+         
+         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         // OFXFTGLFONT
+         class_<ofxFTGLFont>("FTGLFont")
+         .def(constructor<>())
+         .def("loadFont", &loadFont2FTGL)
+         .def("loadFont", &loadFont4FTGL)
+         .def("setSize", (void(ofxFTGLFont::*)(int)) &ofxFTGLFont::setSize)
+         .def("setLineHeight", (void(ofxFTGLFont::*)(float)) &ofxFTGLFont::setLineHeight)
+         .def("getStringBoundingBox", (ofRectangle(ofxFTGLFont::*)(string,float,float)) &ofxFTGLFont::getStringBoundingBox)
+         .def("drawString", (void(ofxFTGLFont::*)(string,float,float)) &ofxFTGLFont::drawString),
+         //////////////////////////////////////////////////////////////////////////////////////////////////
+         
+         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         // OFXFX
+         
+         class_<ofxBloom>("bloom")
+         .def(constructor<>())
+         .def("allocate", (void(ofxBloom::*)(int,int)) &ofxBloom::allocate)
+         .def("getTextureReference", (ofTexture&(ofxBloom::*)(void)) &ofxBloom::getTextureReference)
+         .def("beginFx", (void(ofxBloom::*)(void)) &ofxBloom::begin)
+         .def("endFx", (void(ofxBloom::*)(bool)) &ofxBloom::end)
+         .def("draw", (void(ofxBloom::*)(int,int)) &ofxBloom::draw),
+         
+         class_<ofxBlur>("blur")
+         .def(constructor<>())
+         .def("allocate", (void(ofxBlur::*)(int,int)) &ofxBlur::allocate)
+         .def("setPasses", (ofxBlur&(ofxBlur::*)(int)) &ofxBlur::setPasses)
+         .def("setRadius", (ofxBlur&(ofxBlur::*)(float)) &ofxBlur::setRadius)
+         .def("getTextureReference", (ofTexture&(ofxBlur::*)(void)) &ofxBlur::getTextureReference)
+         .def("beginFx", (void(ofxBlur::*)(void)) &ofxBlur::begin)
+         .def("endFx", (void(ofxBlur::*)(bool)) &ofxBlur::end)
+         .def("draw", (void(ofxBlur::*)(int,int)) &ofxBlur::draw),
+         
+         class_<ofxBlurFast>("blurFast")
+         .def(constructor<>())
+         .def("allocate", (void(ofxBlurFast::*)(int,int)) &ofxBlurFast::allocate)
+         .def("setPasses", (ofxBlurFast&(ofxBlurFast::*)(int)) &ofxBlurFast::setPasses)
+         .def("setFade", (ofxBlurFast&(ofxBlurFast::*)(float)) &ofxBlurFast::setFade)
+         .def("getTextureReference", (ofTexture&(ofxBlurFast::*)(void)) &ofxBlurFast::getTextureReference)
+         .def("beginFx", (void(ofxBlurFast::*)(void)) &ofxBlurFast::begin)
+         .def("endFx", (void(ofxBlurFast::*)(bool)) &ofxBlurFast::end)
+         .def("draw", (void(ofxBlurFast::*)(int,int)) &ofxBlurFast::draw),
+         
+         class_<ofxConway>("conway")
+         .def(constructor<>())
+         .def("allocate", (void(ofxConway::*)(int,int)) &ofxConway::allocate)
+         .def("getTextureReference", (ofTexture&(ofxConway::*)(void)) &ofxConway::getTextureReference)
+         .def("beginFx", (void(ofxConway::*)(void)) &ofxConway::begin)
+         .def("endFx", (void(ofxConway::*)(bool)) &ofxConway::end)
+         .def("update", (void(ofxConway::*)(void)) &ofxConway::update)
+         .def("draw", (void(ofxConway::*)(int,int)) &ofxConway::draw),
+         
+         class_<ofxFlocking>("flocking")
+         .def(constructor<>())
+         .def("allocate", (void(ofxFlocking::*)(int,int,int)) &ofxFlocking::allocate)
+         .def("setParticleSize", (ofxFlocking&(ofxFlocking::*)(float)) &ofxFlocking::setParticleSize)
+         .def("setTimpeStep", (ofxFlocking&(ofxFlocking::*)(float)) &ofxFlocking::setTimpeStep)
+         .def("getTextureReference", (ofTexture&(ofxFlocking::*)(void)) &ofxFlocking::getTextureReference)
+         .def("beginFx", (void(ofxFlocking::*)(void)) &ofxFlocking::begin)
+         .def("endFx", (void(ofxFlocking::*)(void)) &ofxFlocking::end)
+         .def("update", (void(ofxFlocking::*)(void)) &ofxFlocking::update)
+         .def("draw", (void(ofxFlocking::*)(int,int)) &ofxFlocking::draw),
+         
+         class_<ofxFluid>("fluid")
+         .def(constructor<>())
+         .def("allocate", (void(ofxFluid::*)(int,int,float)) &ofxFluid::allocate)
+         .def("setDensity", (ofxFluid&(ofxFluid::*)(ofTexture&)) &ofxFluid::setDensity)
+         .def("setVelocity", (ofxFluid&(ofxFluid::*)(ofTexture&)) &ofxFluid::setVelocity)
+         .def("setTemperature", (ofxFluid&(ofxFluid::*)(ofTexture&)) &ofxFluid::setTemperature)
+         .def("setGravity", (ofxFluid&(ofxFluid::*)(ofVec2f)) &ofxFluid::setGravity)
+         .def("setDensityDissipation", (ofxFluid&(ofxFluid::*)(float)) &ofxFluid::setDensityDissipation)
+         .def("setVelocityDissipation", (ofxFluid&(ofxFluid::*)(float)) &ofxFluid::setVelocityDissipation)
+         .def("setTemperatureDissipation", (ofxFluid&(ofxFluid::*)(float)) &ofxFluid::setTemperatureDissipation)
+         .def("addTemporalForce", &addTemporalForce)
+         .def("addConstantForce", &addConstantForce)
+         .def("beginFx", (void(ofxFluid::*)(void)) &ofxFluid::begin)
+         .def("endFx", (void(ofxFluid::*)(void)) &ofxFluid::end)
+         .def("update", (void(ofxFluid::*)(void)) &ofxFluid::update)
+         .def("draw", (void(ofxFluid::*)(int,int)) &ofxFluid::draw),
+         
+         class_<ofxGlow>("glow")
+         .def(constructor<>())
+         .def("allocate", (void(ofxGlow::*)(int,int)) &ofxGlow::allocate)
+         .def("setPasses", (ofxGlow&(ofxGlow::*)(int)) &ofxGlow::setPasses)
+         .def("setRadius", (ofxGlow&(ofxGlow::*)(float)) &ofxGlow::setRadius)
+         .def("getTextureReference", (ofTexture&(ofxGlow::*)(void)) &ofxGlow::getTextureReference)
+         .def("beginFx", (void(ofxGlow::*)(void)) &ofxGlow::begin)
+         .def("endFx", (void(ofxGlow::*)(bool)) &ofxGlow::end)
+         .def("draw", (void(ofxGlow::*)(int,int)) &ofxGlow::draw),
+         
+         class_<ofxGrayScott>("grayScott")
+         .def(constructor<>())
+         .def("allocate", (void(ofxGrayScott::*)(int,int)) &ofxGrayScott::allocate)
+         .def("setIterations", (ofxGrayScott&(ofxGrayScott::*)(int)) &ofxGrayScott::setIterations)
+         .def("setDiffU", (ofxGrayScott&(ofxGrayScott::*)(float)) &ofxGrayScott::setDiffU)
+         .def("setDiffV", (ofxGrayScott&(ofxGrayScott::*)(float)) &ofxGrayScott::setDiffV)
+         .def("setK", (ofxGrayScott&(ofxGrayScott::*)(float)) &ofxGrayScott::setK)
+         .def("setF", (ofxGrayScott&(ofxGrayScott::*)(float)) &ofxGrayScott::setF)
+         .def("getTextureReference", (ofTexture&(ofxGrayScott::*)(void)) &ofxGrayScott::getTextureReference)
+         .def("getDiffU", (float(ofxGrayScott::*)(void)) &ofxGrayScott::getDiffU)
+         .def("getDiffV", (float(ofxGrayScott::*)(void)) &ofxGrayScott::getDiffV)
+         .def("getK", (float(ofxGrayScott::*)(void)) &ofxGrayScott::getK)
+         .def("getF", (float(ofxGrayScott::*)(void)) &ofxGrayScott::getF)
+         .def("beginFx", (void(ofxGrayScott::*)(void)) &ofxGrayScott::begin)
+         .def("endFx", (void(ofxGrayScott::*)(bool)) &ofxGrayScott::end)
+         .def("update", (void(ofxGrayScott::*)(void)) &ofxGrayScott::update)
+         .def("draw", (void(ofxGrayScott::*)(int,int)) &ofxGrayScott::draw),
+         
+         class_<ofxMask>("mask")
+         .def(constructor<>())
+         .def("allocate", (void(ofxMask::*)(int,int)) &ofxMask::allocate)
+         .def("getTextureReference", (ofTexture&(ofxMask::*)(void)) &ofxMask::getTextureReference)
+         .def("beginMask", (void(ofxMask::*)(void)) &ofxMask::beginMask)
+         .def("endMask", (void(ofxMask::*)(void)) &ofxMask::endMask)
+         .def("beginFx", (void(ofxMask::*)(void)) &ofxMask::begin)
+         .def("endFx", (void(ofxMask::*)(bool)) &ofxMask::end)
+         .def("draw", (void(ofxMask::*)(int,int)) &ofxMask::draw),
+         
+         class_<ofxOldTv>("oldTv")
+         .def(constructor<>())
+         .def("allocate", (void(ofxOldTv::*)(int,int)) &ofxOldTv::allocate)
+         .def("setBrightness", (ofxOldTv&(ofxOldTv::*)(float)) &ofxOldTv::setBrightness)
+         .def("setRows", (ofxOldTv&(ofxOldTv::*)(float)) &ofxOldTv::setRows)
+         .def("getTextureReference", (ofTexture&(ofxOldTv::*)(void)) &ofxOldTv::getTextureReference)
+         .def("beginFx", (void(ofxOldTv::*)(void)) &ofxOldTv::begin)
+         .def("endFx", (void(ofxOldTv::*)(bool)) &ofxOldTv::end)
+         .def("draw", (void(ofxOldTv::*)(int,int)) &ofxOldTv::draw),
+         
+         class_<ofxWater>("water")
+         .def(constructor<>())
+         .def("allocate", (ofxWater&(ofxWater::*)(int,int)) &ofxWater::allocate)
+         .def("loadBackground", (ofxWater&(ofxWater::*)(string)) &ofxWater::loadBackground)
+         .def("linkBackground", (ofxWater&(ofxWater::*)(ofTexture*)) &ofxWater::linkBackground)
+         .def("setThreshold", (ofxWater&(ofxWater::*)(float)) &ofxWater::setThreshold)
+         .def("setDensity", (ofxWater&(ofxWater::*)(float)) &ofxWater::setDensity)
+         .def("setFade", (ofxWater&(ofxWater::*)(float)) &ofxWater::setFade)
+         .def("getTextureReference", (ofTexture&(ofxWater::*)(void)) &ofxWater::getTextureReference)
+         .def("beginFx", (void(ofxWater::*)(void)) &ofxWater::begin)
+         .def("endFx", (void(ofxWater::*)(bool)) &ofxWater::end)
+         .def("update", (void(ofxWater::*)(void)) &ofxWater::update)
+         .def("draw", (void(ofxWater::*)(int,int)) &ofxWater::draw),
+         //////////////////////////////////////////////////////////////////////////////////////////////////
+         
+         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
          // OFXGAUSSIAN
          def("gaussian", (float(*)(void)) &ofxGaussian),
          //////////////////////////////////////////////////////////////////////////////////////////////////
          
-         ///////////////////////////////
+         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         // OFXLOGICMACHINE
+         class_<ofxLogicMachine>("logicMachine")
+         .def(constructor<>())
+         .def("CreateTargetValues", (void(ofxLogicMachine::*)(void)) &ofxLogicMachine::CreateTargetValues)
+         .def("setupSimulation", (void(ofxLogicMachine::*)(void)) &ofxLogicMachine::setupSimulation)
+         .def("PerformSimulation", (void(ofxLogicMachine::*)(void)) &ofxLogicMachine::PerformSimulation)
+         .def("EvaluateSimulation", (void(ofxLogicMachine::*)(void)) &ofxLogicMachine::EvaluateSimulation)
+         .def("DrawSimulation", (void(ofxLogicMachine::*)(int,int,int,int)) &ofxLogicMachine::DrawSimulation)
+         .def("EvolvePopulation", (void(ofxLogicMachine::*)(void)) &ofxLogicMachine::EvolvePopulation)
+         .def_readwrite("mouseX", &ofxLogicMachine::mouseX)
+         .def_readwrite("mouseY", &ofxLogicMachine::mouseY)
+         .def_readonly("bestCode", &ofxLogicMachine::bestCode)
+         .def_readonly("bestFitness", &ofxLogicMachine::bestFitness),
+         //////////////////////////////////////////////////////////////////////////////////////////////////
+         
+         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
          // OFXMISSING
          def("getDateTimeAsString", (string(*)(string)) &getDateTimeAsString),
-         def("MD5", (string(*)(string)) &md5)
+         def("MD5", (string(*)(string)) &md5),
+         //////////////////////////////////////////////////////////////////////////////////////////////////
+         
+         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         // OFXSKYBOX
+         class_<ofxSkyBox>("skyBox")
+         .def(constructor<>())
+         .def("load", (void(ofxSkyBox::*)(void)) &ofxSkyBox::load)
+         .def("draw", (void(ofxSkyBox::*)(void)) &ofxSkyBox::draw),
+         //////////////////////////////////////////////////////////////////////////////////////////////////
+         
+         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         // OFXSUBTITLES
+         class_<ofxSubtitles>("subtitles")
+         .def(constructor<>())
+         .def("load", (void(ofxSubtitles::*)(const string&)) &ofxSubtitles::load)
+         .def("save", (void(ofxSubtitles::*)(const string&)) &ofxSubtitles::save)
+         .def("add", (void(ofxSubtitles::*)(float,string)) &ofxSubtitles::add)
+         .def("add", (void(ofxSubtitles::*)(float,float,string)) &ofxSubtitles::add)
+         .def("getHowMany", (int(ofxSubtitles::*)(float,float)) &ofxSubtitles::getHowMany)
+         .def("getFirstSubN", (int(ofxSubtitles::*)(float)) &ofxSubtitles::getFirstSubN)
+         .def("getLineAt", (string(ofxSubtitles::*)(float)) &ofxSubtitles::getLineAt)
+         .def("isStringAt", (bool(ofxSubtitles::*)(string,float)) &ofxSubtitles::isStringAt)
+         .def("replace", (void(ofxSubtitles::*)(string,string,float)) &ofxSubtitles::replace)
+         .def("loadfont", (void(ofxSubtitles::*)(const string&)) &ofxSubtitles::loadfont)
+         .def("setScreen", (void(ofxSubtitles::*)(int,int)) &ofxSubtitles::setScreen)
+         .def("setColor", (void(ofxSubtitles::*)(int,int,int)) &ofxSubtitles::setColor)
+         .def("setColor", (void(ofxSubtitles::*)(int,int,int,int)) &ofxSubtitles::setColor)
+         .def("draw", (void(ofxSubtitles::*)(float)) &ofxSubtitles::draw)
+         .def("draw", (void(ofxSubtitles::*)(int,int,float)) &ofxSubtitles::draw)
+         .def("draw", (void(ofxSubtitles::*)(int,int,int,int,float)) &ofxSubtitles::draw),
+         //////////////////////////////////////////////////////////////////////////////////////////////////
+         
+         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         // OFXTWITTERSTREAM
+         class_<ofxTwitter>("twitter")
+         .def(constructor<>())
+         .def("connect", (void(ofxTwitter::*)(string,string,string,string)) &ofxTwitter::connect)
+         .def("hasNewTweets", (bool(ofxTwitter::*)(void)) &ofxTwitter::hasNewTweets)
+         .def("getNextTweet", (ofxTweet(ofxTwitter::*)(void)) &ofxTwitter::getNextTweet),
+         
+         class_<ofxTweet>("tweet")
+         .def(constructor<>())
+         .def("getText", (string(ofxTweet::*)(void)) &ofxTweet::getText)
+         .def("getID", (string(ofxTweet::*)(void)) &ofxTweet::getID)
+         .def("getScreenName", (string(ofxTweet::*)(void)) &ofxTweet::getScreenName)
+         .def("getAvatar", (string(ofxTweet::*)(void)) &ofxTweet::getAvatar)
+         .def("getUserID", (string(ofxTweet::*)(void)) &ofxTweet::getUserID),
+         //////////////////////////////////////////////////////////////////////////////////////////////////
+         
+         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         // OFXVORONOIGL
+         class_<ofxVoronoiGL>("voronoiGL")
+         .def(constructor<>())
+         .def(constructor<float,float,float>())
+         .def("setup", (void(ofxVoronoiGL::*)(int,int,float)) &ofxVoronoiGL::setup)
+         .def("update", (void(ofxVoronoiGL::*)(void)) &ofxVoronoiGL::update)
+         .def("drawOnScreen", (void(ofxVoronoiGL::*)(int,int)) &ofxVoronoiGL::drawOnScreen)
+         .def("drawFBOOnScreen", (void(ofxVoronoiGL::*)(int,int)) &ofxVoronoiGL::drawFBOOnScreen)
+         .def("clear", (void(ofxVoronoiGL::*)(void)) &ofxVoronoiGL::clear)
+         .def("setPoint", (void(ofxVoronoiGL::*)(int,int)) &ofxVoronoiGL::setPoint)
+         .def("setPoint", (void(ofxVoronoiGL::*)(ofPoint&)) &ofxVoronoiGL::setPoint)
+         .def("setPolygon", (void(ofxVoronoiGL::*)(vector<ofPoint>&)) &ofxVoronoiGL::setPolygon)
+         .def_readwrite("alpha", &ofxVoronoiGL::alpha)
+         .def_readwrite("drawPoly", &ofxVoronoiGL::drawPoly)
+         .def_readwrite("perFeatureV", &ofxVoronoiGL::perFeatureV)
+         .def_readwrite("skeleton", &ofxVoronoiGL::skeleton)
+         .def_readwrite("drawCenters", &ofxVoronoiGL::drawCenters),
+         //////////////////////////////////////////////////////////////////////////////////////////////////
+         
+         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         // OFXWORDPALETTE
+         class_<WordWithSize>("WordWithSize")
+         .def(constructor<>())
+         .def_readwrite("word", &WordWithSize::word)
+         .def_readwrite("box", &WordWithSize::box),
+         
+         class_<ofxWordPalette>("wordPalette")
+         .def(constructor<>())
+         .def("setup", (void(ofxWordPalette::*)(int,int,string,int,float)) &ofxWordPalette::setup)
+         .def("setWords", (void(ofxWordPalette::*)(string)) &ofxWordPalette::setWords)
+         .def("bindPalette", (void(ofxWordPalette::*)(void)) &ofxWordPalette::bindPalette)
+         .def("drawWord", (void(ofxWordPalette::*)(string,ofVec2f,float)) &ofxWordPalette::drawWord)
+         .def("drawWordWS", (void(ofxWordPalette::*)(WordWithSize&,ofVec2f,float)) &ofxWordPalette::drawWord)
+         .def("unbindPalette", (void(ofxWordPalette::*)(void)) &ofxWordPalette::unbindPalette)
+         .def("drawTypePalette", (void(ofxWordPalette::*)(ofVec2f)) &ofxWordPalette::drawTypePalette)
+         .def("getBoundingTextureCoordsForWord", (void(ofxWordPalette::*)(string,ofVec2f[4])) &ofxWordPalette::getBoundingTextureCoordsForWord)
+         .def("getRandomWord", (WordWithSize&(ofxWordPalette::*)(void)) &ofxWordPalette::getRandomWord)
+         .def("getWordMatchingWidth", (WordWithSize&(ofxWordPalette::*)(float)) &ofxWordPalette::getWordMatchingWidth)
+         .def("getShortestWord", (WordWithSize&(ofxWordPalette::*)(void)) &ofxWordPalette::getShortestWord)
+         .def("getLongestWord", (WordWithSize&(ofxWordPalette::*)(void)) &ofxWordPalette::getLongestWord)
+         .def("getTextureReference", (ofTexture&(ofxWordPalette::*)(void)) &ofxWordPalette::getTextureReference)
+         .def("setUseTexture", (void(ofxWordPalette::*)(bool)) &ofxWordPalette::setUseTexture)
          //////////////////////////////////////////////////////////////////////////////////////////////////
          
         ];
+        
+        // addons CONSTANTS
+        
 		
 		//////////////////////////////////////////////////////////////
 		///////////////////////////////
@@ -1848,6 +2492,7 @@ class ofGamuzaWrapper{
          def("key", &getKey), // ga.key()
          def("mouseX", &getMouseX),  // ga.mouseX()
 		 def("mouseY", &getMouseY),  // ga.mouseY()
+         def("system", &system),
          
          ///////////////////////////////
 		 // string section
@@ -1858,6 +2503,7 @@ class ofGamuzaWrapper{
 		 def("background", (void(*)(float,float)) &gaBackground),
 		 def("background", (void(*)(float,float,float,float)) &gaBackground),
 		 def("cameraTexture", (ofTexture(*)(int)) &gaGetWebcamTexture),
+         def("cameraPixelsRef", (ofPixelsRef(*)(int)) &gaGetWebcamPixelsRef),
          
          ///////////////////////////////
 		 // timeline section
@@ -1899,7 +2545,20 @@ class ofGamuzaWrapper{
 		 def("sampleLooping", (void(*)(int,bool)) &gaSetSampleLooping),
 		 def("samplePaused", (void(*)(int,bool)) &gaSetSamplePaused),
          def("sampleSpeed", (void(*)(int,float)) &gaSetSampleSpeed),
+         def("drawHead", (void(*)(int,int,int,int,int)) &gaDrawSampleHead),
          def("drawSample", (void(*)(int,int,int,int,int)) &gaDrawSampleWave),
+         
+         ///////////////////////////////
+		 // audio input recording section
+         def("startRec", (void(*)(int)) &gaStartInputRecording),
+         def("stopRec", (void(*)(void)) &gaStopInputRecording),
+         def("recSamplePlay", (void(*)(int)) &gaInputRecPlay),
+         def("recSampleStop", (void(*)(int)) &gaInputRecStop),
+		 def("recSampleVolume", (void(*)(int,float)) &gaSetInputRecVolume),
+		 def("recSampleLooping", (void(*)(int,bool)) &gaSetInputRecLooping),
+		 def("recSamplePaused", (void(*)(int,bool)) &gaSetInputRecPaused),
+         def("recSampleSpeed", (void(*)(int,float)) &gaSetInputRecSpeed),
+         def("drawRecHead", (void(*)(int,int,int,int,int)) &gaDrawInputRecHead),
          
          ///////////////////////////////
 		 // midi section
@@ -1966,6 +2625,7 @@ class ofGamuzaWrapper{
 		 
 		 ///////////////////////////////
 		 // arduino
+         def("serialDevice", (string(*)(void)) &gaGetSerialDevName),
 		 def("analogRead", (float(*)(int)) &gaGetAArduinoPin),
 		 def("digitalRead", (int(*)(int)) &gaGetDArduinoPin),
 		 def("digitalWrite", (void(*)(int,int)) &gaSetDArduinoPin)
@@ -2227,11 +2887,12 @@ class ofGamuzaWrapper{
 		/// opengl core api wrapper
 		module(lua, "gl")
 		[
-			 
+			 def("activeTexture", (void(*)(GLenum)) &glActiveTexture),
 			 def("enable", &glEnable),
 			 def("disable", &glDisable),
 			 def("depthMask",&glDepthMask),
 			 def("beginShape", &glBegin),
+             def("vertex2f", &glVertex2f),
 			 def("vertex3f", &glVertex3f),
 			 def("endShape", &glEnd),
 			 def("clear", &glClear),
@@ -2243,7 +2904,9 @@ class ofGamuzaWrapper{
 			 def("matrixMode", &glMatrixMode),
 			 def("loadIdentity", &glLoadIdentity),
 			 def("viewport", &glViewport),
-			 def("translate", &glTranslatef)
+			 def("translate", &glTranslatef),
+             def("multiTexCoord2d", (void(*)(GLenum,GLdouble,GLdouble)) &glMultiTexCoord2d)
+             
 		];
 		
 		lua.doString("GL_POINTS = "+ofToString(GL_POINTS));
@@ -2282,10 +2945,47 @@ class ofGamuzaWrapper{
 	static void loadFont4(ofTrueTypeFont* font, string filename, int fontsize, bool _bAntiAliased, bool _bFullCharacterSet) {
 		font->loadFont(filename, fontsize, _bAntiAliased, _bFullCharacterSet);
 	}
+    static void loadFont2FTGL(ofxFTGLFont* font, string filename, int fontsize) {
+		font->loadFont(filename, fontsize);
+	}
+    static void loadFont4FTGL(ofxFTGLFont* font, string filename, int fontsize, bool _bAntiAliased, bool _bFullCharacterSet) {
+		font->loadFont(filename, fontsize, _bAntiAliased, _bFullCharacterSet);
+	}
+    
+    /// ofxArcText
+	static void loadArcFont2(ofxArcText* font, string filename, int fontsize) {
+		font->loadFont(filename, fontsize);
+	}
+	static void loadArcFont4(ofxArcText* font, string filename, int fontsize, bool _bAntiAliased, bool _bFullCharacterSet) {
+		font->loadFont(filename, fontsize, _bAntiAliased, _bFullCharacterSet);
+	}
+    
+    /// ofxDither
+    static void ditherOrdered(ofxDither* d, ofImage& imageIn, ofImage& imageOut) {
+        d->dither_ordered(imageIn,imageOut);
+    }
     
     /// ofFile
     static void openFile(ofFile* file,string path){
         file->open(path);
+    }
+    
+    /// ofxFx --> ofxFluid
+    static void addTemporalForce(ofxFluid* fluid, ofVec2f _pos, ofVec2f _dir, ofColor _col, float _rad){
+        fluid->addTemporalForce(_pos,_dir,_col,_rad);
+    }
+    
+    static void addConstantForce(ofxFluid* fluid, ofVec2f _pos, ofVec2f _dir, ofColor _col, float _rad){
+        fluid->addConstantForce(_pos,_dir,_col,_rad);
+    }
+    
+    /// ofxOpenCv
+    static void scaleIntoMeGray(ofxCvGrayscaleImage* src, ofxCvImage& img){
+        src->scaleIntoMe(img);
+    }
+    
+    static void scaleIntoMeColor(ofxCvColorImage* src, ofxCvImage& img){
+        src->scaleIntoMe(img);
     }
 	
 	/// global mouse vars

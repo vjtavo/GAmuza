@@ -17,6 +17,7 @@ class audioSample{
 		~audioSample();
 		
 		void	setup(string _file, int _nChannels, float _sampleRate);
+        void    setup(vector<float> _buf, int recSize, int _nChannels);
         void    play();
         void    stop();
     
@@ -33,6 +34,7 @@ class audioSample{
 		void	addToSoundBuffer(float * _buffer, int _bufferSize);
     
         void    drawWaveform(int x, int y, int w, int h);
+        void    drawHead(int x, int y, int w, int h);
 	
         ofxAudioSample  sample;
         gaAmplifier		amp;

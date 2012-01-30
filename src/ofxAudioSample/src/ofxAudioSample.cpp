@@ -10,6 +10,7 @@ ofxAudioSample::ofxAudioSample(){
     isLooping   = false;
     isPlaying   = false;
     isPaused    = false;
+    
 }
 
 //--------------------------------------------------------------
@@ -69,6 +70,15 @@ void ofxAudioSample::load(string tmpPath, float _hSampleRate) {
 }
 
 //--------------------------------------------------------------
+void ofxAudioSample::load(vector<float> _buf, int recSize) {
+    
+    samples = _buf;
+    
+    position = 0;
+    
+}
+
+//--------------------------------------------------------------
 float ofxAudioSample::update(){
     
     if(!isPlaying){
@@ -81,9 +91,9 @@ float ofxAudioSample::update(){
         position += speed;
         
         // check if reached EOF
-        if(position > samples.size()) {
+        if(position > samples.size()-1) {
             if(isLooping) {
-                position=0.0;
+                position=0;
             }else{
                 isPlaying = false;
                 return 0;
@@ -93,7 +103,7 @@ float ofxAudioSample::update(){
         //check if position less than zero (reverse)
         if (position < 0) {
             if(isLooping) {
-                position = samples.size();
+                position = samples.size()-1;
             }else{
                 isPlaying = false;
                 return 0;
@@ -208,4 +218,18 @@ void ofxAudioSample::drawWaveForm(int _x, int _y, int _w, int _h){
     
 	ofPopMatrix();
     
+}
+
+//--------------------------------------------------------------
+void ofxAudioSample::drawHead(int _x, int _y, int _w, int _h){
+    
+    float waveFormDisplayScale = samples.size()/(_w+1.0);
+    
+    ofPushMatrix();
+    ofTranslate(_x, _y, 0);
+    
+    ofSetColor(216,64,64);
+    ofLine(position/waveFormDisplayScale, -(float)_h*0.0, position/waveFormDisplayScale, (float)_h*2.0);
+    
+	ofPopMatrix();
 }

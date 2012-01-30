@@ -214,6 +214,19 @@ void GLEditor::SetCurrentLine(int line)
 	m_Position=LineStart(m_Position);
 }
 
+int GLEditor::getNumLines()
+{
+	
+	int count=0;
+	for (unsigned int i=0; i<m_Text.size(); i++)
+	{
+		if (m_Text[i]=='\n') count++;
+	}
+    
+    return count;
+	
+}
+
 void GLEditor::SetText(const wstring& s)
 {
 	if (m_Text!=L"")

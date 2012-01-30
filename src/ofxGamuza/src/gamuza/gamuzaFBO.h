@@ -105,10 +105,8 @@ void gamuzaMain::setupFBO(){
 		shaderColorCorrection.load(GAMUZA_SHADER);
 		
 		shaderColorCorrection.begin();
-			sprintf(shaderName,"tex_w");
-			shaderColorCorrection.setUniform1f(shaderName,projectionScreenW);
-			sprintf(shaderName,"tex_h");
-			shaderColorCorrection.setUniform1f(shaderName,projectionScreenH);
+			shaderColorCorrection.setUniform1f("tex_w",projectionScreenW);
+			shaderColorCorrection.setUniform1f("tex_h",projectionScreenH);
 		shaderColorCorrection.end();
 	}
 	///////////////////////////
@@ -116,6 +114,7 @@ void gamuzaMain::setupFBO(){
 	///////////////////////////
 	// LIVE CODING CONSOLE	setup
 	liveCoding.setup();
+    scriptScroll.setup(224,previewY,20,previewH);
 	
 	// adding lua language to live coding
 	ofAddListener(liveCoding.doCompileEvent, this, &gamuzaMain::renderScript);
@@ -269,6 +268,11 @@ void gamuzaMain::drawFBO(){
                         ofPopView();
                     }
                 }
+            }
+            if(gui.getSelectedPanel() == 0){
+                // script scroll
+                glTranslatef(-guiPosX, -guiPosY, 0.0f);
+                scriptScroll.draw();
             }
 		}
 		

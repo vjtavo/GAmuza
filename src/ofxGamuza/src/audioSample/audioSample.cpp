@@ -23,6 +23,16 @@ void audioSample::setup(string _file, int _nChannels, float _sampleRate){
 }
 
 //--------------------------------------------------------------
+void audioSample::setup(vector<float> _buf, int recSize, int _nChannels){
+	
+    sample.load(_buf,recSize);
+    
+    outputChannels      = _nChannels;
+    amp.setup(outputChannels);
+	
+}
+
+//--------------------------------------------------------------
 void audioSample::play(){
     sample.play();
 }
@@ -76,6 +86,11 @@ bool audioSample::getIsPlaying(){
 //--------------------------------------------------------------
 void audioSample::drawWaveform(int x, int y, int w, int h){
     sample.drawWaveForm(x,y,w,h);
+}
+
+//--------------------------------------------------------------
+void audioSample::drawHead(int x, int y, int w, int h){
+    sample.drawHead(x,y,w,h);
 }
 
 //--------------------------------------------------------------
