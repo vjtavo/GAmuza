@@ -81,7 +81,7 @@ bool guiValue::hasValueChanged(unsigned int which){
 
 //------------------------------------------------
 void guiValue::clearChangedFlag(){
-	for(int i = 0; i < bChanged.size(); i++){
+	for(unsigned int i = 0; i < bChanged.size(); i++){
 		bChanged[i] = false;
 	}
 }

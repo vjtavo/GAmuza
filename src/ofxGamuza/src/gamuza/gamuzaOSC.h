@@ -6,7 +6,7 @@
 
 /*
  OSC buffer size = 4096 = 4k
- 
+
  */
 //////////////////////////////////////////////
 // OSC vars
@@ -18,23 +18,23 @@ ofxOscBundle			osc_bundle;
 
 //--------------------------------------------------------------
 void gamuzaMain::setupOSC(){
-	
+
 	sender.setup(host_number.c_str(),atoi(host_port.c_str()));
-	
+
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::updateOSC(){
-	
+
 	char osc_name[256];
-	
+
 	////////////////////////////////////////////
 	// send openni sensorkinect data
 	if(openniActivated){
 		if(sensorKinect.useKinect){
 			// sending blob detection data
 			if(sensorKinect.sendOsc_BD && sensorKinect.computeContourFinder){
-				for (unsigned int e = 0; e < sensorKinect.runningBlobs; e++){
+				for (int e = 0; e < sensorKinect.runningBlobs; e++){
 					if(sensorKinect.blobsOrder[e] < MAX_USERS_HARDLIMIT){
 						osc_message.clear();
 						sprintf(osc_name,"/oscBD_OPENNI/Blob%i/ORDER",sensorKinect.blobsOrder[e]);
@@ -71,10 +71,10 @@ void gamuzaMain::updateOSC(){
 					}
 				}
 			}
-			
+
 			// sending contour finder data
 			if(sensorKinect.sendOsc_CF && sensorKinect.computeContourFinder){
-				for (unsigned int e = 0; e < sensorKinect.runningBlobs; e++){
+				for (int e = 0; e < sensorKinect.runningBlobs; e++){
 					if(sensorKinect.cfDetail == 1 && sensorKinect.blobsOrder[e] < MAX_USERS_HARDLIMIT){
 						osc_message.clear();
 						sprintf(osc_name,"/oscCF_OPENNI/Blob%i/NumPoints",sensorKinect.blobsOrder[e]);
@@ -118,10 +118,10 @@ void gamuzaMain::updateOSC(){
 					}
 				}
 			}
-			
+
 			// sending contour geometry data
 			if(sensorKinect.sendOsc_CG && sensorKinect.computeContourFinder && sensorKinect.computeContourGeometry){
-				for (unsigned int e = 0; e < sensorKinect.runningBlobs; e++){
+				for (int e = 0; e < sensorKinect.runningBlobs; e++){
 					if(sensorKinect.blobsOrder[e] < MAX_USERS_HARDLIMIT){
 						osc_message.clear();
 						sprintf(osc_name,"/oscCG_OPENNI/Blob%i/NumLines",sensorKinect.blobsOrder[e]);
@@ -155,7 +155,7 @@ void gamuzaMain::updateOSC(){
 					}
 				}
 			}
-			
+
 			// sending optical flow data
 			if(sensorKinect.sendOsc_OF && sensorKinect.computeOpticalFlow){
 				osc_message.clear();
@@ -166,8 +166,8 @@ void gamuzaMain::updateOSC(){
 				osc_bundle.addMessage(osc_message);
 				sendBuffer();
 				cleanBuffer();
-				for(unsigned int o=0;o<sensorKinect.opticalFlowYGrid;o++){ // Y
-					for(unsigned int oo=0;oo<sensorKinect.opticalFlowXGrid;oo++){ // X
+				for(int o=0;o<sensorKinect.opticalFlowYGrid;o++){ // Y
+					for(int oo=0;oo<sensorKinect.opticalFlowXGrid;oo++){ // X
 						osc_message.clear();
 						sprintf(osc_name,"/oscOF_OPENNI/PixelVel_X%i_Y%i",oo,o);
 						osc_message.setAddress(osc_name);
@@ -179,7 +179,7 @@ void gamuzaMain::updateOSC(){
 					}
 				}
 			}
-			
+
 			// sending trigger areas data
 			if(sensorKinect.sendOsc_TA && sensorKinect.computeContourFinder && sensorKinect.computeTriggerAreas){
 				osc_message.clear();
@@ -192,10 +192,10 @@ void gamuzaMain::updateOSC(){
 				sendBuffer();
 				cleanBuffer();
 			}
-			
+
 			// sending sensor kinect hands tracking data
 			if(sensorKinect.sendOsc_HT && sensorKinect.isTrackingHands){
-				for(unsigned int i=0;i<sensorKinect.maxHands;i++){
+				for(int i=0;i<sensorKinect.maxHands;i++){
 					osc_message.clear();
 					sprintf(osc_name,"/oscHT_OPENNI/Hand%i_XYZ",i);
 					osc_message.setAddress(osc_name);
@@ -207,7 +207,7 @@ void gamuzaMain::updateOSC(){
 					cleanBuffer();
 				}
 			}
-			
+
 			// sending sensor hardware data
 			if(sensorKinect.sendOsc_HW){
 				osc_message.clear();
@@ -227,15 +227,15 @@ void gamuzaMain::updateOSC(){
 				sendBuffer();
 				cleanBuffer();
 			}
-			
+
 		}
 	}
 	////////////////////////////////////////////
-	
+
 	////////////////////////////////////////////
 	// send webcam analysis data
 	if(trackingActivated){
-		for(unsigned int i=0;i<numCamInputs;i++){
+		for(int i=0;i<numCamInputs;i++){
 			if(inputCam[i].captureVideo){
 				// sending motion detection data
 				if(inputCam[i].sendOsc_MD){
@@ -256,12 +256,12 @@ void gamuzaMain::updateOSC(){
 					osc_bundle.addMessage(osc_message);
 					sendBuffer();
 					cleanBuffer();
-					
+
 				}
-				
+
 				// sending blob detection data
 				if(inputCam[i].sendOsc_BD && inputCam[i].computeContourFinder){
-					for (unsigned int e = 0; e < inputCam[i].runningBlobs; e++){
+					for (int e = 0; e < inputCam[i].runningBlobs; e++){
 						if(inputCam[i].blobsOrder[e] < MAX_USERS_HARDLIMIT){
 							osc_message.clear();
 							sprintf(osc_name,"/oscBD_DEV%i/Blob%i/ORDER",i,inputCam[i].blobsOrder[e]);
@@ -297,12 +297,12 @@ void gamuzaMain::updateOSC(){
 							cleanBuffer();
 						}
 					}
-					
+
 				}
-				
+
 				// sending contour finder data
 				if(inputCam[i].sendOsc_CF && inputCam[i].computeContourFinder){
-					for (unsigned int e = 0; e < inputCam[i].runningBlobs; e++){
+					for (int e = 0; e < inputCam[i].runningBlobs; e++){
 						if(inputCam[i].cfDetail == 1 && inputCam[i].blobsOrder[e] < MAX_USERS_HARDLIMIT){
 							osc_message.clear();
 							sprintf(osc_name,"/oscCF_DEV%i/Blob%i/NumPoints",i,inputCam[i].blobsOrder[e]);
@@ -346,10 +346,10 @@ void gamuzaMain::updateOSC(){
 						}
 					}
 				}
-				
+
 				// sending contour geometry data
 				if(inputCam[i].sendOsc_CG && inputCam[i].computeContourFinder && inputCam[i].computeContourGeometry){
-					for (unsigned int e = 0; e < inputCam[i].runningBlobs; e++){
+					for (int e = 0; e < inputCam[i].runningBlobs; e++){
 						if(inputCam[i].blobsOrder[e] < MAX_USERS_HARDLIMIT){
 							osc_message.clear();
 							sprintf(osc_name,"/oscCG_DEV%i/Blob%i/NumLines",i,inputCam[i].blobsOrder[e]);
@@ -383,11 +383,11 @@ void gamuzaMain::updateOSC(){
 						}
 					}
 				}
-				
+
 				// sending optical flow data
 				if(inputCam[i].sendOsc_OF && inputCam[i].computeOpticalFlow){
-					for(unsigned int o=0;o<inputCam[i].opticalFlowYGrid;o++){ // Y
-                        for(unsigned int oo=0;oo<inputCam[i].opticalFlowXGrid;oo++){ // X
+					for(int o=0;o<inputCam[i].opticalFlowYGrid;o++){ // Y
+                        for(int oo=0;oo<inputCam[i].opticalFlowXGrid;oo++){ // X
 							osc_message.clear();
 							sprintf(osc_name,"/oscOF_DEV%i/PixelVel_X%i_Y%i",i,oo,o);
 							osc_message.setAddress(osc_name);
@@ -399,7 +399,7 @@ void gamuzaMain::updateOSC(){
 						}
 					}
 				}
-				
+
 				// sending haar finder data
 				if(inputCam[i].sendOsc_HF && inputCam[i].computeHaarFinder){
 					osc_message.clear();
@@ -407,7 +407,7 @@ void gamuzaMain::updateOSC(){
 					osc_message.setAddress(osc_name);
 					osc_message.addFloatArg(inputCam[i].numFace);
 					osc_bundle.addMessage(osc_message);
-					for(unsigned int f = 0; f < inputCam[i].numFace; f++){
+					for(int f = 0; f < inputCam[i].numFace; f++){
 						osc_message.clear();
 						sprintf(osc_name,"/oscHF_DEV%i/Face%i",i,f);
 						osc_message.setAddress(osc_name);
@@ -420,7 +420,7 @@ void gamuzaMain::updateOSC(){
 						cleanBuffer();
 					}
 				}
-				
+
 				// sending trigger areas data
 				if(inputCam[i].sendOsc_TA && inputCam[i].computeContourFinder && inputCam[i].computeTriggerAreas){
 					osc_message.clear();
@@ -437,11 +437,11 @@ void gamuzaMain::updateOSC(){
 		}
 	}
 	////////////////////////////////////////////
-	
+
 	////////////////////////////////////////////
 	// send audio input analysis data
 	if(audioActivated){
-		for(unsigned int i=0;i<audioInputChannels;i++){
+		for(int i=0;i<audioInputChannels;i++){
 			if(inputAudioCH[i].captureAudio){
 				// send channel volume detection
 				if(inputAudioCH[i].sendOsc_VD){
@@ -479,7 +479,7 @@ void gamuzaMain::updateOSC(){
 		}
 	}
 	////////////////////////////////////////////
-	
+
 	////////////////////////////////////////////
 	// send arduino data
 	if(arduinoActivated){
@@ -511,29 +511,29 @@ void gamuzaMain::updateOSC(){
 		}
 	}
 	////////////////////////////////////////////
-	
-	
+
+
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::sendBuffer(){
-	
+
 	////////////////////////////////////////////
 	// send OSC data bundle
 	sender.sendBundle(osc_bundle);
 	////////////////////////////////////////////
-	
+
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::cleanBuffer(){
-	
+
 	////////////////////////////////////////////
 	// clean OSC buffer
 	osc_bundle.clear();
 	osc_message.clear();
 	////////////////////////////////////////////
-	
+
 }
 
 #endif

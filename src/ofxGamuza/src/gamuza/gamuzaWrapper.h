@@ -40,40 +40,49 @@ class ofGamuzaWrapper{
         
         //////////////////////////////////////////////////////////////
 		///////////////////////////////
-		/// Utils from c++ api wrapper [vector, map, hashMap, ...]
+		/// Utils from c++ api wrapper [pointers, vector, map, hashMap, ...]
 		///
-		module(lua, "cpp")
+		module(lua, "c")
 		[
+         
+         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		 /// \section Pointers
+         
+         ///////////////////////////////////////////////////////////////////////////////////
+		 /// \section char*
+         
+         class_<intP>("intP")
+         .def(constructor<>())
+         .def(constructor<int>())
+         .def("set",(void(intP::*)(int))&intP::set)
+         .def_readwrite("p", &intP::p),
+         
+         class_<uintP>("uintP")
+         .def(constructor<>())
+         .def(constructor<int>())
+         .def("set",(void(uintP::*)(int))&uintP::set)
+         .def_readwrite("p", &uintP::p),
+         
+         class_<floatP>("floatP")
+         .def(constructor<>())
+         .def(constructor<int>())
+         .def("set",(void(floatP::*)(int))&floatP::set)
+         .def_readwrite("p", &floatP::p),
+         
+         class_<charP>("charP")
+         .def(constructor<>())
+         .def(constructor<int>())
+         .def("set",(void(charP::*)(int))&charP::set)
+         .def_readwrite("p", &charP::p),
+         
+         class_<ucharP>("ucharP")
+         .def(constructor<>())
+         .def(constructor<int>())
+         .def("set",(void(ucharP::*)(int))&ucharP::set)
+         .def_readwrite("p", &ucharP::p),
         
          ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		 /// \section vector
-         
-         ///////////////////////////////////////////////////////////////////////////////////
-		 /// \section std::vector<ofVec2f>
-         
-         /*class_<std::vector<ofVec2f> >("vector2f")
-         .def(constructor<>())
-         .def("assign", &std::vector<ofVec2f>::assign)
-         .def("at", &std::vector<ofVec2f>::at)
-         .def("back", &std::vector<ofVec2f>::back)
-         .def("begin", &std::vector<ofVec2f>::begin)
-         .def("capacity", &std::vector<ofVec2f>::capacity)
-         .def("clear", &std::vector<ofVec2f>::clear)
-         .def("empty", &std::vector<ofVec2f>::empty)
-         .def("end", &std::vector<ofVec2f>::end)
-         .def("erase", &std::vector<ofVec2f>::erase)
-         .def("front", &std::vector<ofVec2f>::front)
-         .def("get_allocator", &std::vector<ofVec2f>::get_allocator)
-         .def("insert", &std::vector<ofVec2f>::insert)
-         .def("max_size", &std::vector<ofVec2f>::max_size)
-         .def("pop_back", &std::vector<ofVec2f>::pop_back)
-         .def("push_back", &std::vector<ofVec2f>::push_back)
-         .def("rbegin", &std::vector<ofVec2f>::rbegin)
-         .def("rend", &std::vector<ofVec2f>::rend)
-         .def("reserve", &std::vector<ofVec2f>::reserve)
-         .def("resize", &std::vector<ofVec2f>::resize)
-         .def("size", &std::vector<ofVec2f>::size)
-         .def("swap", &std::vector<ofVec2f>::swap),*/
          
          ///////////////////////////////////////////////////////////////////////////////////
 		 /// \section std::vector<int>
@@ -81,7 +90,27 @@ class ofGamuzaWrapper{
          class_<std::vector<int> >("vectorI")
          .def(constructor<>())
          .def("assign",(void(std::vector<int>::*)(size_t,const int&))&std::vector<int>::assign)
+         //.def("at", &std::vector<int>::at)
          .def("at",(int&(std::vector<int>::*)(size_t))&std::vector<int>::at)
+         .def("back",(int&(std::vector<int>::*)(void))&std::vector<int>::back)
+         //.def("begin",(int&(std::vector<int>::*)(void))&std::vector<int>::begin)
+         .def("capacity",(size_t(std::vector<int>::*)(void))&std::vector<int>::capacity)
+         .def("clear",(void(std::vector<int>::*)(void))&std::vector<int>::clear)
+         .def("empty",(bool(std::vector<int>::*)(void))&std::vector<int>::empty)
+         //.def("end",(int&(std::vector<int>::*)(void))&std::vector<int>::end)
+         //.def("erase",(int&(std::vector<int>::*)(int&))&std::vector<int>::erase)
+         //.def("erase",(int&(std::vector<int>::*)(int&,int&))&std::vector<int>::erase)
+         .def("front",(int&(std::vector<int>::*)(void))&std::vector<int>::front)
+         .def("get_allocator",(int&(std::vector<int>::*)(void))&std::vector<int>::get_allocator)
+         //.def("insert",(int&(std::vector<int>::*)(int&,int&))&std::vector<int>::insert)
+         .def("max_size", (unsigned int(std::vector<int>::*)(void))&std::vector<int>::max_size)
+         .def("pop_back", (void(std::vector<int>::*)(void))&std::vector<int>::pop_back)
+         .def("push_back", (void(std::vector<int>::*)(const int&))&std::vector<int>::push_back)
+         //.def("rbegin", &std::vector<int>::rbegin)
+         //.def("rend", &std::vector<int>::rend)
+         //.def("reserve", (void(std::vector<int>::*)(unsigned int))&std::vector<int>::reserve)
+         //.def("resize", &std::vector<int>::resize)
+         .def("size", (unsigned int(std::vector<int>::*)(void))&std::vector<int>::size)
          .def("swap",(void(std::vector<int>::*)(std::vector<int>&))&std::vector<int>::swap),
          
          ///////////////////////////////////////////////////////////////////////////////////
@@ -89,22 +118,312 @@ class ofGamuzaWrapper{
          
          class_<std::vector<float> >("vectorF")
          .def(constructor<>())
-         .def("at",(float&(std::vector<float>::*)(size_t))&std::vector<float>::at),
+         .def("assign",(void(std::vector<float>::*)(size_t,const float&))&std::vector<float>::assign)
+         //.def("at", &std::vector<float>::at)
+         .def("at",(float&(std::vector<float>::*)(size_t))&std::vector<float>::at)
+         .def("back",(float&(std::vector<float>::*)(void))&std::vector<float>::back)
+         //.def("begin",(int&(std::vector<float>::*)(void))&std::vector<float>::begin)
+         .def("capacity",(size_t(std::vector<float>::*)(void))&std::vector<float>::capacity)
+         .def("clear",(void(std::vector<float>::*)(void))&std::vector<float>::clear)
+         .def("empty",(bool(std::vector<float>::*)(void))&std::vector<float>::empty)
+         //.def("end",(int&(std::vector<float>::*)(void))&std::vector<float>::end)
+         //.def("erase",(int&(std::vector<float>::*)(int&))&std::vector<float>::erase)
+         //.def("erase",(int&(std::vector<float>::*)(int&,int&))&std::vector<float>::erase)
+         .def("front",(float&(std::vector<float>::*)(void))&std::vector<float>::front)
+         .def("get_allocator",(int&(std::vector<float>::*)(void))&std::vector<float>::get_allocator)
+         //.def("insert",(int&(std::vector<float>::*)(int&,int&))&std::vector<float>::insert)
+         .def("max_size", (unsigned int(std::vector<float>::*)(void))&std::vector<float>::max_size)
+         .def("pop_back", (void(std::vector<float>::*)(void))&std::vector<float>::pop_back)
+         .def("push_back", (void(std::vector<float>::*)(const float&))&std::vector<float>::push_back)
+         //.def("rbegin", &std::vector<int>::rbegin)
+         //.def("rend", &std::vector<int>::rend)
+         //.def("reserve", (void(std::vector<float>::*)(unsigned int))&std::vector<float>::reserve)
+         //.def("resize", &std::vector<float>::resize)
+         .def("size", (unsigned int(std::vector<float>::*)(void))&std::vector<float>::size)
+         .def("swap",(void(std::vector<float>::*)(std::vector<float>&))&std::vector<float>::swap),
          
          ///////////////////////////////////////////////////////////////////////////////////
 		 /// \section std::vector<string>
          
-         class_<std::vector<std::string> >("vectorS")
+         class_<std::vector<string> >("vectorS")
          .def(constructor<>())
-         .def("at",(string&(std::vector<std::string>::*)(size_t))&std::vector<std::string>::at),
+         .def("assign",(void(std::vector<string>::*)(size_t,const string&))&std::vector<string>::assign)
+         //.def("at", &std::vector<string>::at)
+         .def("at",(string&(std::vector<string>::*)(size_t))&std::vector<string>::at)
+         .def("back",(string&(std::vector<string>::*)(void))&std::vector<string>::back)
+         //.def("begin",(int&(std::vector<string>::*)(void))&std::vector<string>::begin)
+         .def("capacity",(size_t(std::vector<string>::*)(void))&std::vector<string>::capacity)
+         .def("clear",(void(std::vector<string>::*)(void))&std::vector<string>::clear)
+         .def("empty",(bool(std::vector<string>::*)(void))&std::vector<string>::empty)
+         //.def("end",(int&(std::vector<string>::*)(void))&std::vector<string>::end)
+         //.def("erase",(int&(std::vector<string>::*)(int&))&std::vector<string>::erase)
+         //.def("erase",(int&(std::vector<string>::*)(int&,int&))&std::vector<string>::erase)
+         .def("front",(string&(std::vector<string>::*)(void))&std::vector<string>::front)
+         .def("get_allocator",(int&(std::vector<string>::*)(void))&std::vector<string>::get_allocator)
+         //.def("insert",(int&(std::vector<string>::*)(int&,int&))&std::vector<string>::insert)
+         .def("max_size", (unsigned int(std::vector<string>::*)(void))&std::vector<string>::max_size)
+         .def("pop_back", (void(std::vector<string>::*)(void))&std::vector<string>::pop_back)
+         .def("push_back", (void(std::vector<string>::*)(const string&))&std::vector<string>::push_back)
+         //.def("rbegin", &std::vector<int>::rbegin)
+         //.def("rend", &std::vector<int>::rend)
+         //.def("reserve", (void(std::vector<string>::*)(unsigned int))&std::vector<string>::reserve)
+         //.def("resize", &std::vector<string>::resize)
+         .def("size", (unsigned int(std::vector<string>::*)(void))&std::vector<string>::size)
+         .def("swap",(void(std::vector<string>::*)(std::vector<string>&))&std::vector<string>::swap),
          
          ///////////////////////////////////////////////////////////////////////////////////
 		 /// \section std::vector<char>
          
          class_<std::vector<char> >("vectorC")
          .def(constructor<>())
+         .def("assign",(void(std::vector<char>::*)(size_t,const char&))&std::vector<char>::assign)
+         //.def("at", &std::vector<char>::at)
          .def("at",(char&(std::vector<char>::*)(size_t))&std::vector<char>::at)
+         .def("back",(char&(std::vector<char>::*)(void))&std::vector<char>::back)
+         //.def("begin",(int&(std::vector<char>::*)(void))&std::vector<char>::begin)
+         .def("capacity",(size_t(std::vector<char>::*)(void))&std::vector<char>::capacity)
+         .def("clear",(void(std::vector<char>::*)(void))&std::vector<char>::clear)
+         .def("empty",(bool(std::vector<char>::*)(void))&std::vector<char>::empty)
+         //.def("end",(int&(std::vector<char>::*)(void))&std::vector<char>::end)
+         //.def("erase",(int&(std::vector<char>::*)(int&))&std::vector<char>::erase)
+         //.def("erase",(int&(std::vector<char>::*)(int&,int&))&std::vector<char>::erase)
+         .def("front",(char&(std::vector<char>::*)(void))&std::vector<char>::front)
+         .def("get_allocator",(int&(std::vector<char>::*)(void))&std::vector<char>::get_allocator)
+         //.def("insert",(int&(std::vector<char>::*)(int&,int&))&std::vector<char>::insert)
+         .def("max_size", (unsigned int(std::vector<char>::*)(void))&std::vector<char>::max_size)
+         .def("pop_back", (void(std::vector<char>::*)(void))&std::vector<char>::pop_back)
+         .def("push_back", (void(std::vector<char>::*)(const char&))&std::vector<char>::push_back)
+         //.def("rbegin", &std::vector<int>::rbegin)
+         //.def("rend", &std::vector<int>::rend)
+         //.def("reserve", (void(std::vector<char>::*)(unsigned int))&std::vector<char>::reserve)
+         //.def("resize", &std::vector<char>::resize)
+         .def("size", (unsigned int(std::vector<char>::*)(void))&std::vector<char>::size)
+         .def("swap",(void(std::vector<char>::*)(std::vector<char>&))&std::vector<char>::swap),
          
+         ///////////////////////////////////////////////////////////////////////////////////
+		 /// \section std::vector<ofVec2f>
+         
+         class_<vector<ofVec2f> >("vectorOFvec2f")
+         .def(constructor<>())
+         .def("capacity",(size_t(std::vector<ofVec2f>::*)(void))&std::vector<ofVec2f>::capacity)
+         .def("clear",(void(std::vector<ofVec2f>::*)(void))&std::vector<ofVec2f>::clear)
+         .def("empty",(bool(std::vector<ofVec2f>::*)(void))&std::vector<ofVec2f>::empty)
+         .def("get_allocator",(int&(std::vector<ofVec2f>::*)(void))&std::vector<ofVec2f>::get_allocator)
+         .def("max_size", (unsigned int(std::vector<ofVec2f>::*)(void))&std::vector<ofVec2f>::max_size)
+         .def("pop_back", (void(std::vector<ofVec2f>::*)(void))&std::vector<ofVec2f>::pop_back)
+         .def("push_back", (void(std::vector<ofVec2f>::*)(const char&))&std::vector<ofVec2f>::push_back)
+         .def("size", (unsigned int(std::vector<ofVec2f>::*)(void))&std::vector<ofVec2f>::size)
+         .def("swap",(void(std::vector<ofVec2f>::*)(std::vector<ofVec2f>&))&std::vector<ofVec2f>::swap),
+         
+         ///////////////////////////////////////////////////////////////////////////////////
+		 /// \section std::vector<ofVec3f>
+         
+         class_<vector<ofVec3f> >("vectorOFvec3f")
+         .def(constructor<>())
+         .def("capacity",(size_t(std::vector<ofVec3f>::*)(void))&std::vector<ofVec3f>::capacity)
+         .def("clear",(void(std::vector<ofVec3f>::*)(void))&std::vector<ofVec3f>::clear)
+         .def("empty",(bool(std::vector<ofVec3f>::*)(void))&std::vector<ofVec3f>::empty)
+         .def("get_allocator",(int&(std::vector<ofVec3f>::*)(void))&std::vector<ofVec3f>::get_allocator)
+         .def("max_size", (unsigned int(std::vector<ofVec3f>::*)(void))&std::vector<ofVec3f>::max_size)
+         .def("pop_back", (void(std::vector<ofVec3f>::*)(void))&std::vector<ofVec3f>::pop_back)
+         .def("push_back", (void(std::vector<ofVec3f>::*)(const char&))&std::vector<ofVec3f>::push_back)
+         .def("size", (unsigned int(std::vector<ofVec3f>::*)(void))&std::vector<ofVec3f>::size)
+         .def("swap",(void(std::vector<ofVec3f>::*)(std::vector<ofVec3f>&))&std::vector<ofVec3f>::swap),
+         
+         ///////////////////////////////////////////////////////////////////////////////////
+		 /// \section std::vector<ofVec4f>
+         
+         class_<vector<ofVec4f> >("vectorOFvec4f")
+         .def(constructor<>())
+         .def("capacity",(size_t(std::vector<ofVec4f>::*)(void))&std::vector<ofVec4f>::capacity)
+         .def("clear",(void(std::vector<ofVec4f>::*)(void))&std::vector<ofVec4f>::clear)
+         .def("empty",(bool(std::vector<ofVec4f>::*)(void))&std::vector<ofVec4f>::empty)
+         .def("get_allocator",(int&(std::vector<ofVec4f>::*)(void))&std::vector<ofVec4f>::get_allocator)
+         .def("max_size", (unsigned int(std::vector<ofVec4f>::*)(void))&std::vector<ofVec4f>::max_size)
+         .def("pop_back", (void(std::vector<ofVec4f>::*)(void))&std::vector<ofVec4f>::pop_back)
+         .def("push_back", (void(std::vector<ofVec4f>::*)(const char&))&std::vector<ofVec4f>::push_back)
+         .def("size", (unsigned int(std::vector<ofVec4f>::*)(void))&std::vector<ofVec4f>::size)
+         .def("swap",(void(std::vector<ofVec4f>::*)(std::vector<ofVec4f>&))&std::vector<ofVec4f>::swap),
+         
+         ///////////////////////////////////////////////////////////////////////////////////
+		 /// \section std::vector<ofTexture>
+         
+         class_<vector<ofTexture> >("vectorOFtexture")
+         .def(constructor<>())
+         .def("capacity",(size_t(std::vector<ofTexture>::*)(void))&std::vector<ofTexture>::capacity)
+         .def("clear",(void(std::vector<ofTexture>::*)(void))&std::vector<ofTexture>::clear)
+         .def("empty",(bool(std::vector<ofTexture>::*)(void))&std::vector<ofTexture>::empty)
+         .def("get_allocator",(int&(std::vector<ofTexture>::*)(void))&std::vector<ofTexture>::get_allocator)
+         .def("max_size", (unsigned int(std::vector<ofTexture>::*)(void))&std::vector<ofTexture>::max_size)
+         .def("pop_back", (void(std::vector<ofTexture>::*)(void))&std::vector<ofTexture>::pop_back)
+         .def("push_back", (void(std::vector<ofTexture>::*)(const char&))&std::vector<ofTexture>::push_back)
+         .def("size", (unsigned int(std::vector<ofTexture>::*)(void))&std::vector<ofTexture>::size)
+         .def("swap",(void(std::vector<ofTexture>::*)(std::vector<ofTexture>&))&std::vector<ofTexture>::swap),
+         
+         ///////////////////////////////////////////////////////////////////////////////////
+		 /// \section std::vector<ofPath>
+         
+         class_<vector<ofPath> >("vectorOFpath")
+         .def(constructor<>())
+         .def("capacity",(size_t(std::vector<ofPath>::*)(void))&std::vector<ofPath>::capacity)
+         .def("clear",(void(std::vector<ofPath>::*)(void))&std::vector<ofPath>::clear)
+         .def("empty",(bool(std::vector<ofPath>::*)(void))&std::vector<ofPath>::empty)
+         .def("get_allocator",(int&(std::vector<ofPath>::*)(void))&std::vector<ofPath>::get_allocator)
+         .def("max_size", (unsigned int(std::vector<ofPath>::*)(void))&std::vector<ofPath>::max_size)
+         .def("pop_back", (void(std::vector<ofPath>::*)(void))&std::vector<ofPath>::pop_back)
+         .def("push_back", (void(std::vector<ofPath>::*)(const char&))&std::vector<ofPath>::push_back)
+         .def("size", (unsigned int(std::vector<ofPath>::*)(void))&std::vector<ofPath>::size)
+         .def("swap",(void(std::vector<ofPath>::*)(std::vector<ofPath>&))&std::vector<ofPath>::swap),
+         
+         ///////////////////////////////////////////////////////////////////////////////////
+		 /// \section std::vector<ofBuffer>
+         
+         class_<vector<ofBuffer> >("vectorOFbuffer")
+         .def(constructor<>())
+         .def("capacity",(size_t(std::vector<ofBuffer>::*)(void))&std::vector<ofBuffer>::capacity)
+         .def("clear",(void(std::vector<ofBuffer>::*)(void))&std::vector<ofBuffer>::clear)
+         .def("empty",(bool(std::vector<ofBuffer>::*)(void))&std::vector<ofBuffer>::empty)
+         .def("get_allocator",(int&(std::vector<ofBuffer>::*)(void))&std::vector<ofBuffer>::get_allocator)
+         .def("max_size", (unsigned int(std::vector<ofBuffer>::*)(void))&std::vector<ofBuffer>::max_size)
+         .def("pop_back", (void(std::vector<ofBuffer>::*)(void))&std::vector<ofBuffer>::pop_back)
+         .def("push_back", (void(std::vector<ofBuffer>::*)(const char&))&std::vector<ofBuffer>::push_back)
+         .def("size", (unsigned int(std::vector<ofBuffer>::*)(void))&std::vector<ofBuffer>::size)
+         .def("swap",(void(std::vector<ofBuffer>::*)(std::vector<ofBuffer>&))&std::vector<ofBuffer>::swap),
+         
+         ///////////////////////////////////////////////////////////////////////////////////
+		 /// \section std::vector<ofFile>
+         
+         class_<vector<ofFile> >("vectorOFfile")
+         .def(constructor<>())
+         .def("capacity",(size_t(std::vector<ofFile>::*)(void))&std::vector<ofFile>::capacity)
+         .def("clear",(void(std::vector<ofFile>::*)(void))&std::vector<ofFile>::clear)
+         .def("empty",(bool(std::vector<ofFile>::*)(void))&std::vector<ofFile>::empty)
+         .def("get_allocator",(int&(std::vector<ofFile>::*)(void))&std::vector<ofFile>::get_allocator)
+         .def("max_size", (unsigned int(std::vector<ofFile>::*)(void))&std::vector<ofFile>::max_size)
+         .def("pop_back", (void(std::vector<ofFile>::*)(void))&std::vector<ofFile>::pop_back)
+         .def("push_back", (void(std::vector<ofFile>::*)(const char&))&std::vector<ofFile>::push_back)
+         .def("size", (unsigned int(std::vector<ofFile>::*)(void))&std::vector<ofFile>::size)
+         .def("swap",(void(std::vector<ofFile>::*)(std::vector<ofFile>&))&std::vector<ofFile>::swap),
+         
+         ///////////////////////////////////////////////////////////////////////////////////
+		 /// \section std::vector<ofVideoPlayer>
+         
+         class_<vector<ofVideoPlayer> >("vectorOFvideoPlayer")
+         .def(constructor<>())
+         .def("capacity",(size_t(std::vector<ofVideoPlayer>::*)(void))&std::vector<ofVideoPlayer>::capacity)
+         .def("clear",(void(std::vector<ofVideoPlayer>::*)(void))&std::vector<ofVideoPlayer>::clear)
+         .def("empty",(bool(std::vector<ofVideoPlayer>::*)(void))&std::vector<ofVideoPlayer>::empty)
+         .def("get_allocator",(int&(std::vector<ofVideoPlayer>::*)(void))&std::vector<ofVideoPlayer>::get_allocator)
+         .def("max_size", (unsigned int(std::vector<ofVideoPlayer>::*)(void))&std::vector<ofVideoPlayer>::max_size)
+         .def("pop_back", (void(std::vector<ofVideoPlayer>::*)(void))&std::vector<ofVideoPlayer>::pop_back)
+         .def("push_back", (void(std::vector<ofVideoPlayer>::*)(const char&))&std::vector<ofVideoPlayer>::push_back)
+         .def("size", (unsigned int(std::vector<ofVideoPlayer>::*)(void))&std::vector<ofVideoPlayer>::size)
+         .def("swap",(void(std::vector<ofVideoPlayer>::*)(std::vector<ofVideoPlayer>&))&std::vector<ofVideoPlayer>::swap),
+         
+         ///////////////////////////////////////////////////////////////////////////////////
+		 /// \section std::vector<ofPixels>
+         
+         class_<vector<ofPixels> >("vectorOFpixels")
+         .def(constructor<>())
+         .def("capacity",(size_t(std::vector<ofPixels>::*)(void))&std::vector<ofPixels>::capacity)
+         .def("clear",(void(std::vector<ofPixels>::*)(void))&std::vector<ofPixels>::clear)
+         .def("empty",(bool(std::vector<ofPixels>::*)(void))&std::vector<ofPixels>::empty)
+         .def("get_allocator",(int&(std::vector<ofPixels>::*)(void))&std::vector<ofPixels>::get_allocator)
+         .def("max_size", (unsigned int(std::vector<ofPixels>::*)(void))&std::vector<ofPixels>::max_size)
+         .def("pop_back", (void(std::vector<ofPixels>::*)(void))&std::vector<ofPixels>::pop_back)
+         .def("push_back", (void(std::vector<ofPixels>::*)(const char&))&std::vector<ofPixels>::push_back)
+         .def("size", (unsigned int(std::vector<ofPixels>::*)(void))&std::vector<ofPixels>::size)
+         .def("swap",(void(std::vector<ofPixels>::*)(std::vector<ofPixels>&))&std::vector<ofPixels>::swap),
+         
+         ///////////////////////////////////////////////////////////////////////////////////
+		 /// \section std::vector<ofTrueTypeFont>
+         
+         class_<vector<ofTrueTypeFont> >("vectorOFfont")
+         .def(constructor<>())
+         .def("capacity",(size_t(std::vector<ofTrueTypeFont>::*)(void))&std::vector<ofTrueTypeFont>::capacity)
+         .def("clear",(void(std::vector<ofTrueTypeFont>::*)(void))&std::vector<ofTrueTypeFont>::clear)
+         .def("empty",(bool(std::vector<ofTrueTypeFont>::*)(void))&std::vector<ofTrueTypeFont>::empty)
+         .def("get_allocator",(int&(std::vector<ofTrueTypeFont>::*)(void))&std::vector<ofTrueTypeFont>::get_allocator)
+         .def("max_size", (unsigned int(std::vector<ofTrueTypeFont>::*)(void))&std::vector<ofTrueTypeFont>::max_size)
+         .def("pop_back", (void(std::vector<ofTrueTypeFont>::*)(void))&std::vector<ofTrueTypeFont>::pop_back)
+         .def("push_back", (void(std::vector<ofTrueTypeFont>::*)(const char&))&std::vector<ofTrueTypeFont>::push_back)
+         .def("size", (unsigned int(std::vector<ofTrueTypeFont>::*)(void))&std::vector<ofTrueTypeFont>::size)
+         .def("swap",(void(std::vector<ofTrueTypeFont>::*)(std::vector<ofTrueTypeFont>&))&std::vector<ofTrueTypeFont>::swap),
+         
+         ///////////////////////////////////////////////////////////////////////////////////
+		 /// \section std::vector<ofImage>
+         
+         class_<vector<ofImage> >("vectorOFimage")
+         .def(constructor<>())
+         .def("capacity",(size_t(std::vector<ofImage>::*)(void))&std::vector<ofImage>::capacity)
+         .def("clear",(void(std::vector<ofImage>::*)(void))&std::vector<ofImage>::clear)
+         .def("empty",(bool(std::vector<ofImage>::*)(void))&std::vector<ofImage>::empty)
+         .def("get_allocator",(int&(std::vector<ofImage>::*)(void))&std::vector<ofImage>::get_allocator)
+         .def("max_size", (unsigned int(std::vector<ofImage>::*)(void))&std::vector<ofImage>::max_size)
+         .def("pop_back", (void(std::vector<ofImage>::*)(void))&std::vector<ofImage>::pop_back)
+         .def("push_back", (void(std::vector<ofImage>::*)(const char&))&std::vector<ofImage>::push_back)
+         .def("size", (unsigned int(std::vector<ofImage>::*)(void))&std::vector<ofImage>::size)
+         .def("swap",(void(std::vector<ofImage>::*)(std::vector<ofImage>&))&std::vector<ofImage>::swap),
+         
+         ///////////////////////////////////////////////////////////////////////////////////
+		 /// \section std::vector<ofRectangle>
+         
+         class_<vector<ofRectangle> >("vectorOFrectangle")
+         .def(constructor<>())
+         .def("capacity",(size_t(std::vector<ofRectangle>::*)(void))&std::vector<ofRectangle>::capacity)
+         .def("clear",(void(std::vector<ofRectangle>::*)(void))&std::vector<ofRectangle>::clear)
+         .def("empty",(bool(std::vector<ofRectangle>::*)(void))&std::vector<ofRectangle>::empty)
+         .def("get_allocator",(int&(std::vector<ofRectangle>::*)(void))&std::vector<ofRectangle>::get_allocator)
+         .def("max_size", (unsigned int(std::vector<ofRectangle>::*)(void))&std::vector<ofRectangle>::max_size)
+         .def("pop_back", (void(std::vector<ofRectangle>::*)(void))&std::vector<ofRectangle>::pop_back)
+         .def("push_back", (void(std::vector<ofRectangle>::*)(const char&))&std::vector<ofRectangle>::push_back)
+         .def("size", (unsigned int(std::vector<ofRectangle>::*)(void))&std::vector<ofRectangle>::size)
+         .def("swap",(void(std::vector<ofRectangle>::*)(std::vector<ofRectangle>&))&std::vector<ofRectangle>::swap),
+         
+         ///////////////////////////////////////////////////////////////////////////////////
+		 /// \section std::vector<ofSoundPlayer>
+         
+         class_<vector<ofSoundPlayer> >("vectorOFsoundPlayer")
+         .def(constructor<>())
+         .def("capacity",(size_t(std::vector<ofSoundPlayer>::*)(void))&std::vector<ofSoundPlayer>::capacity)
+         .def("clear",(void(std::vector<ofSoundPlayer>::*)(void))&std::vector<ofSoundPlayer>::clear)
+         .def("empty",(bool(std::vector<ofSoundPlayer>::*)(void))&std::vector<ofSoundPlayer>::empty)
+         .def("get_allocator",(int&(std::vector<ofSoundPlayer>::*)(void))&std::vector<ofSoundPlayer>::get_allocator)
+         .def("max_size", (unsigned int(std::vector<ofSoundPlayer>::*)(void))&std::vector<ofSoundPlayer>::max_size)
+         .def("pop_back", (void(std::vector<ofSoundPlayer>::*)(void))&std::vector<ofSoundPlayer>::pop_back)
+         .def("push_back", (void(std::vector<ofSoundPlayer>::*)(const char&))&std::vector<ofSoundPlayer>::push_back)
+         .def("size", (unsigned int(std::vector<ofSoundPlayer>::*)(void))&std::vector<ofSoundPlayer>::size)
+         .def("swap",(void(std::vector<ofSoundPlayer>::*)(std::vector<ofSoundPlayer>&))&std::vector<ofSoundPlayer>::swap),
+         
+         ///////////////////////////////////////////////////////////////////////////////////
+		 /// \section std::vector<ofxCvColorImage>
+         
+         class_<vector<ofxCvColorImage> >("vectorOFXcvColorImage")
+         .def(constructor<>())
+         .def("capacity",(size_t(std::vector<ofxCvColorImage>::*)(void))&std::vector<ofxCvColorImage>::capacity)
+         .def("clear",(void(std::vector<ofxCvColorImage>::*)(void))&std::vector<ofxCvColorImage>::clear)
+         .def("empty",(bool(std::vector<ofxCvColorImage>::*)(void))&std::vector<ofxCvColorImage>::empty)
+         .def("get_allocator",(int&(std::vector<ofxCvColorImage>::*)(void))&std::vector<ofxCvColorImage>::get_allocator)
+         .def("max_size", (unsigned int(std::vector<ofxCvColorImage>::*)(void))&std::vector<ofxCvColorImage>::max_size)
+         .def("pop_back", (void(std::vector<ofxCvColorImage>::*)(void))&std::vector<ofxCvColorImage>::pop_back)
+         .def("push_back", (void(std::vector<ofxCvColorImage>::*)(const char&))&std::vector<ofxCvColorImage>::push_back)
+         .def("size", (unsigned int(std::vector<ofxCvColorImage>::*)(void))&std::vector<ofxCvColorImage>::size)
+         .def("swap",(void(std::vector<ofxCvColorImage>::*)(std::vector<ofxCvColorImage>&))&std::vector<ofxCvColorImage>::swap),
+         
+         ///////////////////////////////////////////////////////////////////////////////////
+		 /// \section std::vector<ofxCvGrayscaleImage>
+         
+         class_<vector<ofxCvGrayscaleImage> >("vectorOFXcvGrayscaleImage")
+         .def(constructor<>())
+         .def("capacity",(size_t(std::vector<ofxCvGrayscaleImage>::*)(void))&std::vector<ofxCvGrayscaleImage>::capacity)
+         .def("clear",(void(std::vector<ofxCvGrayscaleImage>::*)(void))&std::vector<ofxCvGrayscaleImage>::clear)
+         .def("empty",(bool(std::vector<ofxCvGrayscaleImage>::*)(void))&std::vector<ofxCvGrayscaleImage>::empty)
+         .def("get_allocator",(int&(std::vector<ofxCvGrayscaleImage>::*)(void))&std::vector<ofxCvGrayscaleImage>::get_allocator)
+         .def("max_size", (unsigned int(std::vector<ofxCvGrayscaleImage>::*)(void))&std::vector<ofxCvGrayscaleImage>::max_size)
+         .def("pop_back", (void(std::vector<ofxCvGrayscaleImage>::*)(void))&std::vector<ofxCvGrayscaleImage>::pop_back)
+         .def("push_back", (void(std::vector<ofxCvGrayscaleImage>::*)(const char&))&std::vector<ofxCvGrayscaleImage>::push_back)
+         .def("size", (unsigned int(std::vector<ofxCvGrayscaleImage>::*)(void))&std::vector<ofxCvGrayscaleImage>::size)
+         .def("swap",(void(std::vector<ofxCvGrayscaleImage>::*)(std::vector<ofxCvGrayscaleImage>&))&std::vector<ofxCvGrayscaleImage>::swap)
          
 		];
         
@@ -190,7 +509,8 @@ class ofGamuzaWrapper{
          
          class_<ofEasyCam>("easyCam")
 		 .def(constructor<>())
-         .def("begin", (void(ofEasyCam::*)(ofRectangle)) &ofEasyCam::begin)
+         .def("beginCamera", (void(ofEasyCam::*)(ofRectangle)) &ofEasyCam::begin)
+         .def("endCamera", (void(ofEasyCam::*)(void)) &ofEasyCam::end)
          .def("reset", (void(ofEasyCam::*)(void)) &ofEasyCam::reset)
          .def("setTarget", (void(ofEasyCam::*)(const ofVec3f&)) &ofEasyCam::setTarget)
          .def("setTarget", (void(ofEasyCam::*)(ofNode&)) &ofEasyCam::setTarget)
@@ -318,6 +638,8 @@ class ofGamuzaWrapper{
          .def("beginCamera", (void(ofCamera::*)(ofRectangle)) &ofCamera::begin)
          .def("endCamera", (void(ofCamera::*)(void)) &ofCamera::end),
          
+         def("drawAxis", (void(*)(float)) &ofDrawAxis),
+         
          ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		 /// \section math [ofMath, ofMatrix3x3, ofMatrix4x4, ofQuaternion, ofVec2f, ofVec3f, ofVec4f]
          
@@ -332,7 +654,8 @@ class ofGamuzaWrapper{
 		 def("randomuf", (float(*)(void)) &ofRandomuf),
          def("nextPow2", (int(*)(int)) &ofNextPow2),
 		 def("normalize", &ofNormalize),
-		 def("map", &ofMap),
+		 def("map", (float(*)(float,float,float,float,float,bool)) &ofMap),
+         def("map", &map5),
 		 def("clamp", &ofClamp),
 		 def("lerp", &ofLerp),
 		 def("dist", &ofDist),
@@ -356,6 +679,8 @@ class ofGamuzaWrapper{
 		 def("signedNoise", (float(*)(float,float)) &ofSignedNoise),
 		 def("signedNoise", (float(*)(float,float,float)) &ofSignedNoise),
 		 def("signedNoise", (float(*)(float,float,float,float)) &ofSignedNoise),
+         def("insidePoly", (bool(*)(float,float,const vector<ofPoint>&)) &ofInsidePoly),
+         def("insidePoly", (bool(*)(const ofPoint&,const vector<ofPoint>&)) &ofInsidePoly),
          def("lineSegmentIntersection", (bool(*)(ofPoint,ofPoint,ofPoint,ofPoint,ofPoint)) &ofLineSegmentIntersection),
          def("bezierPoint", (ofPoint(*)(ofPoint,ofPoint,ofPoint,ofPoint,float)) &ofBezierPoint),
          def("curvePoint", (ofPoint(*)(ofPoint,ofPoint,ofPoint,ofPoint,float)) &ofCurvePoint),
@@ -531,7 +856,7 @@ class ofGamuzaWrapper{
          .def(self * other<const float>())
          .def(self / other<const float>())
          .def("getScaled", (ofVec2f(ofVec2f::*)(const float)) &ofVec2f::getScaled)
-         .def("scale", (ofVec2f(ofVec2f::*)(const float)) &ofVec2f::scale)
+         .def("scale", (ofVec2f&(ofVec2f::*)(const float)) &ofVec2f::scale)
          //.def("getRotated", (ofVec2f(ofVec2f::*)(float)) &ofVec2f::getRotated)
          //.def("getRotatedRad", (ofVec2f(ofVec2f::*)(float)) &ofVec2f::getRotatedRad)
          //.def("rotate", (ofVec2f(ofVec2f::*)(float)) &ofVec2f::rotate)
@@ -542,27 +867,27 @@ class ofGamuzaWrapper{
          //.def("rotateRad", (ofVec2f(ofVec2f::*)(float,const ofVec2f&)) &ofVec2f::rotateRad)
 		 //.def("rotated", (ofVec2f(ofVec2f::*)(float,const ofVec2f&)) &ofVec2f::rotated)
          .def("getMapped", (ofVec2f(ofVec2f::*)(const ofVec2f&,const ofVec2f&,const ofVec2f&)) &ofVec2f::getMapped)
-         .def("map", (ofVec2f(ofVec2f::*)(const ofVec2f&,const ofVec2f&,const ofVec2f&)) &ofVec2f::map)
+         .def("map", (ofVec2f&(ofVec2f::*)(const ofVec2f&,const ofVec2f&,const ofVec2f&)) &ofVec2f::map)
          .def("distance", (float(ofVec2f::*)(const ofVec2f&)) &ofVec2f::distance)
          .def("squareDistance", (float(ofVec2f::*)(const ofVec2f&)) &ofVec2f::squareDistance)
          .def("getInterpolated", (ofVec2f(ofVec2f::*)(const ofVec2f&,float)) &ofVec2f::getInterpolated)
-         .def("interpolate", (ofVec2f(ofVec2f::*)(const ofVec2f&,float)) &ofVec2f::interpolate)
+         .def("interpolate", (ofVec2f&(ofVec2f::*)(const ofVec2f&,float)) &ofVec2f::interpolate)
          .def("getMiddle", (ofVec2f(ofVec2f::*)(const ofVec2f&)) &ofVec2f::getMiddle)
-         .def("middle", (ofVec2f(ofVec2f::*)(const ofVec2f&)) &ofVec2f::middle)
-         .def("average", (ofVec2f(ofVec2f::*)(const ofVec2f&,int)) &ofVec2f::average)
+         .def("middle", (ofVec2f&(ofVec2f::*)(const ofVec2f&)) &ofVec2f::middle)
+         .def("average", (ofVec2f&(ofVec2f::*)(const ofVec2f&,int)) &ofVec2f::average)
          .def("getNormalized", (ofVec2f(ofVec2f::*)(void)) &ofVec2f::getNormalized)
-         .def("normalize", (ofVec2f(ofVec2f::*)(void)) &ofVec2f::normalize)
+         .def("normalize", (ofVec2f&(ofVec2f::*)(void)) &ofVec2f::normalize)
          .def("getLimited", (ofVec2f(ofVec2f::*)(float)) &ofVec2f::getLimited)
-         .def("limit", (ofVec2f(ofVec2f::*)(float)) &ofVec2f::limit)
+         .def("limit", (ofVec2f&(ofVec2f::*)(float)) &ofVec2f::limit)
          .def("getPerpendicular", (ofVec2f(ofVec2f::*)(void)) &ofVec2f::getPerpendicular)
-         .def("perpendicular", (ofVec2f(ofVec2f::*)(void)) &ofVec2f::perpendicular)
+         .def("perpendicular", (ofVec2f&(ofVec2f::*)(void)) &ofVec2f::perpendicular)
          .def("length", (float(ofVec2f::*)(void)) &ofVec2f::length)
          .def("squareLength", (float(ofVec2f::*)(void)) &ofVec2f::squareLength)
          .def("angle", (float(ofVec2f::*)(const ofVec2f&)) &ofVec2f::angle)
          .def("angleRad", (float(ofVec2f::*)(const ofVec2f&)) &ofVec2f::angleRad)
          .def("dot", (float(ofVec2f::*)(const ofVec2f&)) &ofVec2f::dot)
          .def("rescaled", (ofVec2f(ofVec2f::*)(const float)) &ofVec2f::rescaled)
-         .def("rescale", (ofVec2f(ofVec2f::*)(const float)) &ofVec2f::rescale)
+         .def("rescale", (ofVec2f&(ofVec2f::*)(const float)) &ofVec2f::rescale)
          //.def("rotated", (ofVec2f(ofVec2f::*)(float)) &ofVec2f::rotated)
          .def("normalized", (ofVec2f(ofVec2f::*)(void)) &ofVec2f::normalized)
          .def("limited", (ofVec2f(ofVec2f::*)(float)) &ofVec2f::limited)
@@ -572,8 +897,8 @@ class ofGamuzaWrapper{
          .def("middled", (ofVec2f(ofVec2f::*)(const ofVec2f&)) &ofVec2f::middled)
          .def("mapped", (ofVec2f(ofVec2f::*)(const ofVec2f&,const ofVec2f&,const ofVec2f&)) &ofVec2f::mapped)
          .def("distanceSquared", (float(ofVec2f::*)(const ofVec2f&)) &ofVec2f::distanceSquared)
-         .def_readonly("x", &ofVec2f::x)
-		 .def_readonly("y", &ofVec2f::y),
+         .def_readwrite("x", &ofVec2f::x)
+		 .def_readwrite("y", &ofVec2f::y),
          
          ///////////////////////////////////////////////////////////////////////////////////
 		 /// \section ofVec3f
@@ -598,38 +923,40 @@ class ofGamuzaWrapper{
          .def(self * other<const float>())
          .def(self / other<const float>())
          .def("getScaled", (ofVec3f(ofVec3f::*)(const float)) &ofVec3f::getScaled)
-         .def("scale", (ofVec3f(ofVec3f::*)(const float)) &ofVec3f::scale)
+         .def("scale", (ofVec3f&(ofVec3f::*)(const float)) &ofVec3f::scale)
          //.def("getRotated", (ofVec3f(ofVec3f::*)(float)) &ofVec3f::getRotated)
          //.def("getRotatedRad", (ofVec3f(ofVec3f::*)(float)) &ofVec3f::getRotatedRad)
-         //.def("rotate", (ofVec3f(ofVec3f::*)(float)) &ofVec3f::rotate)
-         //.def("rotateRad", (ofVec3f(ofVec3f::*)(float)) &ofVec3f::rotateRad)
+         //.def("rotate", (ofVec3f&(ofVec3f::*)(float)) &ofVec3f::rotate)
+         //.def("rotateRad", (ofVec3f&(ofVec3f::*)(float)) &ofVec3f::rotateRad)
          //.def("getRotated", (ofVec3f(ofVec3f::*)(float,const ofVec3f&)) &ofVec3f::getRotated)
          //.def("getRotatedRad", (ofVec3f(ofVec3f::*)(float,const ofVec3f&)) &ofVec3f::getRotatedRad)
-         //.def("rotate", (ofVec3f(ofVec3f::*)(float,const ofVec3f&)) &ofVec3f::rotate)
-         //.def("rotateRad", (ofVec3f(ofVec3f::*)(float,const ofVec3f&)) &ofVec3f::rotateRad)
+         //.def("rotate", (ofVec3f&(ofVec3f::*)(float,const ofVec3f&)) &ofVec3f::rotate)
+         //.def("rotateRad", (ofVec3f&(ofVec3f::*)(float,const ofVec3f&)) &ofVec3f::rotateRad)
 		 //.def("rotated", (ofVec3f(ofVec3f::*)(float,const ofVec3f&)) &ofVec3f::rotated)
          .def("getMapped", (ofVec3f(ofVec3f::*)(const ofVec3f&,const ofVec3f&,const ofVec3f&)) &ofVec3f::getMapped)
-         .def("map", (ofVec3f(ofVec3f::*)(const ofVec3f&,const ofVec3f&,const ofVec3f&)) &ofVec3f::map)
+         .def("map", (ofVec3f&(ofVec3f::*)(const ofVec3f&,const ofVec3f&,const ofVec3f&)) &ofVec3f::map)
          .def("distance", (float(ofVec3f::*)(const ofVec3f&)) &ofVec3f::distance)
          .def("squareDistance", (float(ofVec3f::*)(const ofVec3f&)) &ofVec3f::squareDistance)
          .def("getInterpolated", (ofVec3f(ofVec3f::*)(const ofVec3f&,float)) &ofVec3f::getInterpolated)
-         .def("interpolate", (ofVec3f(ofVec3f::*)(const ofVec3f&,float)) &ofVec3f::interpolate)
+         .def("interpolate", (ofVec3f&(ofVec3f::*)(const ofVec3f&,float)) &ofVec3f::interpolate)
          .def("getMiddle", (ofVec3f(ofVec3f::*)(const ofVec3f&)) &ofVec3f::getMiddle)
-         .def("middle", (ofVec3f(ofVec3f::*)(const ofVec3f&)) &ofVec3f::middle)
-         .def("average", (ofVec3f(ofVec3f::*)(const ofVec3f&,int)) &ofVec3f::average)
+         .def("middle", (ofVec3f&(ofVec3f::*)(const ofVec3f&)) &ofVec3f::middle)
+         .def("average", (ofVec3f&(ofVec3f::*)(const ofVec3f&,int)) &ofVec3f::average)
          .def("getNormalized", (ofVec3f(ofVec3f::*)(void)) &ofVec3f::getNormalized)
-         .def("normalize", (ofVec3f(ofVec3f::*)(void)) &ofVec3f::normalize)
+         .def("normalize", (ofVec3f&(ofVec3f::*)(void)) &ofVec3f::normalize)
          .def("getLimited", (ofVec3f(ofVec3f::*)(float)) &ofVec3f::getLimited)
-         .def("limit", (ofVec3f(ofVec3f::*)(float)) &ofVec3f::limit)
+         .def("limit", (ofVec3f&(ofVec3f::*)(float)) &ofVec3f::limit)
+         .def("getCrossed", (ofVec3f(ofVec3f::*)(const ofVec3f&)) &ofVec3f::getCrossed)
+         .def("cross", (ofVec3f&(ofVec3f::*)(const ofVec3f&)) &ofVec3f::cross)
          .def("getPerpendicular", (ofVec3f(ofVec3f::*)(void)) &ofVec3f::getPerpendicular)
-         .def("perpendicular", (ofVec3f(ofVec3f::*)(void)) &ofVec3f::perpendicular)
+         .def("perpendicular", (ofVec3f&(ofVec3f::*)(void)) &ofVec3f::perpendicular)
          .def("length", (float(ofVec3f::*)(void)) &ofVec3f::length)
          .def("squareLength", (float(ofVec3f::*)(void)) &ofVec3f::squareLength)
          .def("angle", (float(ofVec3f::*)(const ofVec3f&)) &ofVec3f::angle)
          .def("angleRad", (float(ofVec3f::*)(const ofVec3f&)) &ofVec3f::angleRad)
          .def("dot", (float(ofVec3f::*)(const ofVec3f&)) &ofVec3f::dot)
          .def("rescaled", (ofVec3f(ofVec3f::*)(const float)) &ofVec3f::rescaled)
-         .def("rescale", (ofVec3f(ofVec3f::*)(const float)) &ofVec3f::rescale)
+         .def("rescale", (ofVec3f&(ofVec3f::*)(const float)) &ofVec3f::rescale)
          //.def("rotated", (ofVec3f(ofVec3f::*)(float)) &ofVec3f::rotated)
          .def("normalized", (ofVec3f(ofVec3f::*)(void)) &ofVec3f::normalized)
          .def("limited", (ofVec3f(ofVec3f::*)(float)) &ofVec3f::limited)
@@ -639,9 +966,9 @@ class ofGamuzaWrapper{
          .def("middled", (ofVec3f(ofVec3f::*)(const ofVec3f&)) &ofVec3f::middled)
          .def("mapped", (ofVec3f(ofVec3f::*)(const ofVec3f&,const ofVec3f&,const ofVec3f&)) &ofVec3f::mapped)
          .def("distanceSquared", (float(ofVec3f::*)(const ofVec3f&)) &ofVec3f::distanceSquared)
-         .def_readonly("x", &ofVec3f::x)
-		 .def_readonly("y", &ofVec3f::y)
-         .def_readonly("z", &ofVec3f::z),
+         .def_readwrite("x", &ofVec3f::x)
+		 .def_readwrite("y", &ofVec3f::y)
+         .def_readwrite("z", &ofVec3f::z),
          
          ///////////////////////////////////////////////////////////////////////////////////
 		 /// \section ofVec4f
@@ -664,7 +991,7 @@ class ofGamuzaWrapper{
          .def(self * other<const float>())
          .def(self / other<const float>())
          .def("getScaled", (ofVec4f(ofVec4f::*)(const float)) &ofVec4f::getScaled)
-         .def("scale", (ofVec4f(ofVec4f::*)(const float)) &ofVec4f::scale)
+         .def("scale", (ofVec4f&(ofVec4f::*)(const float)) &ofVec4f::scale)
          //.def("getRotated", (ofVec4f(ofVec4f::*)(float)) &ofVec4f::getRotated)
          //.def("getRotatedRad", (ofVec4f(ofVec4f::*)(float)) &ofVec4f::getRotatedRad)
          //.def("rotate", (ofVec4f(ofVec4f::*)(float)) &ofVec4f::rotate)
@@ -677,30 +1004,29 @@ class ofGamuzaWrapper{
          .def("distance", (float(ofVec4f::*)(const ofVec4f&)) &ofVec4f::distance)
          .def("squareDistance", (float(ofVec4f::*)(const ofVec4f&)) &ofVec4f::squareDistance)
          .def("getInterpolated", (ofVec4f(ofVec4f::*)(const ofVec4f&,float)) &ofVec4f::getInterpolated)
-         .def("interpolate", (ofVec4f(ofVec4f::*)(const ofVec4f&,float)) &ofVec4f::interpolate)
+         .def("interpolate", (ofVec4f&(ofVec4f::*)(const ofVec4f&,float)) &ofVec4f::interpolate)
          .def("getMiddle", (ofVec4f(ofVec4f::*)(const ofVec4f&)) &ofVec4f::getMiddle)
-         .def("middle", (ofVec4f(ofVec4f::*)(const ofVec4f&)) &ofVec4f::middle)
-         .def("average", (ofVec4f(ofVec4f::*)(const ofVec4f&,int)) &ofVec4f::average)
+         .def("middle", (ofVec4f&(ofVec4f::*)(const ofVec4f&)) &ofVec4f::middle)
+         .def("average", (ofVec4f&(ofVec4f::*)(const ofVec4f&,int)) &ofVec4f::average)
          .def("getNormalized", (ofVec4f(ofVec4f::*)(void)) &ofVec4f::getNormalized)
-         .def("normalize", (ofVec4f(ofVec4f::*)(void)) &ofVec4f::normalize)
+         .def("normalize", (ofVec4f&(ofVec4f::*)(void)) &ofVec4f::normalize)
          .def("getLimited", (ofVec4f(ofVec4f::*)(float)) &ofVec4f::getLimited)
-         .def("limit", (ofVec4f(ofVec4f::*)(float)) &ofVec4f::limit)
+         .def("limit", (ofVec4f&(ofVec4f::*)(float)) &ofVec4f::limit)
          .def("length", (float(ofVec4f::*)(void)) &ofVec4f::length)
          .def("squareLength", (float(ofVec4f::*)(void)) &ofVec4f::squareLength)
          .def("dot", (float(ofVec4f::*)(const ofVec4f&)) &ofVec4f::dot)
          .def("rescaled", (ofVec4f(ofVec4f::*)(const float)) &ofVec4f::rescaled)
-         .def("rescale", (ofVec4f(ofVec4f::*)(const float)) &ofVec4f::rescale)
-         //.def("rotated", (ofVec4f(ofVec4f::*)(float)) &ofVec4f::rotated)
+         .def("rescale", (ofVec4f&(ofVec4f::*)(const float)) &ofVec4f::rescale)
          .def("normalized", (ofVec4f(ofVec4f::*)(void)) &ofVec4f::normalized)
          .def("limited", (ofVec4f(ofVec4f::*)(float)) &ofVec4f::limited)
          .def("lengthSquared", (float(ofVec4f::*)(void)) &ofVec4f::lengthSquared)
          .def("interpolated", (ofVec4f(ofVec4f::*)(const ofVec4f&,float)) &ofVec4f::interpolated)
          .def("middled", (ofVec4f(ofVec4f::*)(const ofVec4f&)) &ofVec4f::middled)
          .def("distanceSquared", (float(ofVec4f::*)(const ofVec4f&)) &ofVec4f::distanceSquared)
-         .def_readonly("x", &ofVec4f::x)
-		 .def_readonly("y", &ofVec4f::y)
-         .def_readonly("z", &ofVec4f::z)
-         .def_readonly("w", &ofVec4f::w),
+         .def_readwrite("x", &ofVec4f::x)
+		 .def_readwrite("y", &ofVec4f::y)
+         .def_readwrite("z", &ofVec4f::z)
+         .def_readwrite("w", &ofVec4f::w),
          
          ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		 /// \section gl [ofMaterials, ofFbo, ofGLRenderer, ofVbo, ofTextureData, ofShader, ofVboMesh, ofTexture, ofGLUtils, ofLight]
@@ -918,7 +1244,70 @@ class ofGamuzaWrapper{
          class_<ofVboMesh>("vboMesh")
 		 .def(constructor<>())
          .def(constructor<const ofMesh&>())
-         .def("setUsage", (void(ofVboMesh::*)(int)) &ofVboMesh::setUsage),
+         .def("setUsage", (void(ofVboMesh::*)(int)) &ofVboMesh::setUsage)
+         
+         .def("setMode", (void(ofVboMesh::*)(ofPrimitiveMode)) &ofVboMesh::setMode)
+         .def("getMode", (ofPrimitiveMode(ofVboMesh::*)(void)) &ofVboMesh::getMode)
+         .def("clear", (void(ofVboMesh::*)(void)) &ofVboMesh::clear)
+         .def("setupIndicesAuto", (void(ofVboMesh::*)(void)) &ofVboMesh::setupIndicesAuto)
+         .def("getVertex", (ofVec3f(ofVboMesh::*)(int)) &ofVboMesh::getVertex)
+         //.def("removeVertex", (void(ofVboMesh::*)(int)) &ofVboMesh::removeVertex)
+         .def("clearVertices", (void(ofVboMesh::*)(void)) &ofVboMesh::clearVertices)
+         .def("getNormal", (ofVec3f(ofVboMesh::*)(int)) &ofVboMesh::getNormal)
+         //.def("removeNormal", (void(ofVboMesh::*)(int)) &ofVboMesh::removeNormal)
+         .def("clearNormals", (void(ofVboMesh::*)(void)) &ofVboMesh::clearNormals)
+         .def("getColor", (ofFloatColor(ofVboMesh::*)(int)) &ofVboMesh::getColor)
+         //.def("removeColor", (void(ofVboMesh::*)(int)) &ofVboMesh::removeColor)
+         .def("clearColors", (void(ofVboMesh::*)(void)) &ofVboMesh::clearColors)
+         .def("getTexCoord", (ofVec2f(ofVboMesh::*)(int)) &ofVboMesh::getTexCoord)
+         //.def("removeTexCoord", (void(ofVboMesh::*)(int)) &ofVboMesh::removeTexCoord)
+         .def("clearTexCoords", (void(ofVboMesh::*)(void)) &ofVboMesh::clearTexCoords)
+         .def("getIndex", (ofIndexType(ofVboMesh::*)(int)) &ofVboMesh::getTexCoord)
+         .def("addIndex", (void(ofVboMesh::*)(ofIndexType)) &ofVboMesh::addIndex)
+         //.def("removeIndex", (void(ofVboMesh::*)(int)) &ofVboMesh::removeIndex)
+         .def("setIndex", (void(ofVboMesh::*)(int,ofIndexType)) &ofVboMesh::setIndex)
+         .def("clearIndices", (void(ofVboMesh::*)(void)) &ofVboMesh::clearIndices)
+         .def("addTriangle", (void(ofVboMesh::*)(ofIndexType,ofIndexType,ofIndexType)) &ofVboMesh::addTriangle)
+         .def("getNumVertices", (int(ofVboMesh::*)(void)) &ofVboMesh::getNumVertices)
+         .def("getNumColors", (int(ofVboMesh::*)(void)) &ofVboMesh::getNumColors)
+         .def("getNumNormals", (int(ofVboMesh::*)(void)) &ofVboMesh::getNumNormals)
+         .def("getNumTexCoords", (int(ofVboMesh::*)(void)) &ofVboMesh::getNumTexCoords)
+         .def("getNumIndices", (int(ofVboMesh::*)(void)) &ofVboMesh::getNumIndices)
+         .def("getVerticesPointer", (ofVec3f*(ofVboMesh::*)(void)) &ofVboMesh::getVerticesPointer)
+         .def("getColorsPointer", (ofFloatColor*(ofVboMesh::*)(void)) &ofVboMesh::getColorsPointer)
+         .def("getNormalsPointer", (ofVec3f*(ofVboMesh::*)(void)) &ofVboMesh::getNormalsPointer)
+         .def("getTexCoordsPointer", (ofVec2f*(ofVboMesh::*)(void)) &ofVboMesh::getTexCoordsPointer)
+         .def("getIndexPointer", (ofIndexType*(ofVboMesh::*)(void)) &ofVboMesh::getIndexPointer)
+         .def("getVertices", (ofVec3f(ofVboMesh::*)(void)) &ofVboMesh::getVertices)
+         .def("getColors", (ofFloatColor(ofVboMesh::*)(void)) &ofVboMesh::getColors)
+         .def("getNormals", (ofVec3f(ofVboMesh::*)(void)) &ofVboMesh::getNormals)
+         .def("getTexCoords", (ofVec2f(ofVboMesh::*)(void)) &ofVboMesh::getTexCoords)
+         .def("getIndices", (ofIndexType(ofVboMesh::*)(void)) &ofVboMesh::getIndices)
+         .def("setName", (void(ofVboMesh::*)(string)) &ofVboMesh::setName)
+         .def("haveVertsChanged", (bool(ofVboMesh::*)(void)) &ofVboMesh::haveVertsChanged)
+         .def("haveColorsChanged", (bool(ofVboMesh::*)(void)) &ofVboMesh::haveColorsChanged)
+         .def("haveNormalsChanged", (bool(ofVboMesh::*)(void)) &ofVboMesh::haveNormalsChanged)
+         .def("haveTexCoordsChanged", (bool(ofVboMesh::*)(void)) &ofVboMesh::haveTexCoordsChanged)
+         .def("haveIndicesChanged", (bool(ofVboMesh::*)(void)) &ofVboMesh::haveIndicesChanged)
+         .def("hasVertices", (bool(ofVboMesh::*)(void)) &ofVboMesh::hasVertices)
+         .def("hasColors", (bool(ofVboMesh::*)(void)) &ofVboMesh::hasColors)
+         .def("hasNormals", (bool(ofVboMesh::*)(void)) &ofVboMesh::hasNormals)
+         .def("hasTexCoords", (bool(ofVboMesh::*)(void)) &ofVboMesh::hasTexCoords)
+         .def("hasIndices", (bool(ofVboMesh::*)(void)) &ofVboMesh::hasIndices)
+         .def("drawVertices", (void(ofVboMesh::*)(void)) &ofVboMesh::drawVertices)
+         .def("drawWireframe", (void(ofVboMesh::*)(void)) &ofVboMesh::drawWireframe)
+         .def("drawFaces", (void(ofVboMesh::*)(void)) &ofVboMesh::drawFaces)
+         .def("draw", (void(ofVboMesh::*)(void)) &ofVboMesh::draw)
+         .def("addVertex", (void(ofVboMesh::*)(const ofVec3f&)) &ofVboMesh::addVertex)
+         .def("setVertex", (void(ofVboMesh::*)(int,const ofVec3f&)) &ofVboMesh::setVertex)
+         .def("addNormal", (void(ofVboMesh::*)(const ofVec3f&)) &ofVboMesh::addNormal)
+         .def("setNormal", (void(ofVboMesh::*)(int,const ofVec3f&)) &ofVboMesh::setNormal)
+         .def("addColor", (void(ofVboMesh::*)(const ofFloatColor&)) &ofVboMesh::addColor)
+         .def("setColor", (void(ofVboMesh::*)(int,const ofFloatColor&)) &ofVboMesh::setColor)
+         .def("addTexCoord", (void(ofVboMesh::*)(const ofVec2f&)) &ofVboMesh::addTexCoord)
+         .def("setTexCoord", (void(ofVboMesh::*)(int,const ofVec2f&)) &ofVboMesh::setTexCoord)
+         .def("addIndices", (void(ofVboMesh::*)(const ofIndexType*,int)) &ofVboMesh::addIndices),
+         //.def("getCentroid", (ofVec3f(ofVboMesh::*)(void)) &ofVboMesh::getCentroid),
          
          ///////////////////////////////////////////////////////////////////////////////////
 		 /// \section ofTexture
@@ -994,7 +1383,56 @@ class ofGamuzaWrapper{
          .def("getDiffuseColor", (ofFloatColor(ofLight::*)(void)) &ofLight::getDiffuseColor)
          .def("getSpecularColor", (ofFloatColor(ofLight::*)(void)) &ofLight::getSpecularColor)
          .def("getLightID", (int(ofLight::*)(void)) &ofLight::getLightID)
-         .def("customDraw", (void(ofLight::*)(void)) &ofLight::customDraw),
+         .def("customDraw", (void(ofLight::*)(void)) &ofLight::customDraw)
+         
+         // from ofNode, transform functionality
+         .def("getPosition", (ofVec3f(ofLight::*)(void)) &ofLight::getPosition)
+         .def("getX", (float(ofLight::*)(void)) &ofLight::getX)
+         .def("getY", (float(ofLight::*)(void)) &ofLight::getY)
+         .def("getZ", (float(ofLight::*)(void)) &ofLight::getZ)
+         .def("getXAxis", (ofVec3f(ofLight::*)(void)) &ofLight::getXAxis)
+         .def("getYAxis", (ofVec3f(ofLight::*)(void)) &ofLight::getYAxis)
+         .def("getZAxis", (ofVec3f(ofLight::*)(void)) &ofLight::getZAxis)
+         .def("getSideDir", (ofVec3f(ofLight::*)(void)) &ofLight::getSideDir)
+         .def("getLookAtDir", (ofVec3f(ofLight::*)(void)) &ofLight::getLookAtDir)
+         .def("getUpDir", (ofVec3f(ofLight::*)(void)) &ofLight::getUpDir)
+         .def("getPitch", (float(ofLight::*)(void)) &ofLight::getPitch)
+         .def("getHeading", (float(ofLight::*)(void)) &ofLight::getHeading)
+         .def("getRoll", (float(ofLight::*)(void)) &ofLight::getRoll)
+         .def("getOrientationQuat", (ofQuaternion(ofLight::*)(void)) &ofLight::getOrientationQuat)
+         .def("getOrientationEuler", (ofVec3f(ofLight::*)(void)) &ofLight::getOrientationEuler)
+         .def("getScale", (ofVec3f(ofLight::*)(void)) &ofLight::getScale)
+         .def("getLocalTransformMatrix", (ofMatrix4x4(ofLight::*)(void)) &ofLight::getLocalTransformMatrix)
+         .def("getGlobalTransformMatrix", (ofMatrix4x4(ofLight::*)(void)) &ofLight::getGlobalTransformMatrix)
+         .def("getGlobalPosition", (ofVec3f(ofLight::*)(void)) &ofLight::getGlobalPosition)
+         .def("getGlobalOrientation", (ofQuaternion(ofLight::*)(void)) &ofLight::getGlobalOrientation)
+         .def("setTransformMatrix", (void(ofLight::*)(const ofMatrix4x4&)) &ofLight::setTransformMatrix)
+         .def("setPosition", (void(ofLight::*)(float,float,float)) &ofLight::setPosition)
+         .def("setPosition", (void(ofLight::*)(const ofVec3f&)) &ofLight::setPosition)
+         .def("setGlobalPosition", (void(ofLight::*)(float,float,float)) &ofLight::setGlobalPosition)
+         .def("setGlobalPosition", (void(ofLight::*)(const ofVec3f&)) &ofLight::setGlobalPosition)
+         .def("setOrientation", (void(ofLight::*)(const ofQuaternion&)) &ofLight::setOrientation)
+         .def("setOrientation", (void(ofLight::*)(const ofVec3f&)) &ofLight::setOrientation)
+         .def("setGlobalOrientation", (void(ofLight::*)(const ofQuaternion&)) &ofLight::setGlobalOrientation)
+         .def("setScale", (void(ofLight::*)(float,float,float)) &ofLight::setScale)
+         .def("setScale", (void(ofLight::*)(const ofVec3f&)) &ofLight::setScale)         
+         .def("move", (void(ofLight::*)(float,float,float)) &ofLight::move)
+         .def("move", (void(ofLight::*)(const ofVec3f&)) &ofLight::move)
+         .def("truck", (void(ofLight::*)(float)) &ofLight::truck)
+         .def("boom", (void(ofLight::*)(float)) &ofLight::boom)
+         .def("dolly", (void(ofLight::*)(float)) &ofLight::dolly)
+         .def("tilt", (void(ofLight::*)(float)) &ofLight::tilt)
+         .def("pan", (void(ofLight::*)(float)) &ofLight::pan)
+         .def("roll", (void(ofLight::*)(float)) &ofLight::roll)
+         .def("rotate", (void(ofLight::*)(const ofQuaternion&)) &ofLight::rotate)
+         .def("rotate", (void(ofLight::*)(float,const ofVec3f&)) &ofLight::rotate)
+         .def("rotate", (void(ofLight::*)(float,float,float,float)) &ofLight::rotate)
+         .def("rotateAround", (void(ofLight::*)(const ofQuaternion&,const ofVec3f&)) &ofLight::rotateAround)
+         .def("rotateAround", (void(ofLight::*)(float,const ofVec3f&,const ofVec3f&)) &ofLight::rotateAround)
+         .def("lookAt", (void(ofLight::*)(const ofVec3f&,ofVec3f)) &ofLight::lookAt)
+         .def("lookAt", (void(ofLight::*)(ofNode&,const ofVec3f&)) &ofLight::lookAt)
+         .def("orbit", (void(ofLight::*)(float,float,float,const ofVec3f&)) &ofLight::orbit)
+         .def("orbit", (void(ofLight::*)(float,float,float,ofNode&)) &ofLight::orbit),
          
          def("enableLighting", (void(*)(void)) &ofEnableLighting),
          def("disableLighting", (void(*)(void)) &ofDisableLighting),
@@ -1137,6 +1575,12 @@ class ofGamuzaWrapper{
          .def("moveFromTo", (bool(*)(string,string,bool,bool)) &ofFile::moveFromTo)
          .def("doesFileExist", (bool(*)(string,bool)) &ofFile::moveFromTo)
          .def("removeFile", (bool(*)(string,bool)) &ofFile::removeFile),
+         
+         ///////////////////////////////////////////////////////////////////////////////////
+		 /// \section ofFileUtils
+         
+         def("bufferFromFile", &ofBufferFromFile),
+         def("bufferToFile", &ofBufferToFile),
          
          ///////////////////////////////////////////////////////////////////////////////////
 		 /// \section ofHttpRequest
@@ -1284,7 +1728,7 @@ class ofGamuzaWrapper{
          
          
 		 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		 /// \section graphics [ofPath, ofImage, ofPixels, ofGraphics, ofPixelUtils, ofTrueTypeFont, ofPolyline, ofTessellator, ofRendererCollection]
+		 /// \section graphics [ofPath, ofImage, ofFloatImage, ofPixels, ofGraphics, ofPixelUtils, ofTrueTypeFont, ofTTFCharacter, ofPolyline, ofTessellator, ofRendererCollection]
          
          ///////////////////////////////////////////////////////////////////////////////////
 		 /// \section ofPath
@@ -1356,9 +1800,10 @@ class ofGamuzaWrapper{
          .def("setUseTexture", (void(ofImage::*)(bool)) &ofImage::setUseTexture)
          .def("getTextureReference", (ofTexture&(ofImage::*)(void)) &ofImage::getTextureReference)
 		 .def("loadImage", (bool(ofImage::*)(string)) &ofImage::loadImage)
-         // .def("saveImage", (bool(ofImage::*)(string)) &ofImage::saveImage)                                       NOT AVAILABLE
+         .def("saveImage", (void(ofImage::*)(string, ofImageQualityType)) &ofImage::saveImage)
+         .def("saveImageBuffer", (void(ofImage::*)(ofBuffer&, ofImageQualityType)) &ofImage::saveImage)
 		 .def("getPixels", (unsigned char*(ofImage::*)(void)) &ofImage::getPixels)
-         // .def("setFromPixels", (void(ofImage::*)(unsigned char*,int,int,int,bool)) &ofImage::setFromPixels)      NOT AVAILABLE
+         .def("setFromPixels", (void(ofImage::*)(const ofPixels&)) &ofImage::setFromPixels)
 		 .def("setImageType", (void(ofImage::*)(int)) &ofImage::setImageType)
          .def("resize", (void(ofImage::*)(int,int)) &ofImage::resize)
          .def("grabScreen", (void(ofImage::*)(int,int,int,int)) &ofImage::grabScreen)
@@ -1387,11 +1832,55 @@ class ofGamuzaWrapper{
          .def_readonly("type", &ofImage::type)
 		 .def_readonly("bpp", &ofImage::bpp),
          
-         def("ofLoadImage",	(bool(*)(ofPixels&,string)) &ofLoadImage),
-         def("ofLoadImage",	(bool(*)(ofPixels&,const ofBuffer&)) &ofLoadImage),
-         def("ofLoadImage",	(bool(*)(ofTexture&,string)) &ofLoadImage),
-         def("ofLoadImage",	(bool(*)(ofTexture&,const ofBuffer&)) &ofLoadImage),
-         // def("ofSaveImage",	(bool(*)(ofPixels&,string,ofImageQualityType)) &ofSaveImage),                       NOT AVAILABLE
+         def("loadImage",	(bool(*)(ofPixels&,string)) &ofLoadImage),
+         //def("loadImage",	(bool(*)(ofPixels&,const ofBuffer&)) &ofLoadImage),
+         //def("loadImage",	(bool(*)(ofTexture&,string)) &ofLoadImage),
+         //def("loadImage",	(bool(*)(ofTexture&,const ofBuffer&)) &ofLoadImage),
+         def("saveImage",	(void(*)(ofPixels&,string,ofImageQualityType)) &ofSaveImage),
+         
+         ///////////////////////////////////////////////////////////////////////////////////
+		 /// \section ofFloatImage
+		 
+		 class_<ofFloatImage>("floatImage")
+		 .def(constructor<>())
+		 .def(constructor<const string&>())
+		 .def("allocate", (void(ofFloatImage::*)(int,int,int)) &ofFloatImage::allocate)
+		 .def("clear", (void(ofFloatImage::*)(void)) &ofFloatImage::clear)
+         .def("clone", (void(ofFloatImage::*)(const ofFloatImage&)) &ofFloatImage::clone)
+         .def("setUseTexture", (void(ofFloatImage::*)(bool)) &ofFloatImage::setUseTexture)
+         .def("getTextureReference", (ofTexture&(ofFloatImage::*)(void)) &ofFloatImage::getTextureReference)
+		 .def("loadImage", (bool(ofFloatImage::*)(string)) &ofFloatImage::loadImage)
+         .def("saveImage", (void(ofFloatImage::*)(string, ofImageQualityType)) &ofFloatImage::saveImage)
+         .def("saveImageBuffer", (void(ofFloatImage::*)(ofBuffer&, ofImageQualityType)) &ofFloatImage::saveImage)
+		 .def("getPixels", (unsigned char*(ofFloatImage::*)(void)) &ofFloatImage::getPixels)
+         //.def("setFromPixels", (void(ofImage::*)(const ofPixels&)) &ofImage::setFromPixels)
+		 .def("setImageType", (void(ofFloatImage::*)(int)) &ofFloatImage::setImageType)
+         .def("resize", (void(ofFloatImage::*)(int,int)) &ofFloatImage::resize)
+         .def("grabScreen", (void(ofFloatImage::*)(int,int,int,int)) &ofFloatImage::grabScreen)
+         .def("update", (void(ofFloatImage::*)(void)) &ofFloatImage::update)
+		 .def("draw", (void(ofFloatImage::*)(float,float)) &ofFloatImage::draw)
+		 .def("draw", (void(ofFloatImage::*)(float,float,float,float)) &ofFloatImage::draw)
+         .def("getWidth", (float(ofFloatImage::*)(void)) &ofFloatImage::getWidth)
+         .def("getHeight", (float(ofFloatImage::*)(void)) &ofFloatImage::getHeight)
+		 .def("getColor", (ofColor(ofFloatImage::*)(int,int)) &ofFloatImage::getColor)
+		 .def("setColor", (void(ofFloatImage::*)(int,int,ofColor)) &ofFloatImage::setColor)
+         .def("setImageType", (void(ofFloatImage::*)(ofImageType)) &ofFloatImage::setImageType)
+         .def("crop", (void(ofFloatImage::*)(int,int,int,int)) &ofFloatImage::crop)
+         .def("cropFrom", (void(ofFloatImage::*)(ofFloatImage&,int,int,int,int)) &ofFloatImage::cropFrom)
+         .def("rotate90", (void(ofFloatImage::*)(int)) &ofFloatImage::rotate90)
+		 .def("mirror", (void(ofFloatImage::*)(bool,bool)) &ofFloatImage::mirror)
+		 .def("setAnchorPoint", (void(ofFloatImage::*)(float,float)) &ofFloatImage::setAnchorPoint)
+         .def("draw", (void(ofFloatImage::*)(const ofRectangle&)) &ofFloatImage::draw)
+         .def("draw", (void(ofFloatImage::*)(const ofPoint&,float,float)) &ofFloatImage::draw)
+         .def("draw", (void(ofFloatImage::*)(float,float,float)) &ofFloatImage::draw)
+         .def("draw", (void(ofFloatImage::*)(const ofPoint&)) &ofFloatImage::draw)
+         .def("draw", (void(ofFloatImage::*)(float,float,float,float,float)) &ofFloatImage::draw)
+		 .def("bAllocated", (void(ofFloatImage::*)(bool)) &ofFloatImage::bAllocated)
+         .def("reloadTexture", (void(ofFloatImage::*)(void)) &ofFloatImage::reloadTexture)
+		 .def_readonly("width", &ofFloatImage::width)
+		 .def_readonly("height", &ofFloatImage::height)
+         .def_readonly("type", &ofFloatImage::type)
+		 .def_readonly("bpp", &ofFloatImage::bpp),
          
          ///////////////////////////////////////////////////////////////////////////////////
 		 /// \section ofPixels
@@ -1400,10 +1889,7 @@ class ofGamuzaWrapper{
 		 .def(constructor<>())
 		 .def("allocate", (void(ofPixels::*)(int,int,int)) &ofPixels::allocate)
 		 .def("set", (void(ofPixels::*)(unsigned char)) &ofPixels::set)
-         // void ofPixels::setFromPixels(unsigned char *newPixels, int w, int h, ofImageType newType)                           NOT AVAILABLE
-         // void ofPixels::setFromExternalPixels(unsigned char *newPixels, int w, int h, ofImageType newType)                   NOT AVAILABLE
-         // void ofPixels::setFromAlignedPixels(unsigned char *newPixels, int w, int h, ofImageType newType, int widthStep)     NOT AVAILABLE
-         // .def("setFromPixels", (void(ofPixels::*)(unsigned char*,int,int,int)) &ofPixels::setFromPixels)                     NOT AVAILABLE
+         //.def("setFromPixels", (void(ofPixels::*)(unsigned char*,int,int,ofImageType)) &ofPixels::setFromPixels)
          .def("setFromExternalPixels", (void(ofPixels::*)(unsigned char*,int,int,int)) &ofPixels::setFromExternalPixels)
          .def("setFromAlignedPixels", (void(ofPixels::*)(unsigned char*,int,int,int,int)) &ofPixels::setFromAlignedPixels)
          .def("swapRgb", (void(ofPixels::*)(void)) &ofPixels::swapRgb)
@@ -1502,7 +1988,7 @@ class ofGamuzaWrapper{
          def("getFill", (ofFillFlag(*)(void)) &ofGetFill),
          def("setColor", (void(*)(const ofColor&)) &ofSetColor),
          def("setColor", (void(*)(const ofColor&,int)) &ofSetColor),
-         def("enableBlendMode", (void(*)(void)) &ofEnableBlendMode),
+         def("enableBlendMode", (void(*)(ofBlendMode)) &ofEnableBlendMode),
 		 def("disableBlendMode", (void(*)(void)) &ofDisableBlendMode),
          def("enablePointSprites", (void(*)(void)) &ofEnablePointSprites),
 		 def("disablePointSprites", (void(*)(void)) &ofDisablePointSprites),
@@ -1581,10 +2067,12 @@ class ofGamuzaWrapper{
 		 .def("getSpaceSize", (float(ofTrueTypeFont::*)(void)) &ofTrueTypeFont::getSpaceSize)
 		 .def("setSpaceSize", (void(ofTrueTypeFont::*)(float)) &ofTrueTypeFont::setSpaceSize)
 		 .def("getNumCharacters", (int(ofTrueTypeFont::*)(void)) &ofTrueTypeFont::getNumCharacters)
-		 .def("getStringAsPoints", (ofTTFCharacter(ofTrueTypeFont::*)(string)) &ofTrueTypeFont::getStringAsPoints)
+         .def("getCharacterAsPoints", (ofTTFCharacter(ofTrueTypeFont::*)(int)) &ofTrueTypeFont::getCharacterAsPoints)
+		 .def("getStringAsPoints", (vector<ofTTFCharacter>(ofTrueTypeFont::*)(string)) &ofTrueTypeFont::getStringAsPoints)
          .def("bind", (void(ofTrueTypeFont::*)(void)) &ofTrueTypeFont::bind)
          .def("unbind", (void(ofTrueTypeFont::*)(void)) &ofTrueTypeFont::unbind),
          // .def("setGlobalDpi", (void(ofTrueTypeFont::*)(int)) &ofTrueTypeFont::setGlobalDpi)                      NOT AVAILABLE
+         
          ///////////////////////////////////////////////////////////////////////////////////
 		 /// \section ofPolyLine
 		 
@@ -1592,8 +2080,7 @@ class ofGamuzaWrapper{
 		 .def(constructor<>())
          .def("clear", (void(ofPolyline::*)(void)) &ofPolyline::clear)
          .def("addVertex", (void(ofPolyline::*)(float,float,float)) &ofPolyline::addVertex)
-         // void ofPolyline::addVertexes(const vector< ofPoint > &verts)                                                         NOT AVAILABLE
-         // .def("addVertexes", (void(ofPolyline::*)(const ofPoint&,int)) &ofPolyline::addVertexes)                              NOT AVAILABLE
+         .def("addVertexes", (void(ofPolyline::*)(const vector<ofPoint>&)) &ofPolyline::addVertexes)
          .def("lineTo", (void(ofPolyline::*)(const ofPoint&)) &ofPolyline::lineTo)
          .def("lineTo", (void(ofPolyline::*)(float,float,float)) &ofPolyline::lineTo)
          .def("arc", (void(ofPolyline::*)(const ofPoint&,float,float,float,float,int)) &ofPolyline::arc)
@@ -1612,8 +2099,6 @@ class ofGamuzaWrapper{
          .def("getResampledByCount", (ofPolyline(ofPolyline::*)(int)) &ofPolyline::getResampledByCount) // int count
          .def("getBoundingBox", (ofRectangle(ofPolyline::*)(void)) &ofPolyline::getBoundingBox)
          .def("getClosestPoint", (ofPoint(ofPolyline::*)(const ofPoint&,unsigned int*)) &ofPolyline::getClosestPoint)
-         //.def("inside", (bool(ofPolyline::*)(float,float)) &ofPolyline::inside)                                               NOT AVAILABLE
-         //.def("inside", (bool(ofPolyline::*)(const ofPoint&)) &ofPolyline::inside)                                            NOT AVAILABLE
          .def("simplify", (void(ofPolyline::*)(float)) &ofPolyline::simplify)
          .def("size", (size_t(ofPolyline::*)(void)) &ofPolyline::size)
          .def("resize", (void(ofPolyline::*)(size_t)) &ofPolyline::resize)
@@ -1621,10 +2106,8 @@ class ofGamuzaWrapper{
          .def("isClosed", (bool(ofPolyline::*)(void)) &ofPolyline::isClosed)
          .def("close", (void(ofPolyline::*)(void)) &ofPolyline::close)
          .def("hasChanged", (bool(ofPolyline::*)(void)) &ofPolyline::hasChanged)
-         .def("getVertices", (ofPoint(ofPolyline::*)(void)) &ofPolyline::getVertices)
+         .def("getVertices", (vector<ofPoint>&(ofPolyline::*)(void)) &ofPolyline::getVertices)
          .def("getPerimeter", (float(ofPolyline::*)(void)) &ofPolyline::getPerimeter)
-         //.def("getArea", (float(ofPolyline::*)(void)) &ofPolyline::getArea)
-         //.def("getCentroid2D", (ofPoint(ofPolyline::*)(void)) &ofPolyline::getCentroid2D)
          .def("draw", (void(ofPolyline::*)(void)) &ofPolyline::draw),
 		 
          ///////////////////////////////////////////////////////////////////////////////////
@@ -1687,6 +2170,84 @@ class ofGamuzaWrapper{
 		 .def_readonly("a", &ofColor::a),
          
          ///////////////////////////////////////////////////////////////////////////////////
+		 /// \section ofFloatColor
+		 
+		 class_<ofFloatColor>("floatColor")
+		 .def(constructor<>())
+		 .def(constructor<float,float,float,float>())
+         .def(constructor<ofFloatColor const&>())
+         .def(constructor<ofFloatColor const&,float>())
+		 .def(constructor<float,float>())
+         .def("getHex", (int(ofFloatColor::*)(void)) &ofFloatColor::getHex)
+         .def("clamp", (ofFloatColor(ofFloatColor::*)(void)) &ofFloatColor::clamp)
+         .def("invert", (ofFloatColor(ofFloatColor::*)(void)) &ofFloatColor::invert)
+         .def("normalize", (ofFloatColor(ofFloatColor::*)(void)) &ofFloatColor::normalize)
+         .def("getClamped", (ofFloatColor(ofFloatColor::*)(void)) &ofFloatColor::getClamped)
+         .def("getInverted", (ofFloatColor(ofFloatColor::*)(void)) &ofFloatColor::getInverted)
+         .def("getNormalized", (ofFloatColor(ofFloatColor::*)(void)) &ofFloatColor::getNormalized)
+         .def("getHue", (float(ofFloatColor::*)(void)) &ofFloatColor::getHue)
+		 .def("getSaturation", (float(ofFloatColor::*)(void)) &ofFloatColor::getSaturation)
+		 .def("getBrightness", (float(ofFloatColor::*)(void)) &ofFloatColor::getBrightness)
+         .def("getLightness", (float(ofFloatColor::*)(void)) &ofFloatColor::getLightness)
+         .def("setHue", (void(ofFloatColor::*)(float)) &ofFloatColor::setHue)
+		 .def("setSaturation", (void(ofFloatColor::*)(float)) &ofFloatColor::setSaturation)
+		 .def("setBrightness", (void(ofFloatColor::*)(float)) &ofFloatColor::setBrightness)
+         .def("setHsb", (void(ofFloatColor::*)(float,float,float,float)) &ofFloatColor::setHsb)
+         .def("setHsb", (void(ofFloatColor::*)(float,float,float)) &ofFloatColor::setHsb)
+		 .def("set", (void(ofFloatColor::*)(float,float,float,float)) &ofFloatColor::set)
+		 .def("set", (void(ofFloatColor::*)(float,float)) &ofFloatColor::set)
+         .def("set", (void(ofFloatColor::*)(ofFloatColor const&)) &ofFloatColor::set)
+		 .def("setHex", (void(ofFloatColor::*)(int,float)) &ofFloatColor::setHex)
+		 .def("lerp", (ofFloatColor(ofFloatColor::*)(const ofFloatColor&, float)) &ofFloatColor::lerp)
+         .def("getLerped", (ofFloatColor(ofFloatColor::*)(const ofFloatColor&, float)) &ofFloatColor::getLerped)
+		 .def("getHsb", (void(ofFloatColor::*)(float&,float&,float&)) &ofFloatColor::getHsb)
+		 //.def("fromHsb", (ofFloatColor(ofFloatColor::*)(float,float,float,float)) &ofFloatColor::fromHsb)    NOT AVAILABLE
+		 //.def("fromHex", (ofFloatColor(ofFloatColor::*)(int,float)) &ofFloatColor::fromHex)                  NOT AVAILABLE
+         .def_readonly("r", &ofFloatColor::r)
+		 .def_readonly("g", &ofFloatColor::g)
+		 .def_readonly("b", &ofFloatColor::b)
+		 .def_readonly("a", &ofFloatColor::a),
+         
+         ///////////////////////////////////////////////////////////////////////////////////
+		 /// \section ofShortColor
+		 
+		 class_<ofShortColor>("shortColor")
+		 .def(constructor<>())
+		 .def(constructor<float,float,float,float>())
+         .def(constructor<ofShortColor const&>())
+         .def(constructor<ofShortColor const&,float>())
+		 .def(constructor<float,float>())
+         .def("getHex", (int(ofShortColor::*)(void)) &ofShortColor::getHex)
+         .def("clamp", (ofShortColor(ofShortColor::*)(void)) &ofShortColor::clamp)
+         .def("invert", (ofShortColor(ofShortColor::*)(void)) &ofShortColor::invert)
+         .def("normalize", (ofShortColor(ofShortColor::*)(void)) &ofShortColor::normalize)
+         .def("getClamped", (ofShortColor(ofShortColor::*)(void)) &ofShortColor::getClamped)
+         .def("getInverted", (ofShortColor(ofShortColor::*)(void)) &ofShortColor::getInverted)
+         .def("getNormalized", (ofShortColor(ofShortColor::*)(void)) &ofShortColor::getNormalized)
+         .def("getHue", (float(ofShortColor::*)(void)) &ofShortColor::getHue)
+		 .def("getSaturation", (float(ofShortColor::*)(void)) &ofShortColor::getSaturation)
+		 .def("getBrightness", (float(ofShortColor::*)(void)) &ofShortColor::getBrightness)
+         .def("getLightness", (float(ofShortColor::*)(void)) &ofShortColor::getLightness)
+         .def("setHue", (void(ofShortColor::*)(float)) &ofShortColor::setHue)
+		 .def("setSaturation", (void(ofShortColor::*)(float)) &ofShortColor::setSaturation)
+		 .def("setBrightness", (void(ofShortColor::*)(float)) &ofShortColor::setBrightness)
+         .def("setHsb", (void(ofShortColor::*)(float,float,float,float)) &ofShortColor::setHsb)
+         .def("setHsb", (void(ofShortColor::*)(float,float,float)) &ofShortColor::setHsb)
+		 .def("set", (void(ofShortColor::*)(float,float,float,float)) &ofShortColor::set)
+		 .def("set", (void(ofShortColor::*)(float,float)) &ofShortColor::set)
+         .def("set", (void(ofShortColor::*)(ofShortColor const&)) &ofShortColor::set)
+		 .def("setHex", (void(ofShortColor::*)(int,float)) &ofShortColor::setHex)
+		 .def("lerp", (ofShortColor(ofShortColor::*)(const ofShortColor&, float)) &ofShortColor::lerp)
+         .def("getLerped", (ofShortColor(ofShortColor::*)(const ofShortColor&, float)) &ofShortColor::getLerped)
+		 .def("getHsb", (void(ofShortColor::*)(float&,float&,float&)) &ofShortColor::getHsb)
+		 //.def("fromHsb", (ofShortColor(ofShortColor::*)(float,float,float,float)) &ofShortColor::fromHsb)    NOT AVAILABLE
+		 //.def("fromHex", (ofShortColor(ofShortColor::*)(int,float)) &ofShortColor::fromHex)                  NOT AVAILABLE
+         .def_readonly("r", &ofShortColor::r)
+		 .def_readonly("g", &ofShortColor::g)
+		 .def_readonly("b", &ofShortColor::b)
+		 .def_readonly("a", &ofShortColor::a),
+         
+         ///////////////////////////////////////////////////////////////////////////////////
 		 /// \section ofStyle
          
          class_<ofStyle>("style")
@@ -1744,7 +2305,15 @@ class ofGamuzaWrapper{
 		 /// \section events [ofKeyEventArgs, ofAudioEventArgs, ofCoreEvents, ofEventArgs, ofEvent, ofMouseEventArgs, ofResizeEventArgs, ofEvents, ofEventUtils]
          
          
-         // NOT AVAILABLE IN GAMUZA 0.3 IN THE LIVE CODING SYSTEM
+         ///////////////////////////////////////////////////////////////////////////////////
+		 /// \section ofEvents
+         
+         def("getMousePressed", &ofGetMousePressed),
+         def("getKeyPressed", &ofGetKeyPressed),
+         def("getMouseX", &ofGetMouseX),
+         def("getMouseY", &ofGetMouseY),
+         def("getPreviousMouseX", &ofGetPreviousMouseX),
+         def("getPreviousMouseY", &ofGetPreviousMouseY),
          
          
          ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1820,7 +2389,7 @@ class ofGamuzaWrapper{
          
          ///////////////////////////////
          // ofx3DBaseLoader
-         class_<ofx3DBaseLoader>("3DBaseLoader")
+         class_<ofx3DBaseLoader>("BaseLoader3D")
          .def(constructor<>())
          .def("loadModel", (void(ofx3DBaseLoader::*)(string,float)) &ofx3DBaseLoader::loadModel)
          .def("loadModel", (void(ofx3DBaseLoader::*)(string)) &ofx3DBaseLoader::loadModel)
@@ -1829,7 +2398,7 @@ class ofGamuzaWrapper{
          
          ///////////////////////////////
          // ofx3DModelLoader
-         class_<ofx3DModelLoader>("3DModelLoader")
+         class_<ofx3DModelLoader>("ModelLoader3D")
          .def(constructor<>())
          .def("loadModel", (void(ofx3DModelLoader::*)(string,float)) &ofx3DModelLoader::loadModel)
          .def("setPosition", (void(ofx3DModelLoader::*)(float,float,float)) &ofx3DModelLoader::setPosition)
@@ -2136,6 +2705,225 @@ class ofGamuzaWrapper{
          
          .def("drawString", (void(ofxArcText::*)(string,float,float,float)) &ofxArcText::drawString)
          .def("getCharacterWidth", (float(ofxArcText::*)(char)) &ofxArcText::getCharacterWidth),
+         //////////////////////////////////////////////////////////////////////////////////////////////////
+         
+         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         // OFXBOX2D
+         class_<ofxBox2d>("box2d")
+         .def(constructor<>())
+         .def("init", (void(ofxBox2d::*)(void)) &ofxBox2d::init)
+         .def("setFPS", (void(ofxBox2d::*)(float)) &ofxBox2d::setFPS)
+         
+         .def("mousePressed", (void(ofxBox2d::*)(ofMouseEventArgs&)) &ofxBox2d::mousePressed)
+         .def("mouseDragged", (void(ofxBox2d::*)(ofMouseEventArgs&)) &ofxBox2d::mouseDragged)
+         .def("mouseReleased", (void(ofxBox2d::*)(ofMouseEventArgs&)) &ofxBox2d::mouseReleased)
+         
+         .def("registerGrabbing", (void(ofxBox2d::*)(void)) &ofxBox2d::registerGrabbing)
+         .def("grabShapeDown", (void(ofxBox2d::*)(float,float)) &ofxBox2d::grabShapeDown)
+         .def("grabShapeUp", (void(ofxBox2d::*)(float,float)) &ofxBox2d::grabShapeUp)
+         .def("grabShapeDragged", (void(ofxBox2d::*)(float,float)) &ofxBox2d::grabShapeDragged)
+         .def("getWorld", (b2World*(ofxBox2d::*)(void)) &ofxBox2d::getWorld)
+         .def("getBodyCount", (int(ofxBox2d::*)(void)) &ofxBox2d::getBodyCount)
+         .def("getJointCount", (int(ofxBox2d::*)(void)) &ofxBox2d::getJointCount)
+         .def("enableGrabbing", (void(ofxBox2d::*)(void)) &ofxBox2d::enableGrabbing)
+         .def("disableGrabbing", (void(ofxBox2d::*)(void)) &ofxBox2d::disableGrabbing)
+         .def("setContactListener", (void(ofxBox2d::*)(ofxBox2dContactListener*)) &ofxBox2d::setContactListener)
+         .def("setIterations", (void(ofxBox2d::*)(int,int)) &ofxBox2d::setIterations)
+         .def("setGravity", (void(ofxBox2d::*)(float,float)) &ofxBox2d::setGravity)
+         .def("setGravity", (void(ofxBox2d::*)(ofPoint)) &ofxBox2d::setGravity)
+         .def("setBounds", (void(ofxBox2d::*)(ofPoint,ofPoint)) &ofxBox2d::setBounds)
+         .def("createBounds", (void(ofxBox2d::*)(float,float,float,float)) &ofxBox2d::createBounds)
+         .def("createBounds", (void(ofxBox2d::*)(ofRectangle&)) &ofxBox2d::createBounds)
+         .def("createGround", (void(ofxBox2d::*)(const ofPoint&,const ofPoint&)) &ofxBox2d::createGround)
+         .def("createGround", (void(ofxBox2d::*)(float,float,float,float)) &ofxBox2d::createGround)
+         .def("checkBounds", (void(ofxBox2d::*)(bool)) &ofxBox2d::checkBounds)
+         
+         .def("update", (void(ofxBox2d::*)(void)) &ofxBox2d::update)
+         .def("draw", (void(ofxBox2d::*)(void)) &ofxBox2d::draw)
+         .def("drawGround", (void(ofxBox2d::*)(void)) &ofxBox2d::drawGround),
+         
+         class_<ofxBox2dCircle>("box2dCircle")
+         .def(constructor<>())
+         
+         // from ofxBox2dBaseShape
+         .def("isBody", (bool(ofxBox2dCircle::*)(void)) &ofxBox2dCircle::isBody)
+         .def("isFixed", (bool(ofxBox2dCircle::*)(void)) &ofxBox2dCircle::isFixed)
+         .def("getWorld", (b2World*(ofxBox2dCircle::*)(void)) &ofxBox2dCircle::getWorld)
+         .def("create", (void(ofxBox2dCircle::*)(void)) &ofxBox2dCircle::create)
+         .def("setBounce", (void(ofxBox2dCircle::*)(float)) &ofxBox2dCircle::setBounce)
+         .def("setDensity", (void(ofxBox2dCircle::*)(float)) &ofxBox2dCircle::setDensity)
+         .def("setFriction", (void(ofxBox2dCircle::*)(float)) &ofxBox2dCircle::setFriction)
+         .def("setPhysics", (void(ofxBox2dCircle::*)(float,float,float)) &ofxBox2dCircle::setPhysics)
+         .def("setData", (void*(ofxBox2dCircle::*)(void*)) &ofxBox2dCircle::setData)
+         .def("getData", (void*(ofxBox2dCircle::*)(void)) &ofxBox2dCircle::getData)
+         .def("setFilterData", (void(ofxBox2dCircle::*)(b2Filter)) &ofxBox2dCircle::setFilterData)
+         .def("enableGravity", (void(ofxBox2dCircle::*)(bool)) &ofxBox2dCircle::enableGravity)
+         .def("setFixedRotation", (void(ofxBox2dCircle::*)(bool)) &ofxBox2dCircle::setFixedRotation)
+         .def("setRotationFriction", (void(ofxBox2dCircle::*)(float)) &ofxBox2dCircle::setRotationFriction)
+         .def("getRotation", (float(ofxBox2dCircle::*)(void)) &ofxBox2dCircle::getRotation)
+         .def("getPosition", (ofVec2f(ofxBox2dCircle::*)(void)) &ofxBox2dCircle::getPosition)
+         .def("getB2DPosition", (ofVec2f(ofxBox2dCircle::*)(void)) &ofxBox2dCircle::getB2DPosition)
+         .def("setVelocity", (void(ofxBox2dCircle::*)(float,float)) &ofxBox2dCircle::setVelocity)
+         .def("setVelocity", (void(ofxBox2dCircle::*)(ofVec2f)) &ofxBox2dCircle::setVelocity)
+         .def("getVelocity", (ofVec2f(ofxBox2dCircle::*)(void)) &ofxBox2dCircle::getVelocity)
+         .def("setDamping", (void(ofxBox2dCircle::*)(float)) &ofxBox2dCircle::setDamping)
+         .def("setDamping", (void(ofxBox2dCircle::*)(float,float)) &ofxBox2dCircle::setDamping)
+         .def("addForce", (void(ofxBox2dCircle::*)(ofVec2f,float)) &ofxBox2dCircle::addForce)
+         .def("addImpulseForce", (void(ofxBox2dCircle::*)(ofVec2f,ofVec2f)) &ofxBox2dCircle::addImpulseForce)
+         .def("destroy", (void(ofxBox2dCircle::*)(void)) &ofxBox2dCircle::destroy)
+         .def("update", (void(ofxBox2dCircle::*)(void)) &ofxBox2dCircle::update)
+         
+         .def("setup", (void(ofxBox2dCircle::*)(b2World*,float,float,float)) &ofxBox2dCircle::setup)
+         .def("getRadius", (float(ofxBox2dCircle::*)(void)) &ofxBox2dCircle::getRadius)
+         .def("setRadius", (void(ofxBox2dCircle::*)(float)) &ofxBox2dCircle::setRadius)
+         .def("draw", (void(ofxBox2dCircle::*)(void)) &ofxBox2dCircle::draw)
+         .def("addAttractionPoint", (void(ofxBox2dCircle::*)(float,float,float)) &ofxBox2dCircle::addAttractionPoint)
+         .def("addAttractionPoint", (void(ofxBox2dCircle::*)(ofVec2f,float)) &ofxBox2dCircle::addAttractionPoint)
+         .def("addRepulsionForce", (void(ofxBox2dCircle::*)(float,float,float)) &ofxBox2dCircle::addRepulsionForce)
+         .def("addRepulsionForce", (void(ofxBox2dCircle::*)(ofVec2f,float)) &ofxBox2dCircle::addRepulsionForce),
+         
+         class_<ofxBox2dJoint>("box2dJoint")
+         .def(constructor<>())
+         .def(constructor<b2World*,b2Body*,b2Body*,float,float,bool>())
+         .def(constructor<b2World*,b2Body*,b2Body*,b2Vec2,b2Vec2,float,float,bool>())
+         
+         .def("setWorld", (void(ofxBox2dJoint::*)(b2World*)) &ofxBox2dJoint::setWorld)
+         .def("setup", (void(ofxBox2dJoint::*)(b2World*,b2Body*,b2Body*,float,float,bool)) &ofxBox2dJoint::setup)
+         .def("setup", (void(ofxBox2dJoint::*)(b2World*,b2Body*,b2Body*,b2Vec2,b2Vec2,float,float,bool)) &ofxBox2dJoint::setup)
+         .def("isSetup", (bool(ofxBox2dJoint::*)(void)) &ofxBox2dJoint::isSetup)
+         .def("draw", (void(ofxBox2dJoint::*)(void)) &ofxBox2dJoint::draw)
+         .def("destroy", (void(ofxBox2dJoint::*)(void)) &ofxBox2dJoint::destroy)
+         .def("setLength", (void(ofxBox2dJoint::*)(float)) &ofxBox2dJoint::setLength)
+         .def("getLength", (float(ofxBox2dJoint::*)(void)) &ofxBox2dJoint::getLength)
+         .def("setFrequency", (void(ofxBox2dJoint::*)(float)) &ofxBox2dJoint::setFrequency)
+         .def("getFrequency", (float(ofxBox2dJoint::*)(void)) &ofxBox2dJoint::getFrequency)
+         .def("setDamping", (void(ofxBox2dJoint::*)(float)) &ofxBox2dJoint::setDamping)
+         .def("getDamping", (float(ofxBox2dJoint::*)(void)) &ofxBox2dJoint::getDamping)
+         .def("getReactionForce", (ofVec2f(ofxBox2dJoint::*)(float)) &ofxBox2dJoint::getReactionForce)
+         .def("getReactionForceB2D", (b2Vec2(ofxBox2dJoint::*)(float)) &ofxBox2dJoint::getReactionForceB2D)
+         .def("getReactionTorque", (float(ofxBox2dJoint::*)(float)) &ofxBox2dJoint::getReactionTorque),
+         
+         class_<ofxBox2dPolygon>("box2dPolygon")
+         .def(constructor<>())
+         
+         // from ofPolyline
+         .def("clear", (void(ofxBox2dPolygon::*)(void)) &ofxBox2dPolygon::clear)
+         .def("addVertex", (void(ofxBox2dPolygon::*)(float,float,float)) &ofxBox2dPolygon::addVertex)
+         .def("lineTo", (void(ofxBox2dPolygon::*)(const ofPoint&)) &ofxBox2dPolygon::lineTo)
+         .def("lineTo", (void(ofxBox2dPolygon::*)(float,float,float)) &ofxBox2dPolygon::lineTo)
+         .def("arc", (void(ofxBox2dPolygon::*)(const ofPoint&,float,float,float,float,int)) &ofxBox2dPolygon::arc)
+         .def("arc", (void(ofxBox2dPolygon::*)(float,float,float,float,float,float,int)) &ofxBox2dPolygon::arc)
+         .def("arc", (void(ofxBox2dPolygon::*)(float,float,float,float,float,float,float,int)) &ofxBox2dPolygon::arc)
+         .def("curveTo", (void(ofxBox2dPolygon::*)(const ofPoint&,int)) &ofxBox2dPolygon::curveTo)
+         .def("curveTo", (void(ofxBox2dPolygon::*)(float,float,float,int)) &ofxBox2dPolygon::curveTo)
+         .def("bezierTo", (void(ofxBox2dPolygon::*)(const ofPoint&,const ofPoint&,const ofPoint&,int)) &ofxBox2dPolygon::bezierTo)
+         .def("bezierTo", (void(ofxBox2dPolygon::*)(float,float,float,float,float,float,int)) &ofxBox2dPolygon::bezierTo)
+         .def("bezierTo", (void(ofxBox2dPolygon::*)(float,float,float,float,float,float,float,float,float,int)) &ofxBox2dPolygon::bezierTo)
+         .def("quadBezierTo", (void(ofxBox2dPolygon::*)(const ofPoint&,const ofPoint&,const ofPoint&,int)) &ofxBox2dPolygon::quadBezierTo)
+         .def("quadBezierTo", (void(ofxBox2dPolygon::*)(float,float,float,float,float,float,int)) &ofxBox2dPolygon::quadBezierTo)
+         .def("quadBezierTo", (void(ofxBox2dPolygon::*)(float,float,float,float,float,float,float,float,float,int)) &ofxBox2dPolygon::quadBezierTo)
+         .def("getSmoothed", (ofxBox2dPolygon(ofxBox2dPolygon::*)(int,float)) &ofxBox2dPolygon::getSmoothed)
+         .def("getResampledBySpacing", (ofxBox2dPolygon(ofxBox2dPolygon::*)(float)) &ofxBox2dPolygon::getResampledBySpacing)
+         .def("getResampledByCount", (ofxBox2dPolygon(ofxBox2dPolygon::*)(int)) &ofxBox2dPolygon::getResampledByCount)
+         .def("getBoundingBox", (ofRectangle(ofxBox2dPolygon::*)(void)) &ofxBox2dPolygon::getBoundingBox)
+         .def("getClosestPoint", (ofPoint(ofxBox2dPolygon::*)(const ofPoint&,unsigned int*)) &ofxBox2dPolygon::getClosestPoint)
+         .def("simplify", (void(ofxBox2dPolygon::*)(float)) &ofxBox2dPolygon::simplify)
+         .def("size", (size_t(ofxBox2dPolygon::*)(void)) &ofxBox2dPolygon::size)
+         .def("resize", (void(ofxBox2dPolygon::*)(size_t)) &ofxBox2dPolygon::resize)
+         .def("setClosed", (void(ofxBox2dPolygon::*)(bool)) &ofxBox2dPolygon::setClosed)
+         .def("isClosed", (bool(ofxBox2dPolygon::*)(void)) &ofxBox2dPolygon::isClosed)
+         .def("close", (void(ofxBox2dPolygon::*)(void)) &ofxBox2dPolygon::close)
+         .def("hasChanged", (bool(ofxBox2dPolygon::*)(void)) &ofxBox2dPolygon::hasChanged)
+         .def("getVertices", (ofPoint(ofxBox2dPolygon::*)(void)) &ofxBox2dPolygon::getVertices)
+         .def("getPerimeter", (float(ofxBox2dPolygon::*)(void)) &ofxBox2dPolygon::getPerimeter)
+         
+         // from ofxBox2dBaseShape
+         .def("isBody", (bool(ofxBox2dPolygon::*)(void)) &ofxBox2dPolygon::isBody)
+         .def("isFixed", (bool(ofxBox2dPolygon::*)(void)) &ofxBox2dPolygon::isFixed)
+         .def("getWorld", (b2World*(ofxBox2dPolygon::*)(void)) &ofxBox2dPolygon::getWorld)
+         .def("create", (void(ofxBox2dPolygon::*)(void)) &ofxBox2dPolygon::create)
+         .def("setBounce", (void(ofxBox2dPolygon::*)(float)) &ofxBox2dPolygon::setBounce)
+         .def("setDensity", (void(ofxBox2dPolygon::*)(float)) &ofxBox2dPolygon::setDensity)
+         .def("setFriction", (void(ofxBox2dPolygon::*)(float)) &ofxBox2dPolygon::setFriction)
+         .def("setPhysics", (void(ofxBox2dPolygon::*)(float,float,float)) &ofxBox2dPolygon::setPhysics)
+         .def("setData", (void*(ofxBox2dPolygon::*)(void*)) &ofxBox2dPolygon::setData)
+         .def("getData", (void*(ofxBox2dPolygon::*)(void)) &ofxBox2dPolygon::getData)
+         .def("setFilterData", (void(ofxBox2dPolygon::*)(b2Filter)) &ofxBox2dPolygon::setFilterData)
+         .def("enableGravity", (void(ofxBox2dPolygon::*)(bool)) &ofxBox2dPolygon::enableGravity)
+         .def("setFixedRotation", (void(ofxBox2dPolygon::*)(bool)) &ofxBox2dPolygon::setFixedRotation)
+         .def("setRotationFriction", (void(ofxBox2dPolygon::*)(float)) &ofxBox2dPolygon::setRotationFriction)
+         .def("getRotation", (float(ofxBox2dPolygon::*)(void)) &ofxBox2dPolygon::getRotation)
+         .def("getPosition", (ofVec2f(ofxBox2dPolygon::*)(void)) &ofxBox2dPolygon::getPosition)
+         .def("getB2DPosition", (ofVec2f(ofxBox2dPolygon::*)(void)) &ofxBox2dPolygon::getB2DPosition)
+         .def("setVelocity", (void(ofxBox2dPolygon::*)(float,float)) &ofxBox2dPolygon::setVelocity)
+         .def("setVelocity", (void(ofxBox2dPolygon::*)(ofVec2f)) &ofxBox2dPolygon::setVelocity)
+         .def("getVelocity", (ofVec2f(ofxBox2dPolygon::*)(void)) &ofxBox2dPolygon::getVelocity)
+         .def("setDamping", (void(ofxBox2dPolygon::*)(float)) &ofxBox2dPolygon::setDamping)
+         .def("setDamping", (void(ofxBox2dPolygon::*)(float,float)) &ofxBox2dPolygon::setDamping)
+         .def("addForce", (void(ofxBox2dPolygon::*)(ofVec2f,float)) &ofxBox2dPolygon::addForce)
+         .def("addImpulseForce", (void(ofxBox2dPolygon::*)(ofVec2f,ofVec2f)) &ofxBox2dPolygon::addImpulseForce)
+         .def("destroy", (void(ofxBox2dPolygon::*)(void)) &ofxBox2dPolygon::destroy)
+         .def("update", (void(ofxBox2dPolygon::*)(void)) &ofxBox2dPolygon::update)
+         
+         .def("setup", (void(ofxBox2dPolygon::*)(b2World*)) &ofxBox2dPolygon::setup)
+         .def("addTriangle", (void(ofxBox2dPolygon::*)(const ofVec2f&,const ofVec2f&,const ofVec2f&)) &ofxBox2dPolygon::addTriangle)
+         //.def("addVertexes", (void(ofxBox2dPolygon::*)(vector <ofVec2f>&)) &ofxBox2dPolygon::addVertexes)
+         .def("addVertexes", (void(ofxBox2dPolygon::*)(ofPolyline&)) &ofxBox2dPolygon::addVertexes)
+         .def("simplify", (void(ofxBox2dPolygon::*)(float)) &ofxBox2dPolygon::simplify)
+         .def("triangulate", (void(ofxBox2dPolygon::*)(float,int)) &ofxBox2dPolygon::triangulate)
+         .def("getCenter", (ofVec2f(ofxBox2dPolygon::*)(void)) &ofxBox2dPolygon::getCenter)
+         .def("getArea", (float(ofxBox2dPolygon::*)(void)) &ofxBox2dPolygon::getArea)
+         .def("isGoodShape", (bool(ofxBox2dPolygon::*)(void)) &ofxBox2dPolygon::isGoodShape)
+         .def("setAsEdge", (void(ofxBox2dPolygon::*)(bool)) &ofxBox2dPolygon::setAsEdge)
+         .def("addAttractionPoint", (void(ofxBox2dPolygon::*)(ofVec2f,float)) &ofxBox2dPolygon::addAttractionPoint)
+         .def("addAttractionPoint", (void(ofxBox2dPolygon::*)(float,float,float)) &ofxBox2dPolygon::addAttractionPoint)
+         .def("addRepulsionForce", (void(ofxBox2dPolygon::*)(ofVec2f,float)) &ofxBox2dPolygon::addRepulsionForce)
+         .def("addRepulsionForce", (void(ofxBox2dPolygon::*)(float,float,float)) &ofxBox2dPolygon::addRepulsionForce)
+         .def("updateShape", (void(ofxBox2dPolygon::*)(void)) &ofxBox2dPolygon::updateShape)
+         .def("create", (void(ofxBox2dPolygon::*)(b2World*)) &ofxBox2dPolygon::create)
+         .def("draw", (void(ofxBox2dPolygon::*)(void)) &ofxBox2dPolygon::draw),
+         
+         class_<ofxBox2dRect>("box2dRect")
+         .def(constructor<>())
+         
+         // from ofxBox2dBaseShape
+         .def("isBody", (bool(ofxBox2dRect::*)(void)) &ofxBox2dRect::isBody)
+         .def("isFixed", (bool(ofxBox2dRect::*)(void)) &ofxBox2dRect::isFixed)
+         .def("getWorld", (b2World*(ofxBox2dRect::*)(void)) &ofxBox2dRect::getWorld)
+         .def("create", (void(ofxBox2dRect::*)(void)) &ofxBox2dRect::create)
+         .def("setBounce", (void(ofxBox2dRect::*)(float)) &ofxBox2dRect::setBounce)
+         .def("setDensity", (void(ofxBox2dRect::*)(float)) &ofxBox2dRect::setDensity)
+         .def("setFriction", (void(ofxBox2dRect::*)(float)) &ofxBox2dRect::setFriction)
+         .def("setPhysics", (void(ofxBox2dRect::*)(float,float,float)) &ofxBox2dRect::setPhysics)
+         .def("setData", (void*(ofxBox2dRect::*)(void*)) &ofxBox2dRect::setData)
+         .def("getData", (void*(ofxBox2dRect::*)(void)) &ofxBox2dRect::getData)
+         .def("setFilterData", (void(ofxBox2dRect::*)(b2Filter)) &ofxBox2dRect::setFilterData)
+         .def("enableGravity", (void(ofxBox2dRect::*)(bool)) &ofxBox2dRect::enableGravity)
+         .def("setFixedRotation", (void(ofxBox2dRect::*)(bool)) &ofxBox2dRect::setFixedRotation)
+         .def("setRotationFriction", (void(ofxBox2dRect::*)(float)) &ofxBox2dRect::setRotationFriction)
+         .def("getRotation", (float(ofxBox2dRect::*)(void)) &ofxBox2dRect::getRotation)
+         .def("getPosition", (ofVec2f(ofxBox2dRect::*)(void)) &ofxBox2dRect::getPosition)
+         .def("getB2DPosition", (ofVec2f(ofxBox2dRect::*)(void)) &ofxBox2dRect::getB2DPosition)
+         .def("setVelocity", (void(ofxBox2dRect::*)(float,float)) &ofxBox2dRect::setVelocity)
+         .def("setVelocity", (void(ofxBox2dRect::*)(ofVec2f)) &ofxBox2dRect::setVelocity)
+         .def("getVelocity", (ofVec2f(ofxBox2dRect::*)(void)) &ofxBox2dRect::getVelocity)
+         .def("setDamping", (void(ofxBox2dRect::*)(float)) &ofxBox2dRect::setDamping)
+         .def("setDamping", (void(ofxBox2dRect::*)(float,float)) &ofxBox2dRect::setDamping)
+         .def("addForce", (void(ofxBox2dRect::*)(ofVec2f,float)) &ofxBox2dRect::addForce)
+         .def("addImpulseForce", (void(ofxBox2dRect::*)(ofVec2f,ofVec2f)) &ofxBox2dRect::addImpulseForce)
+         .def("destroy", (void(ofxBox2dRect::*)(void)) &ofxBox2dRect::destroy)
+         .def("update", (void(ofxBox2dRect::*)(void)) &ofxBox2dRect::update)
+         
+         .def("setup", (void(ofxBox2dRect::*)(b2World*,ofRectangle)) &ofxBox2dRect::setup)
+         .def("setup", (void(ofxBox2dRect::*)(b2World*,float,float,float,float)) &ofxBox2dRect::setup)
+         .def("draw", (void(ofxBox2dRect::*)(void)) &ofxBox2dRect::draw)
+         .def("getWidth", (float(ofxBox2dRect::*)(void)) &ofxBox2dRect::getWidth)
+         .def("getHeight", (float(ofxBox2dRect::*)(void)) &ofxBox2dRect::getHeight)
+         .def("addAttractionPoint", (void(ofxBox2dRect::*)(float,float,float)) &ofxBox2dRect::addAttractionPoint)
+         .def("addAttractionPoint", (void(ofxBox2dRect::*)(ofVec2f,float)) &ofxBox2dRect::addAttractionPoint)
+         .def("addRepulsionForce", (void(ofxBox2dRect::*)(float,float,float)) &ofxBox2dRect::addRepulsionForce)
+         .def("addRepulsionForce", (void(ofxBox2dRect::*)(ofVec2f,float)) &ofxBox2dRect::addRepulsionForce),
+         
          //////////////////////////////////////////////////////////////////////////////////////////////////
          
          ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2504,6 +3292,7 @@ class ofGamuzaWrapper{
 		 def("background", (void(*)(float,float,float,float)) &gaBackground),
 		 def("cameraTexture", (ofTexture(*)(int)) &gaGetWebcamTexture),
          def("cameraPixelsRef", (ofPixelsRef(*)(int)) &gaGetWebcamPixelsRef),
+         def("saveFrame", (void(*)(string)) &gaSaveFrame),
          
          ///////////////////////////////
 		 // timeline section
@@ -2523,8 +3312,8 @@ class ofGamuzaWrapper{
 		 // audio input
 		 def("getVolume", (float(*)(int)) &gaGetVolume),
 		 def("getPitch", (float(*)(int)) &gaGetPitch),
-		 def("getBin", (float(*)(int,int)) &gaGetFFTBin),
-		 def("getFFT", (float*(*)(int)) &gaGetFFTBins),
+		 def("getBin", (float(*)(int,int)) &gaGetFFTBand),
+		 def("getFFT", (float(*)(int,int)) &gaGetFFTBin),
 		 
 		 ///////////////////////////////
 		 // audio synth section
@@ -2745,6 +3534,44 @@ class ofGamuzaWrapper{
         lua.doString("OF_POLY_WINDING_POSITIVE = "+ofToString(OF_POLY_WINDING_POSITIVE));
         lua.doString("OF_POLY_WINDING_NEGATIVE = "+ofToString(OF_POLY_WINDING_NEGATIVE));
         lua.doString("OF_POLY_WINDING_ABS_GEQ_TWO = "+ofToString(OF_POLY_WINDING_ABS_GEQ_TWO));
+        
+        // OF primitives
+        lua.doString("OF_PRIMITIVE_TRIANGLES = "+ofToString(OF_PRIMITIVE_TRIANGLES));
+        lua.doString("OF_PRIMITIVE_TRIANGLE_STRIP = "+ofToString(OF_PRIMITIVE_TRIANGLE_STRIP));
+        lua.doString("OF_PRIMITIVE_TRIANGLE_FAN = "+ofToString(OF_PRIMITIVE_TRIANGLE_FAN));
+        lua.doString("OF_PRIMITIVE_LINES = "+ofToString(OF_PRIMITIVE_LINES));
+        lua.doString("OF_PRIMITIVE_LINE_STRIP = "+ofToString(OF_PRIMITIVE_LINE_STRIP));
+        lua.doString("OF_PRIMITIVE_LINE_LOOP = "+ofToString(OF_PRIMITIVE_LINE_LOOP));
+        lua.doString("OF_PRIMITIVE_POINTS = "+ofToString(OF_PRIMITIVE_POINTS));
+        
+        // OF gl legacy
+        lua.doString("OF_TRIANGLES_MODE = "+ofToString(OF_TRIANGLES_MODE));
+        lua.doString("OF_TRIANGLE_STRIP_MODE = "+ofToString(OF_TRIANGLE_STRIP_MODE));
+        lua.doString("OF_TRIANGLE_FAN_MODE = "+ofToString(OF_TRIANGLE_FAN_MODE));
+        lua.doString("OF_LINES_MODE = "+ofToString(OF_LINES_MODE));
+        lua.doString("OF_LINE_STRIP_MODE = "+ofToString(OF_LINE_STRIP_MODE));
+        lua.doString("OF_LINE_LOOP_MODE = "+ofToString(OF_LINE_LOOP_MODE));
+        lua.doString("OF_POINTS_MODE = "+ofToString(OF_POINTS_MODE));
+        
+        // OF mesh modes
+        lua.doString("OF_MESH_POINTS = "+ofToString(OF_MESH_POINTS));
+        lua.doString("OF_MESH_WIREFRAME = "+ofToString(OF_MESH_WIREFRAME));
+        lua.doString("OF_MESH_FILL = "+ofToString(OF_MESH_FILL));
+        
+        // OF blending modes
+        lua.doString("OF_BLENDMODE_DISABLED = "+ofToString(OF_BLENDMODE_DISABLED));
+        lua.doString("OF_BLENDMODE_ALPHA = "+ofToString(OF_BLENDMODE_ALPHA));
+        lua.doString("OF_BLENDMODE_ADD = "+ofToString(OF_BLENDMODE_ADD));
+        lua.doString("OF_BLENDMODE_SUBTRACT = "+ofToString(OF_BLENDMODE_SUBTRACT));
+        lua.doString("OF_BLENDMODE_MULTIPLY = "+ofToString(OF_BLENDMODE_MULTIPLY));
+        lua.doString("OF_BLENDMODE_SCREEN = "+ofToString(OF_BLENDMODE_SCREEN));
+        
+        // OF bitmap draw modes
+        lua.doString("OF_BITMAPMODE_SIMPLE = "+ofToString(OF_BITMAPMODE_SIMPLE));
+        lua.doString("OF_BITMAPMODE_SCREEN = "+ofToString(OF_BITMAPMODE_SCREEN));
+        lua.doString("OF_BITMAPMODE_VIEWPORT = "+ofToString(OF_BITMAPMODE_VIEWPORT));
+        lua.doString("OF_BITMAPMODE_MODEL = "+ofToString(OF_BITMAPMODE_MODEL));
+        lua.doString("OF_BITMAPMODE_MODEL_BILLBOARD = "+ofToString(OF_BITMAPMODE_MODEL_BILLBOARD));
 		
 		// graphics
 		lua.doString("OUTPUT_W = "+ofToString(gapp->gamuzaBase.projectionScreenW));
@@ -2759,6 +3586,7 @@ class ofGamuzaWrapper{
         lua.doString("OPTICAL_FLOW_GRID_Y = "+ofToString((int)(gapp->gamuzaBase.workingH/OPTICAL_FLOW_ROWS_STEP)));
 		
 		// audio analysis
+        lua.doString("BUFFER_SIZE = "+ofToString(gapp->gamuzaBase.audioBufferSize));
 		lua.doString("FFT_BANDS = "+ofToString(BARK_SCALE_CRITICAL_BANDS));
 		
 		// audio synth
@@ -2882,61 +3710,17 @@ class ofGamuzaWrapper{
 		lua.doString("LAB_8 = "+ofToString(LAB_8));
 		lua.doString("SI_8 = "+ofToString(SI_8));
 		
-		//////////////////////////////////////////////////////////////
-		///////////////////////////////
-		/// opengl core api wrapper
-		module(lua, "gl")
-		[
-			 def("activeTexture", (void(*)(GLenum)) &glActiveTexture),
-			 def("enable", &glEnable),
-			 def("disable", &glDisable),
-			 def("depthMask",&glDepthMask),
-			 def("beginShape", &glBegin),
-             def("vertex2f", &glVertex2f),
-			 def("vertex3f", &glVertex3f),
-			 def("endShape", &glEnd),
-			 def("clear", &glClear),
-			 def("pushMatrix", &glPushMatrix),
-			 def("popMatrix", &glPopMatrix),
-			 def("rotate", &glRotatef),
-			 def("color3f", &glColor3f),
-			 def("color4f", &glColor4f),
-			 def("matrixMode", &glMatrixMode),
-			 def("loadIdentity", &glLoadIdentity),
-			 def("viewport", &glViewport),
-			 def("translate", &glTranslatef),
-             def("multiTexCoord2d", (void(*)(GLenum,GLdouble,GLdouble)) &glMultiTexCoord2d)
-             
-		];
-		
-		lua.doString("GL_POINTS = "+ofToString(GL_POINTS));
-		lua.doString("GL_LINES = "+ofToString(GL_LINES));
-		lua.doString("GL_LINE_STRIP = "+ofToString(GL_LINE_STRIP));
-		lua.doString("GL_LINE_LOOP = "+ofToString(GL_LINE_LOOP));
-		lua.doString("GL_TRIANGLES = "+ofToString(GL_TRIANGLES));
-		lua.doString("GL_TRIANGLE_STRIP = "+ofToString(GL_TRIANGLE_STRIP));
-		lua.doString("GL_TRIANGLE_FAN = "+ofToString(GL_TRIANGLE_FAN));
-		lua.doString("GL_QUADS = "+ofToString(GL_QUADS));
-		lua.doString("GL_QUAD_STRIP = "+ofToString(GL_QUAD_STRIP));
-		lua.doString("GL_BLEND = "+ofToString(GL_BLEND));
-		lua.doString("GL_DEPTH_TEST = "+ofToString(GL_DEPTH_TEST));
-		lua.doString("GL_LUMINANCE = "+ofToString(GL_LUMINANCE));
-		lua.doString("GL_RGB = "+ofToString(GL_RGB));
-		lua.doString("GL_RGBA = "+ofToString(GL_RGBA));
-		//////////////////////////////////////////////////////////////
-		
 	}
 	
 	////////////////////////////////////////////////////////
 	/// \section Function & Object Wrappers
 	
-	/// ofBackground
-	static void background(int brightness) 		{ofBackground(brightness);}
-	static void background(int r, int g, int b)	{ofBackground(r, g, b);}
-    
-    /// ofSetColor
-    static void setColor1(int gray)              {ofSetColor(gray,gray,gray);}
-    static void setColor2(int gray, int alpha)   {ofSetColor(gray,gray,gray,alpha);}
+	/// ofGraphics
+	static void background(int brightness)                                  {ofBackground(brightness);}
+	static void background(int r, int g, int b)                             {ofBackground(r, g, b);}
+    static void setColor1(int gray)                                         {ofSetColor(gray,gray,gray);}
+    static void setColor2(int gray, int alpha)                              {ofSetColor(gray,gray,gray,alpha);}
+    static void map5(float v,float iMin,float iMax,float oMin,float oMax)   {ofMap(v,iMin,iMax,oMin,oMax,false);}
     
     /// ofTrueTypeFont
 	static void loadFont2(ofTrueTypeFont* font, string filename, int fontsize) {

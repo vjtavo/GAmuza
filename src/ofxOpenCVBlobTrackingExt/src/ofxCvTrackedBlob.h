@@ -13,13 +13,13 @@
 #define OF_CV_TRACKEDBLOB_H
 
 
-#include "ofxCvConstants_Track.h"
+#include <ofxCvConstants_Track.h>
 
 
 class ofxCvTrackedBlob : public ofxCvBlob {
   public:
 
-    int id;
+    int _id;
 
     ofPoint deltaLoc;
     ofPoint deltaLocTotal;
@@ -37,7 +37,7 @@ class ofxCvTrackedBlob : public ofxCvBlob {
 
 
     ofxCvTrackedBlob() {
-        id = -1;
+        _id = -1;
         area = 0.0f;
         length = 0.0f;
         deltaArea = 0.0f;
@@ -53,7 +53,7 @@ class ofxCvTrackedBlob : public ofxCvBlob {
         hole = b.hole;
         pts = b.pts;
 
-        id = -1;
+        _id = -1;
         deltaArea = 0.0f;
         markedForDeletion = false;
         framesLeft = 0;

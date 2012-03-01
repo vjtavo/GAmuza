@@ -7,21 +7,45 @@
  *
  */
 
-#pragma once
+#ifndef CLIPBOARD_H
+#define CLIPBOARD_H
+
+#ifdef TARGET_OSX
+    #define GHOST_COCOA
+
+    #include "GHOST_IEventConsumer.h"
+    #include "GHOST_ISystem.h"
+    #include "GHOST_IEvent.h"
+#endif
+
+#ifdef TARGET_LINUX
+    //#include "GHOST_SystemX11.h"
+#endif
 
 #include "ofMain.h"
 
-class ClipBoard {
+
+class ClipBoard{
 
 public:
-	char* getTextFromPasteboard();
 
-    #ifndef __APPLE__
-        // TODO
-    #else
-        OSStatus setTextToPasteboard(const char* byteArrayIndex);
+    ClipBoard();
+
+    void            setupClipboard();
+    void            updateClipboard();
+
+    char*           getTextFromPasteboard();
+
+    #ifdef TARGET_OSX
+	OSStatus        setTextToPasteboard(const char* byteArrayIndex);
     #endif
 
+    #ifdef TARGET_LINUX
+    // TODO
+    #endif
 
+    //GHOST_ISystem*  ghostSystem;
 
 };
+
+#endif

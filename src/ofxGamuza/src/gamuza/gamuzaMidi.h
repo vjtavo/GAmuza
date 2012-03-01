@@ -22,18 +22,18 @@ void gamuzaMain::newMidiMessage(ofxMidiEventArgs& eventArgs) {
     midi_id         = eventArgs.channel;
     midi_port       = eventArgs.port;
     midi_timestamp  = eventArgs.timestamp;
-    
+
     bool exist = false;
-    
-    for(int i=0; i<midiMapping.size();i++){
+
+    for(int i=0; i<(int)midiMapping.size();i++){
         if(midiMapping[i].x == midi_id && midiMapping[i].y == midi_valueOne){
             exist = true;
             break;
         }
     }
-    
+
     if(exist){
-        for(int i=0; i<midiMapping.size();i++){
+        for(int i=0; i<(int)midiMapping.size();i++){
             if(midiMapping[i].x == midi_id && midiMapping[i].y == midi_valueOne){
                 midiMapping[i].z = midi_valueTwo;
                 break;
@@ -44,7 +44,7 @@ void gamuzaMain::newMidiMessage(ofxMidiEventArgs& eventArgs) {
         _temp.set(midi_id,midi_valueOne,midi_valueTwo);
         midiMapping.push_back(_temp);
     }
-    
+
 }
 
 #endif

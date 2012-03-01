@@ -84,6 +84,7 @@ class gamuzaMain : public ofBaseApp, public ofxMidiListener{
 	
 		// FBO functions
 		void setupFBO();
+        void updateFBO();
 		void drawFBO();
 		void drawIntoFBO(int w, int h);
 		void cvHomographyFBO();
@@ -189,9 +190,11 @@ class gamuzaMain : public ofBaseApp, public ofxMidiListener{
         ofPixels                outputPix;
 		ofShader				shaderColorCorrection;
 		bool					useShader;
+        bool					useSecondaryScreen;
 		matrixAreas				finalTextureMapping;
 	
 		ofVideoPlayer			outputVideo;
+        ofImage					tempFrame;
 		//////////////////////////////////////////////
 		
 		//////////////////////////////////////////////
@@ -299,7 +302,6 @@ class gamuzaMain : public ofBaseApp, public ofxMidiListener{
         threadedEncoding        threadMovieEncoding;
 		ofMutex					gamuzaSetup;
 		ofxXmlSettings			setting_data;
-		ofImage					tempFrame;
 		int						currentSavedFrame;
         bool                    isExporting;
         bool                    isEncoding;

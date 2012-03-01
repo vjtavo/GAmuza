@@ -20,27 +20,27 @@ class guiStatVarPointer : public guiVariablePointer{
 		guiStatVarPointer(){
 			displayName = "none";
 			ptr			= NULL;
-			dataType	= GUI_VAR_FLOAT;		
+			dataType	= GUI_VAR_FLOAT;
 			precision   = 7;
-			autoUpdate  = true;		
+			autoUpdate  = true;
 		}
 
 		guiStatVarPointer( string displayNameIn, void * varPtr, guiVarType theDataType, bool autoUpdateGraph, float floatPrecision = 7){
 			displayName = displayNameIn;
 			ptr			= varPtr;
-			dataType	= theDataType;		
+			dataType	= theDataType;
 			precision   = floatPrecision;
 			autoUpdate  = autoUpdateGraph;
-		} 
-	
+		}
+
 		void setup( string displayNameIn, void * varPtr, guiVarType theDataType, bool autoUpdateGraph, float floatPrecision = 7){
 			displayName = displayNameIn;
 			ptr			= varPtr;
-			dataType	= theDataType;		
+			dataType	= theDataType;
 			precision   = floatPrecision;
 			autoUpdate  = autoUpdateGraph;
-		} 
-		
+		}
+
 		void updateManually(){
 			bDoUpdate = true;
 		}
@@ -61,38 +61,38 @@ class guiTypeChartPlotter : public guiBaseObject{
 
         void setup(string elementName, guiStatVarPointer varPtr, float width, float height, int maxValues, float minValY, float maxValY, bool strechH){
 			name		   = elementName;
-			
+
 			hitArea.width  = width;
 			hitArea.height = height;
-			
+
 			minVal         = minValY;
 			maxVal		   = maxValY;
-			
+
 			var			   = varPtr;
 			maxNum		   = maxValues;
-			
+
 			strech		   = strechH;
-			
+
 		}
-		
+
 		//-----------------------------------------------
-		void update(){			
+		void update(){
 			updateBoundingBox();
-			
+
 			if( var.ptr == NULL ){
 				ofLog(OF_LOG_ERROR, "guiTypeChartPlotter::update - variable ptr is not set!");
 			}
-			
+
 			if( var.dataType == GUI_VAR_FLOAT ){
 				var.varAsString = ofToString( *((float *)var.ptr), var.precision);
 			}else if( var.dataType == GUI_VAR_INT ){
 				var.varAsString = ofToString( *((int *)var.ptr));
 			}
-			
+
 			if( var.autoUpdate || var.bDoUpdate ){
-			
+
 				float valIn = 0.0;
-				
+
 				if( var.dataType == GUI_VAR_FLOAT ){
 					valIn = *( (float *)var.ptr) ;
 				}else if( var.dataType == GUI_VAR_INT ){
@@ -100,56 +100,56 @@ class guiTypeChartPlotter : public guiBaseObject{
 				}
 
 				valueHistory.push_back( valIn );
-				if( valueHistory.size() > maxNum ){
+				if( (int)valueHistory.size() > maxNum ){
 					valueHistory.erase(valueHistory.begin(), valueHistory.begin()+1);
 				}
-				
+
 				var.bDoUpdate = false;
 			}
-			
+
 		}
-		
+
 		//-----------------------------------------------
 		void render(){
 			ofPushStyle();
 				glPushMatrix();
-			
+
 					if(strech){
 						glTranslatef(0.0f, -10.0f, 0.0f);
 					}
-				
-					glColor4fv(textColor.getColorF());				
+
+					glColor4fv(textColor.getColorF());
 					guiBaseObject::renderText();
 
 					//draw the background
 					ofFill();
 					glColor4fv(bgColor.getColorF());
 					ofRect(hitArea.x, hitArea.y, hitArea.width, hitArea.height);
-					
+
 					float x = hitArea.x;
 					float y = hitArea.y + hitArea.height;
-					
+
 					if( valueHistory.size() ){
 						glColor4fv(fgColor.getSelectedColorF());
-					
+
 						ofNoFill();
 						ofBeginShape();
-						for(int i = 0; i < valueHistory.size(); i++){
+						for(unsigned int i = 0; i < valueHistory.size(); i++){
 							float xx = ofMap(i, 0, maxNum, x, x + hitArea.width, true);
 							float yy = ofMap(valueHistory[i], minVal, maxVal, y, y - hitArea.height, true);
-							
+
 							ofVertex(xx, yy);
 						}
 						ofEndShape(false);
 					}
-					
+
 					ofFill();
 
-					glColor4fv(textColor.getColorF());				
+					glColor4fv(textColor.getColorF());
 					displayText.renderString(var.displayName + ": " + var.varAsString, x + 2, y - displayText.getTextSingleLineHeight()*3);
 					displayText.renderString("max: "+ofToString(maxVal, 0), x + 2, hitArea.y + displayText.getTextSingleLineHeight()+2);
 					displayText.renderString("min: "+ofToString(minVal, 0), x + 2, y - 8);
-					
+
 					//draw the outline
 					ofNoFill();
 					glColor4fv(outlineColor.getColorF());
@@ -157,23 +157,23 @@ class guiTypeChartPlotter : public guiBaseObject{
 				glPopMatrix();
 			ofPopStyle();
 		}
-		
+
 		bool  strech;
 		float minVal, maxVal;
 		vector <float> valueHistory;
 		int maxNum;
 		guiStatVarPointer var;
-		
-		
-//        
+
+
+//
 //		void updateGui(float x, float y, bool firstHit, bool isRelative);
 //        void setKnobSize(float _knobSize);
-//        
+//
 //		virtual void setValue(float _value, int whichParam);
 //        virtual void updateValue();
-//		
-//		virtual void notify();	
-//		
+//
+//		virtual void notify();
+//
 //        void render();
 
 };

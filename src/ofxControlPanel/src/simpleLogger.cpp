@@ -5,7 +5,7 @@ simpleLogger::simpleLogger(){
 	bDate = true;
 	bTime = true;
 	bLevel = true;
-	
+
 }
 
 //------------------------------------------------
@@ -29,7 +29,7 @@ void simpleLogger::setup(string logFileName, bool overwrite){
 		xml.saveFile(logFile);
 		fileLoaded = true;
 	}
-	
+
 }
 
 void simpleLogger::setIncludeDate(bool bIncludeDate){
@@ -74,14 +74,14 @@ void simpleLogger::log(int logLevel, const char* format, ...){
 
 void simpleLogger::simpleLog(string text){
 	logRecord record;
-	
+
 	record.msg      = text;
 	record.level    = 99;
 	record.logStr   = convertToString(record);
-	
+
 	logs.push_back(record);
 	logToXml(record);
-	
+
 }
 
 float simpleLogger::getWidth(){
@@ -125,8 +125,8 @@ void simpleLogger::saveFile(){
 
 //-----------------------------------------------.
 void simpleLogger::draw(float x, float y){
+    float yPos = 0.0;
 	ofPushStyle();
-		float yPos;
 		for(int i = logs.size()-1; i >= 0; i--){
 			yPos += 13.6;
 			string str = logs[i].logStr;
@@ -138,7 +138,7 @@ void simpleLogger::draw(float x, float y){
 //-----------------------------------------------.
 void simpleLogger::draw(float x, float y, float width, float height){
 	ofPushStyle();
-		float yPos;
+		float yPos = 0.0;
 		for(int i = logs.size()-1; i >= 0; i--){
 			yPos += 13.6;
 			if(yPos >= height)break;

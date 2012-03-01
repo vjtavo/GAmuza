@@ -27,51 +27,51 @@ class guiTypeVairableLister : public guiBaseObject{
 			name = listerName;
 			vars = varsIn;
 		}
-		
-		void update(){			
+
+		void update(){
 			updateBoundingBox();
 		}
-		
+
 		void updateBoundingBox(){
-		
+
 			minNameWidth = 20;
 			minVarWidth  = 20;
-			
+
 			if( displayText.usingTTF() ){
 				typeStartOffset = -4;
 			}else{
 				typeStartOffset = -2;
 			}
-							
-			for(int i = 0; i < vars.size(); i++){
+
+			for(unsigned int i = 0; i < vars.size(); i++){
 				minNameWidth = MAX(minNameWidth, displayText.getTextWidth(vars[i].displayName));
-				
+
 				if( vars[i].dataType == GUI_VAR_FLOAT ){
 					vars[i].varAsString = ofToString( *((float *)vars[i].ptr), vars[i].precision);
 				}else if( vars[i].dataType == GUI_VAR_INT ){
 					vars[i].varAsString = ofToString( *((int *)vars[i].ptr));
 				}else if( vars[i].dataType == GUI_VAR_BOOL ){
-					
+
 					bool bVar = *((bool *)vars[i].ptr);
 					if( bVar ){
 						vars[i].varAsString = "true";
 					}else{
-						vars[i].varAsString = "false";						
+						vars[i].varAsString = "false";
 					}
 				}else if( vars[i].dataType == GUI_VAR_STRING ){
 					vars[i].varAsString = *((string *)vars[i].ptr);
 				}
-				
+
 				minVarWidth = MAX(minVarWidth, displayText.getTextWidth( "= " + vars[i].varAsString));
-				
+
 			}
-			
-			minNameWidth += 5;			
+
+			minNameWidth += 5;
 			minVarWidth  += 5;
-			
+
 			hitArea.width  = MAX(hitArea.width, minNameWidth + minVarWidth);
 			hitArea.height = MAX(20, vars.size() * ( displayText.getTextSingleLineHeight() + 3));
-			
+
 			if(bShowText){
 				//we need to update out hitArea because the text will have moved the gui down
 				hitArea.y = boundingBox.y + displayText.getTextHeight() + titleSpacing;
@@ -81,13 +81,13 @@ class guiTypeVairableLister : public guiBaseObject{
 				hitArea.y = boundingBox.y;
 			}
 		}
-		
+
 		//-----------------------------------------------.
 		void render(){
 			ofPushStyle();
 				glPushMatrix();
-				
-					glColor4fv(textColor.getColorF());				
+
+					glColor4fv(textColor.getColorF());
 					guiBaseObject::renderText();
 
 					//draw the background
@@ -96,19 +96,19 @@ class guiTypeVairableLister : public guiBaseObject{
 					ofRect(hitArea.x, hitArea.y, hitArea.width, hitArea.height);
 
 					float lineH = hitArea.height / (float) MAX(1, vars.size());
-					
+
 					float x		= hitArea.x;
 					float y		= (hitArea.y + lineH) + typeStartOffset;
 					float ly	= (hitArea.y + lineH);
-					
+
 					//draw the foreground
-					for(int i = 0; i < vars.size(); i++){
-						
+					for(unsigned int i = 0; i < vars.size(); i++){
+
 						if( i != vars.size()-1){
 							glColor4fv(outlineColor.getColorF());
 							ofLine(x, ly, x + hitArea.width, ly);
 						}
-						
+
 						glColor4fv(textColor.getColorF());
 						displayText.renderString(vars[i].displayName, x, y);
 						displayText.renderString("= " + vars[i].varAsString, x + minNameWidth, y);
@@ -116,7 +116,7 @@ class guiTypeVairableLister : public guiBaseObject{
 						y  += lineH;
 						ly += lineH;
 					}
-					
+
 					//draw the outline
 					ofNoFill();
 					glColor4fv(outlineColor.getColorF());
@@ -124,20 +124,20 @@ class guiTypeVairableLister : public guiBaseObject{
 				glPopMatrix();
 			ofPopStyle();
 		}
-				
+
 		vector <guiVariablePointer> vars;
 		float minNameWidth, minVarWidth;
 		float typeStartOffset;
-		
-//        
+
+//
 //		void updateGui(float x, float y, bool firstHit, bool isRelative);
 //        void setKnobSize(float _knobSize);
-//        
+//
 //		virtual void setValue(float _value, int whichParam);
 //        virtual void updateValue();
-//		
-//		virtual void notify();	
-//		
+//
+//		virtual void notify();
+//
 //        void render();
 
 };

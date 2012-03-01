@@ -7,20 +7,20 @@ public:
 	ofxTweet();
 	
 	inline string getText() 					{ return text; 				}
-	inline string getID()	 					{ return id; 				}
+	inline string getID()	 					{ return _id; 				}
 	inline string getScreenName()				{ return screen_name;		}
 	inline string getAvatar()					{ return avatar; 			}
 	inline string getUserID()					{ return user_id; 			}
 	
 	inline ofxTweet& setText(string sText) 			{ text = sText; 			return *this;}
-	inline ofxTweet& setID(string sID) 				{ id = sID; 				return *this;}
+	inline ofxTweet& setID(string sID) 				{ _id = sID; 				return *this;}
 	inline ofxTweet& setAvatar(string sURL) 		{ avatar = sURL;			return *this;} 
 	inline ofxTweet& setScreenName(string sName) 	{ screen_name = sName;		return *this;}
 	inline ofxTweet& setUserID(string sID)			{ user_id = sID;			return *this;}
 	
 private:	
 	string text;
-	string id;
+	string _id;
 	string screen_name;
 	string avatar;
 	string user_id;

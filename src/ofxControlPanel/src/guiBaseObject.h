@@ -45,10 +45,10 @@ class guiBaseObject{
         //should  be called on mouse up
         //-------------------------------------------
         virtual void release();
-	
+
 		//should be called when a key is pressed; return true if we consume the key
 		virtual bool keyPressed( int k);
-		
+
         //these are here for the custom control types
         //we notify all elements about these actions
         virtual void saveSettings(string filename);
@@ -74,16 +74,16 @@ class guiBaseObject{
 
         //------------------------------------------------
         virtual void setShowText(bool showText);
-		
+
         //-----------------------------------------------
         virtual void setTypeInt();
 
         //-----------------------------------------------
         virtual void setTypeFloat();
-		
+
         //-----------------------------------------------
         virtual void setTypeBool();
-		
+
         //-----------------------------------------------
         virtual void setPosition(float x, float y);
 
@@ -92,10 +92,10 @@ class guiBaseObject{
 
         //-----------------------------------------------
         virtual float getPosX();
-		
+
         //------------------------------------------------
         virtual float getPosY();
-		
+
         //------------------------------------------------
         virtual float getWidth();
 
@@ -110,10 +110,10 @@ class guiBaseObject{
 
 		//-----------------------------------------------
 		virtual void notify();
-		
+
         //-----------------------------------------------
         virtual void checkPrescison();
-		
+
 //        //-----------------------------------------------
 //        virtual void setIsRelative( bool bIsRelative ){
 //            isRelative = bIsRelative;
@@ -138,7 +138,7 @@ class guiBaseObject{
 
          //-------------------------------------------
          virtual void setNormal();
-		 
+
          //-------------------------------------------
          virtual void setForegroundColor( int norR, int norG, int norB, int norA);
 
@@ -189,7 +189,7 @@ class guiBaseObject{
         //-------------------
         vector <guiBaseObject *>children;
 
-		ofEvent <guiCallbackData> guiEvent;		
+		ofEvent <guiCallbackData> guiEvent;
 
         //bool isRelative;
         bool locked;

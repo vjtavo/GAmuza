@@ -19,12 +19,18 @@ void ofxGLEditor::setup(string fontFile) {
 		glEditor.push_back(editor);
 		
 	}
-	reShape();	
+	reShape();
+    
+    clipBoard.setupClipboard();
 	
 	currentEditor   = 1;
     currentLine     = 0;
 	
 	
+}
+
+void ofxGLEditor::update(){
+    //clipBoard.updateClipboard();
 }
 
 void ofxGLEditor::renderScript(){
@@ -76,12 +82,12 @@ void ofxGLEditor::keyPressed(int key, bool editorOn) {
 		glEditor[currentEditor]->selectAll();
 	}else if (alt && key == 'x') {
 		cutToClipBoard();
+        glEditor[currentEditor]->cutSelection();
 	}else if (alt && key == 'c') {
 		copyToClipBoard();
+        glEditor[currentEditor]->copySelection();
 	}else if (alt && key == 'v') {
 		pasteFromClipBoard();
-	}else if (alt && key == 's') {
-		saveToFile();
 	}/*else if (alt && key == '1') {
 		currentEditor = 1;
 	}else if (alt && key == '2') {
@@ -160,13 +166,11 @@ void ofxGLEditor::reShape(int _w, int _h, int _x, int _y) {
 }
 
 void ofxGLEditor::pasteFromClipBoard() {
-	
-	wstring m_CopyBuffer = string_to_wstring(clipBoard.getTextFromPasteboard());
-	glEditor[currentEditor]->m_Text.insert(glEditor[currentEditor]->m_Position,m_CopyBuffer);
-	glEditor[currentEditor]->m_Selection=false;
-	glEditor[currentEditor]->m_Position+=m_CopyBuffer.size();	
-	glEditor[currentEditor]->ProcessTabs();
-	
+	wstring m_CopyBuffer = string_to_wstring((char*)clipBoard.getTextFromPasteboard());
+    glEditor[currentEditor]->m_Text.insert(glEditor[currentEditor]->m_Position,m_CopyBuffer);
+    glEditor[currentEditor]->m_Selection=false;
+    glEditor[currentEditor]->m_Position+=m_CopyBuffer.size();	
+    glEditor[currentEditor]->ProcessTabs();
 }
 
 void ofxGLEditor::pasteFromLuaScript(string _s) {
@@ -182,10 +186,13 @@ void ofxGLEditor::pasteFromLuaScript(string _s) {
 void ofxGLEditor::copyToClipBoard() {
     
 	string script = wstring_to_string(glEditor[currentEditor]->GetText());
-    #ifndef __APPLE__
-        // TODO
-    #else
-        clipBoard.setTextToPasteboard(script.c_str());
+    
+    #ifdef TARGET_OSX
+    clipBoard.setTextToPasteboard((char*)script.c_str());
+    #endif
+    
+    #ifdef TARGET_LINUX
+    // TODO
     #endif
     
 }
@@ -194,13 +201,14 @@ void ofxGLEditor::cutToClipBoard() {
     
 	string script = wstring_to_string(glEditor[currentEditor]->GetText());
     
-    #ifndef __APPLE__
-    // TODO
-        glEditor[currentEditor]->cutSelection();
-    #else
-        clipBoard.setTextToPasteboard(script.c_str());
-        glEditor[currentEditor]->cutSelection();
+    #ifdef TARGET_OSX
+    clipBoard.setTextToPasteboard((char*)script.c_str());
     #endif
+    
+    #ifdef TARGET_LINUX
+    // TODO
+    #endif
+    glEditor[currentEditor]->cutSelection();
     
 }
 

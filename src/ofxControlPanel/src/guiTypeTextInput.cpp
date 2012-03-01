@@ -36,31 +36,31 @@ bool guiTypeTextInput::keyPressed( int k )
 {
 	if ( isLocked() )
 		return false;
-	
+
 	bool bApplyDelete = true;
 	if( textSelected ){
-		
-		if( startIndex < valueText.textString.length() && endIndex <= valueText.textString.length() ){
+
+		if( startIndex < (int)valueText.textString.length() && endIndex <= (int)valueText.textString.length() ){
 			valueText.textString.erase(valueText.textString.begin() + startIndex, valueText.textString.begin() + endIndex );
 			text_position = startIndex;
 		}else{
 			valueText.textString.clear();
 			text_position = 0;
 		}
-		
+
 		bApplyDelete	= false;
-		
-		changed			= true;		
-		textSelected = false;	
-	}		
-	
+
+		changed			= true;
+		textSelected = false;
+	}
+
 	bool eaten = false;
 	text_position = min(max(0, text_position), (int)valueText.textString.length() );
 	if ( value.getValueB() )
 	{
 
 		eaten = true;
-		
+
 		// handle backspace
 		if ( bApplyDelete &&  k == OF_KEY_BACKSPACE && valueText.textString.length() > 0 && text_position > 0 )
 		{
@@ -69,7 +69,7 @@ bool guiTypeTextInput::keyPressed( int k )
 			changed = true;
 		}
 		// handle DEL
-		else if (bApplyDelete && k == OF_KEY_DEL && valueText.textString.length() > 0 && text_position < valueText.textString.length() )
+		else if (bApplyDelete && k == OF_KEY_DEL && (int)valueText.textString.length() > 0 && text_position < (int)valueText.textString.length() )
 		{
 			valueText.textString.erase( valueText.textString.begin()+(text_position) );
 		}
@@ -99,16 +99,16 @@ bool guiTypeTextInput::keyPressed( int k )
 void guiTypeTextInput::render()
 {
 	ofPushStyle();
-	
+
 	glPushMatrix();
-	
+
 	guiBaseObject::renderText();
-	
+
 	//draw the background
 	ofFill();
 	glColor4fv(bgColor.getColorF());
 	ofRect(hitArea.x, hitArea.y, hitArea.width, hitArea.height);
-		
+
 	if( textSelected ){
 		glColor4fv(fgColor.selected.getColorF());
 		ofRect( hitArea.x+startPositionX, hitArea.y, endPositionX - startPositionX,  hitArea.height);
@@ -120,21 +120,21 @@ void guiTypeTextInput::render()
 			ofRect( hitArea.x+valueText.getTextWidth(valueText.textString.substr(0,text_position))+1, hitArea.y+1, 2, hitArea.height-2 );
 		}
 	}
-	
+
 	glColor4fv(textColor.getColorF());
-	valueText.renderText(boundingBox.x + 2, boundingBox.y + (valueText.getTextSingleLineHeight()*2) + 3);	
-	
+	valueText.renderText(boundingBox.x + 2, boundingBox.y + (valueText.getTextSingleLineHeight()*2) + 3);
+
 	ofNoFill();
-	if( value.getValueB() ) 
+	if( value.getValueB() )
 		glColor4fv(outlineColor.getSelectedColorF());
 	else
 		glColor4fv(outlineColor.getNormalColorF());
 	ofRect(hitArea.x, hitArea.y, hitArea.width, hitArea.height);
-	
+
 	glLineWidth(1.0);
-	
+
 	glPopMatrix();
-	
+
 	ofPopStyle();
 }
 
@@ -156,10 +156,10 @@ void guiTypeTextInput::updateGui(float x, float y, bool firstHit, bool isRelativ
 {
 	if ( isLocked() )
 		return;
-	
+
 	float rel_x = x - hitArea.x;
-	float rel_y = y - hitArea.y;
-	
+	//float rel_y = y - hitArea.y;
+
 	if( firstHit ){
 		preX = rel_x;
 		selectDragStartX = rel_x;
@@ -169,9 +169,9 @@ void guiTypeTextInput::updateGui(float x, float y, bool firstHit, bool isRelativ
 		endPositionX = 0;
 	}else{
 		mouseDraggedDeltaX += (rel_x-preX);
-		
+
 		float characterWidth = MAX(8, valueText.getTextWidth("A") );
-		
+
 		if( fabs( mouseDraggedDeltaX ) > characterWidth*1.5 ){
 			textSelected = true;
 			selectDragEndX = rel_x;
@@ -185,24 +185,24 @@ void guiTypeTextInput::updateGui(float x, float y, bool firstHit, bool isRelativ
 			textSelected = false;
 		}
 	}
-	
+
 
 	if( state == SG_STATE_SELECTED ){
-	
+
 		if( textSelected ){
-			
+
 			startPositionX = 0;
 			endPositionX   = 0;
-			
+
 			float sx = selectDragStartX < selectDragEndX ? selectDragStartX : selectDragEndX;
 			float ex = selectDragStartX > selectDragEndX ? selectDragStartX : selectDragEndX;
-			
+
 			string toTest = valueText.textString;
 			if( toTest.length() ) toTest = toTest + " ";
-			
-			for ( int i=0; i < toTest.length(); i++ ){
+
+			for (unsigned int i=0; i < toTest.length(); i++ ){
 				float currStrWidth = valueText.getTextWidth(toTest.substr(0,i));
-				
+
 				if ( sx >= currStrWidth ){
 					startPositionX = currStrWidth;
 					startIndex = i;
@@ -212,13 +212,13 @@ void guiTypeTextInput::updateGui(float x, float y, bool firstHit, bool isRelativ
 					endIndex = i;
 				}
 			}
-			
+
 		}else{
 			// activate
 			value.setValue(true);
 			// position cursor
 			text_position = valueText.textString.length();
-			for ( int i=0; i<valueText.textString.length(); i++ )
+			for (unsigned int i=0; i<valueText.textString.length(); i++ )
 			{
 				if ( rel_x-10 < valueText.getTextWidth(valueText.textString.substr(0,i)) )
 				{
@@ -232,7 +232,7 @@ void guiTypeTextInput::updateGui(float x, float y, bool firstHit, bool isRelativ
 	{
 		value.setValue(false);
 	}
-	
+
 }
 
 void guiTypeTextInput::setValueText( string new_text )
@@ -243,7 +243,7 @@ void guiTypeTextInput::setValueText( string new_text )
 }
 
 
-void guiTypeTextInput::updateText() 
+void guiTypeTextInput::updateText()
 {
 	// don't append the selected number
 	displayText.setText( name );

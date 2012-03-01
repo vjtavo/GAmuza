@@ -8,10 +8,10 @@
  
 typedef long long CoordType;
  
-struct hPoint {
+struct hPoint_h {
 	CoordType x, y;
  
-	bool operator <(const hPoint &p) const {
+	bool operator <(const hPoint_h &p) const {
 		return x < p.x || (x == p.x && y < p.y);
 	}
 };
@@ -19,17 +19,17 @@ struct hPoint {
 // 2D cross product.
 // Return a positive value, if OAB makes a counter-clockwise turn,
 // negative for clockwise turn, and zero if the points are collinear.
-static CoordType cross(const hPoint &O, const hPoint &A, const hPoint &B)
+static CoordType cross(const hPoint_h &O, const hPoint_h &A, const hPoint_h &B)
 {
 	return (A.x - O.x) * (B.y - O.y) - (A.y - O.y) * (B.x - O.x);
 }
  
 // Returns a list of points on the convex hull in counter-clockwise order.
 // Note: the last point in the returned list is the same as the first one.
-static vector<hPoint> calcConvexHull(vector<hPoint> P)
+static vector<hPoint_h> calcConvexHull(vector<hPoint_h> P)
 {
 	int n = P.size(), k = 0;
-	vector<hPoint> H(2*n);
+	vector<hPoint_h> H(2*n);
  
 	// Sort points lexicographically
 	sort(P.begin(), P.end());

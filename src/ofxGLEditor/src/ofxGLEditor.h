@@ -24,6 +24,7 @@ class ofxGLEditor {
 public:
 	
 	void setup(string fontFile = GL_EDITOR_FONT);
+    void update();
     void renderScript();
 	void keyPressed(int key, bool editorOn);
 	void draw();	

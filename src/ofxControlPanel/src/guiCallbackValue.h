@@ -25,7 +25,7 @@ class cbValue{
 			valI = 0;
 			valueType = CB_VALUE_NOT_SET;
 		}
-		
+
 		void setValue(float val){
 			valF = val;
 			valueType = CB_VALUE_FLOAT;
@@ -40,11 +40,11 @@ class cbValue{
 			valS = val;
 			valueType = CB_VALUE_STRING;
 		}
-		
+
 		guiCBValueType getType(){
 			return valueType;
 		}
-		
+
 		float getFloat(){
 			if( valueType == CB_VALUE_FLOAT ){
 				return valF;
@@ -53,7 +53,7 @@ class cbValue{
 			}
 			return 0.0f;
 		}
-		
+
 		int getInt(){
 			if( valueType == CB_VALUE_INT ){
 				return valI;
@@ -62,7 +62,7 @@ class cbValue{
 			}
 			return 0;
 		}
-		
+
 		string getString(){
 			if( valueType == CB_VALUE_STRING ){
 				return valS;
@@ -73,7 +73,7 @@ class cbValue{
 			}
 			return "";
 		}
-				
+
 		guiCBValueType valueType;
 		float   valF;
 		int     valI;
@@ -82,12 +82,12 @@ class cbValue{
 
 class guiCallbackData{
 	public:
-	
+
 		void setup(string xmlNameIn, string displayNameIn){
 			xmlName	    = xmlNameIn;
 			displayName = displayNameIn;
 		}
-		
+
 		void addValueF(float val){
 			values.push_back(cbValue());
 			values.back().setValue(val);
@@ -102,54 +102,54 @@ class guiCallbackData{
 			values.push_back(cbValue());
 			values.back().setValue(val);
 		}
-		
+
 		bool isElement(string nameToMatch){
 			if( nameToMatch == xmlName || nameToMatch == displayName) return true;
 			return false;
 		}
-		
+
 		string getXmlName(){
 			return xmlName;
 		}
-		
+
 		string getDisplayName(){
 			return displayName;
 		}
-				
+
 		int getNumValues(){
 			return values.size();
 		}
-		
+
 		float getFloat(int which){
-			if( which < values.size() ){
+			if( which < (int)values.size() ){
 				return values[which].getFloat();
 			}
-			return 0.0;	
+			return 0.0;
 		}
 
 		int getInt(int which){
-			if( which < values.size() ){
+			if( which < (int)values.size() ){
 				return values[which].getInt();
 			}
 			return 0;
 		}
-		
+
 		guiCBValueType getType(int which){
-			if( which < values.size() ){
+			if( which < (int)values.size() ){
 				return values[which].getType();
 			}
 			return CB_VALUE_NOT_SET;
 		}
 
 		string getString(int which){
-			if( which < values.size() ){
+			if( which < (int)values.size() ){
 				return values[which].getString();
 			}
 			return "";
 		}
-		
+
 		protected:
-		
+
 		string displayName;
 		string xmlName;
 		vector <cbValue> values;

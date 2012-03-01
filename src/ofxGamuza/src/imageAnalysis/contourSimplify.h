@@ -71,16 +71,16 @@ class contourSimplify{
 			
 			int numPtsIn = contourIn.size();
 						
-			vector <hPoint> hullPointsIn;
+			vector <hPoint_h> hullPointsIn;
 			hullPointsIn.clear();
-			hullPointsIn.assign(numPtsIn, hPoint());
+			hullPointsIn.assign(numPtsIn, hPoint_h());
 			
 			for(int i = 0; i < numPtsIn; i++){
 				hullPointsIn[i].x = contourIn[i].x;
 				hullPointsIn[i].y = contourIn[i].y;
 			}
 			
-			vector <hPoint> hullPointsOut = calcConvexHull(hullPointsIn);
+			vector <hPoint_h> hullPointsOut = calcConvexHull(hullPointsIn);
 			int numOut = hullPointsOut.size();
 			
 			contourOut.clear();

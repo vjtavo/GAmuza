@@ -42,14 +42,14 @@ ofxControlPanel::~ofxControlPanel(){
     }
 	guiObjects.clear();
 
-	for(int i = 0; i < ofxControlPanel::globalPanelList.size(); i++){
+	for(unsigned int i = 0; i < ofxControlPanel::globalPanelList.size(); i++){
 		if( ofxControlPanel::globalPanelList[i] != NULL && ofxControlPanel::globalPanelList[i]->name == name ){
 			ofxControlPanel::globalPanelList.erase( ofxControlPanel::globalPanelList.begin()+i, ofxControlPanel::globalPanelList.begin()+i+1);
 			break;
 		}
 	}
 
-	for(int i = 0; i < customEvents.size(); i++){
+	for(unsigned int i = 0; i < customEvents.size(); i++){
 		if( customEvents[i] != NULL ){
 			delete customEvents[i];
 			customEvents[i] = NULL;
@@ -61,7 +61,7 @@ ofxControlPanel::~ofxControlPanel(){
 
 //-----------------------------
 ofxControlPanel * ofxControlPanel::getPanelInstance(string panelName){
-	for(int i = 0; i < ofxControlPanel::globalPanelList.size(); i++){
+	for(unsigned int i = 0; i < ofxControlPanel::globalPanelList.size(); i++){
 		if( ofxControlPanel::globalPanelList[i] != NULL && ofxControlPanel::globalPanelList[i]->name == panelName ){
 			return ofxControlPanel::globalPanelList[i];
 		}
@@ -110,7 +110,7 @@ void ofxControlPanel::setSize( int new_width, int new_height )
 	// set width
 	setDimensions( new_width, new_height );
 	// set underlying panel widths
-	for ( int i=0; i<panels.size(); i++ )
+	for (unsigned int i=0; i<panels.size(); i++ )
 	{
 		panels[i]->setDimensions( (boundingBox.width - borderWidth*2) -1, boundingBox.height - topSpacing*3);
 	}
@@ -181,7 +181,7 @@ int ofxControlPanel::getSelectedPanel(){
 
 //---------------------------------------------
 void ofxControlPanel::setSelectedPanel(int whichPanel){
-	if( whichPanel >= 0 && whichPanel < panels.size()){
+	if( whichPanel >= 0 && whichPanel < (int)panels.size()){
 		selectedPanel = whichPanel;
 	}
 }
@@ -201,7 +201,7 @@ void ofxControlPanel::setSliderWidth(int width){
 void ofxControlPanel::addXmlAssociation( guiBaseObject* object, string xmlName, int paramCount )
 {
 	// check for already-existing xml name
-	for ( int i=0; i<xmlObjects.size(); i++ )
+	for (unsigned int i=0; i<xmlObjects.size(); i++ )
 	{
 		if ( xmlObjects[i].xmlName == xmlName )
 		{
@@ -304,7 +304,7 @@ void ofxControlPanel::removeObject( string xmlName )
 {
 	// look for the xmlAssociation
 	guiBaseObject* object = NULL;
-	for ( int i=0; i<xmlObjects.size(); i++ )
+	for (unsigned int i=0; i<xmlObjects.size(); i++ )
 	{
 		if ( xmlObjects[i].xmlName == xmlName )
 		{
@@ -320,7 +320,7 @@ void ofxControlPanel::removeObject( string xmlName )
 	else
 	{
 		bool found = false;
-		for ( int i=0; i<panels.size(); i++ )
+		for (unsigned int i=0; i<panels.size(); i++ )
 			if ( panels[i]->containsElement( object ) )
 			{
 				//printf("removing %s [%x] from panel %s\n", object->xmlName.c_str(), object, panels[i]->name.c_str() );
@@ -330,7 +330,7 @@ void ofxControlPanel::removeObject( string xmlName )
 			}
 		assert( found );
 		found = false;
-		for ( int i=0; i<guiObjects.size(); i++ )
+		for (unsigned int i=0; i<guiObjects.size(); i++ )
 		{
 			if ( guiObjects[i] == object )
 			{
@@ -510,7 +510,7 @@ guiTypeDrawable * ofxControlPanel::addDrawableRect(string name, ofBaseDraws * dr
 
 //---------------------------------------------
 guiTypeVideo * ofxControlPanel::addVideoRect(string name, ofVideoPlayer * drawablePtr, int drawW, int drawH){
-    if( currentPanel < 0 || currentPanel >= panels.size() )return NULL;
+    if( currentPanel < 0 || currentPanel >= (int)panels.size() )return NULL;
     guiTypeVideo * vid = new guiTypeVideo();
 
 	setLayoutFlag(vid);
@@ -660,7 +660,7 @@ guiTypeChartPlotter * ofxControlPanel::addChartPlotter(string name, guiStatVarPo
 
 //---------------------------------------------
 guiTypeLogger * ofxControlPanel::addLogger(string name, simpleLogger * logger, int drawW, int drawH){
-    if( currentPanel < 0 || currentPanel >= panels.size() )return NULL;
+    if( currentPanel < 0 || currentPanel >= (int)panels.size() )return NULL;
     guiTypeLogger * loggerType = new guiTypeLogger();
 
 	setLayoutFlag(loggerType);
@@ -679,7 +679,7 @@ guiTypeLogger * ofxControlPanel::addLogger(string name, simpleLogger * logger, i
 
 //---------------------------------------------
 guiTypeFileLister * ofxControlPanel::addFileLister(string name, simpleFileLister * lister, int drawW, int drawH){
-    if( currentPanel < 0 || currentPanel >= panels.size() )return NULL;
+    if( currentPanel < 0 || currentPanel >= (int)panels.size() )return NULL;
     guiTypeFileLister * listerType = new guiTypeFileLister();
 
 	setLayoutFlag(listerType);
@@ -707,16 +707,16 @@ guiTypeFileLister * ofxControlPanel::addFileLister(string name, simpleFileLister
 //---------------------------------------------
 void ofxControlPanel::setupEvents(){
 	eventsEnabled = true;
-	for(int i = 0; i < guiObjects.size(); i++){
+	for(unsigned int i = 0; i < guiObjects.size(); i++){
 		ofAddListener(guiObjects[i]->guiEvent, this, &ofxControlPanel::eventsIn);
 	}
 
 	//setup an event group for each panel
-	for(int i = 0; i < panels.size(); i++){
+	for(unsigned int i = 0; i < panels.size(); i++){
 
 		vector <string> xmlNames;
 
-		for(int j = 0; j < panels[i]->children.size(); j++){
+		for(unsigned int j = 0; j < panels[i]->children.size(); j++){
 			xmlNames.push_back(panels[i]->children[j]->xmlName);
 		}
 
@@ -764,7 +764,7 @@ void ofxControlPanel::disableEvents(){
 // Get an event object for just a panel
 //---------------------------------------------
 ofEvent <guiCallbackData> & ofxControlPanel::getEventsForPanel(int panelNo){
-	if( panelNo < panels.size() ){
+	if( panelNo < (int)panels.size() ){
 		return getEventGroup("PANEL_EVENT_"+ofToString(panelNo));
 	}else{
 		return guiEvent;
@@ -780,7 +780,7 @@ ofEvent <guiCallbackData> & ofxControlPanel::getAllEvents(){
 // Use the name you made for your custom group to get back the event object
 //---------------------------------------------
 ofEvent <guiCallbackData> & ofxControlPanel::getEventGroup(string eventGroupName){
-	for(int i = 0; i < customEvents.size(); i++){
+	for(unsigned int i = 0; i < customEvents.size(); i++){
 		if( eventGroupName == customEvents[i]->group ){
 			return customEvents[i]->guiEvent;
 		}
@@ -800,8 +800,8 @@ void ofxControlPanel::eventsIn(guiCallbackData & data){
 	ofNotifyEvent(guiEvent, data, this);
 
 	//we then check custom event groups
-	for(int i = 0; i < customEvents.size(); i++){
-		for(int k = 0; k < customEvents[i]->names.size(); k++){
+	for(unsigned int i = 0; i < customEvents.size(); i++){
+		for(unsigned int k = 0; k < customEvents[i]->names.size(); k++){
 			if( customEvents[i]->names[k] == data.getXmlName() ){
 				ofNotifyEvent(customEvents[i]->guiEvent, data, this);
 			}
@@ -908,7 +908,7 @@ bool ofxControlPanel::hasValueChangedInPanel(string whichPanel){
 
 	guiTypePanel * panel = NULL;
 
-	for(int i = 0; i < panels.size(); i++){
+	for(unsigned int i = 0; i < panels.size(); i++){
 		if( panels[i]->name == whichPanel ){
 			panel = panels[i];
 			break;
@@ -936,7 +936,7 @@ bool ofxControlPanel::newPanelSelected(){
 
 //---------------------------------------------
 string ofxControlPanel::getCurrentPanelName(){
-    if( selectedPanel < 0 || selectedPanel >= panels.size() )return "no panel";
+    if( selectedPanel < 0 || selectedPanel >= (int)panels.size() )return "no panel";
 	return panels[selectedPanel]->name;
 }
 

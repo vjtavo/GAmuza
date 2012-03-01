@@ -18,13 +18,13 @@ void ofxCvBlobTracker::setListener( ofxCvBlobListener* _listener ) {
 }
 
 
-int ofxCvBlobTracker::findOrder( int id ) {
+int ofxCvBlobTracker::findOrder( int _id ) {
     // This is a bit inefficient but ok when
     // assuming low numbers of blobs
     // a better way would be to use a hash table
     int count = 0;
     for( int i=0; i<blobs.size(); i++ ) {
-        if( blobs[i].id < id ) {
+        if( blobs[i]._id < _id ) {
             count++;
         }
     }
@@ -32,12 +32,12 @@ int ofxCvBlobTracker::findOrder( int id ) {
 }
 
 
-ofxCvTrackedBlob&  ofxCvBlobTracker::getById( int id ) {
+ofxCvTrackedBlob&  ofxCvBlobTracker::getById( int _id ) {
     // This is a bit inefficient but ok when
     // assuming low numbers of blobs
     // a better way would be to use a hash table
     for( int i=0; i<blobs.size(); i++ ) {
-        if( blobs[i].id == id ) {
+        if( blobs[i]._id == _id ) {
             return blobs[i];
         }
     }
@@ -72,7 +72,7 @@ void ofxCvBlobTracker::draw( float x, float y ) {
     for( int i=0; i<blobs.size(); i++ ) {
         ostringstream docstring;
         //docstring << blobs[i].id << endl;
-        docstring << findOrder(blobs[i].id) << endl;
+        docstring << findOrder(blobs[i]._id) << endl;
         ofDrawBitmapString( docstring.str(),
                             blobs[i].centroid.x, blobs[i].centroid.y );
     }
@@ -224,12 +224,12 @@ void ofxCvBlobTracker::trackBlobs( const vector<ofxCvBlob>& _blobs ) {
 	if( best_error_ndx != -1 ) {
 		for( i=0; i<cursize; i++ ) {
 			if( matrix[best_error_ndx][i] != -1 ) {
-				blobs[i].id = (*prev)[matrix[best_error_ndx][i]].id;
+				blobs[i]._id = (*prev)[matrix[best_error_ndx][i]]._id;
 			} else {
-				blobs[i].id = -1;
+				blobs[i]._id = -1;
             }
 
-			if( blobs[i].id != -1 ) {
+			if( blobs[i]._id != -1 ) {
 				ofxCvTrackedBlob *oldblob = &(*prev)[matrix[best_error_ndx][i]];
 
 				blobs[i].deltaLoc.x = (blobs[i].centroid.x - oldblob->centroid.x);
@@ -260,8 +260,8 @@ void ofxCvBlobTracker::trackBlobs( const vector<ofxCvBlob>& _blobs ) {
 	// assign ID's for any blobs that are new this frame (ones that didn't get
 	// matched up with a blob from the previous frame).
 	for( i=0; i<cursize; i++ ) {
-		if(blobs[i].id == -1)	{
-			blobs[i].id = currentID;
+		if(blobs[i]._id == -1)	{
+			blobs[i]._id = currentID;
 			currentID ++;
 			if( currentID >= 65535 ) {
 				currentID = 0;
@@ -286,7 +286,7 @@ void ofxCvBlobTracker::trackBlobs( const vector<ofxCvBlob>& _blobs ) {
 	for( i=0; i<prevsize; i++ ) {
 		bool found = false;
 		for( j=0; j<cursize; j++ ) {
-			if( blobs[j].id == (*prev)[i].id ) {
+			if( blobs[j]._id == (*prev)[i]._id ) {
 				found = true;
 				break;
 			}
@@ -325,23 +325,23 @@ void ofxCvBlobTracker::trackBlobs( const vector<ofxCvBlob>& _blobs ) {
 //
 void ofxCvBlobTracker::doBlobOn( const ofxCvTrackedBlob& b ) {
     if( listener != NULL ) {
-        listener->blobOn( b.centroid.x, b.centroid.y, b.id, findOrder(b.id) );
+        listener->blobOn( b.centroid.x, b.centroid.y, b._id, findOrder(b._id) );
     } else {
-        cout << "doBlobOn() event for blob: " << b.id << endl;
+        cout << "doBlobOn() event for blob: " << b._id << endl;
     }
 }
 void ofxCvBlobTracker::doBlobMoved( const ofxCvTrackedBlob& b ) {
     if( listener != NULL ) {
-        listener->blobMoved( b.centroid.x, b.centroid.y, b.id, findOrder(b.id) );
+        listener->blobMoved( b.centroid.x, b.centroid.y, b._id, findOrder(b._id) );
     } else {
-        cout << "doBlobMoved() event for blob: " << b.id << endl;
+        cout << "doBlobMoved() event for blob: " << b._id << endl;
     }
 }
 void ofxCvBlobTracker::doBlobOff( const ofxCvTrackedBlob& b ) {
     if( listener != NULL ) {
-        listener->blobOff( b.centroid.x, b.centroid.y, b.id, findOrder(b.id) );
+        listener->blobOff( b.centroid.x, b.centroid.y, b._id, findOrder(b._id) );
     } else {
-        cout << "doBlobOff() event for blob: " << b.id << endl;
+        cout << "doBlobOff() event for blob: " << b._id << endl;
     }
 }
 

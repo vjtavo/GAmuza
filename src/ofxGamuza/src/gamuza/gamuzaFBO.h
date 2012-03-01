@@ -45,7 +45,6 @@ bool					printError;
 bool					computeFBOTexture;
 bool					saveMappingSettings;
 bool					drawGrid;
-bool					useSecondaryScreen;
 bool					calibrationScreen;
 int						calibScreenSel;
 //////////////////////////////////////////////
@@ -157,6 +156,22 @@ void gamuzaMain::setupFBO(){
 	}
 	///////////////////////////
 	
+}
+
+//--------------------------------------------------------------
+void gamuzaMain::updateFBO(){
+    // simple video player
+    if(useVideoFile){
+        outputVideo.idleMovie();
+    }
+    
+    // live coding
+    if(useLiveCoding){
+        lua.scriptUpdate();
+    }
+    
+    liveCoding.update();
+    
 }
 
 //--------------------------------------------------------------
@@ -321,7 +336,7 @@ void gamuzaMain::drawFBO(){
 		/////////////////////////////////////
         
         /////////////////////////////////////
-        // Output Texture exporting to video file
+        // Output Texture exporting
         if(isExporting){
             if(useSecondaryScreen && useShader){
                 finalTexture.readToPixels(outputPix);
@@ -334,16 +349,6 @@ void gamuzaMain::drawFBO(){
             }
         }
         /////////////////////////////////////
-		
-		// simple video player
-		if(useVideoFile){
-			outputVideo.idleMovie();
-		}
-		
-		// live coding
-		if(useLiveCoding){
-			lua.scriptUpdate();
-		}
 		
 	}
 	

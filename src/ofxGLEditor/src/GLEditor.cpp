@@ -855,7 +855,7 @@ void GLEditor::Handle(int button, int key, int special, int state, int x, int y,
 	else
 	if (mod&GLUT_ACTIVE_ALT)
 	{
-        //printf("%i",key);
+        //printf("%i\n",key);
 		switch(key)
 		{
 			// alt+l = lambda
@@ -864,8 +864,8 @@ void GLEditor::Handle(int button, int key, int special, int state, int x, int y,
 				m_Position++;
 				break;
 			
-			///////////////////////// HANDLE { } and [ ] and ~
-			case 91:
+			///////////////////////// HANDLE { } and [ ] and ~ and \
+            case 91:
 				m_Text.insert(m_Position,string_to_wstring("["));
 				m_Position++;
 				break;
@@ -882,11 +882,21 @@ void GLEditor::Handle(int button, int key, int special, int state, int x, int y,
 				m_Position++;
 				break;
             case 177:
-				m_Text.insert(m_Position, string_to_wstring("~"));
+				m_Text.insert(m_Position,string_to_wstring("~"));
 				m_Position++;
 				break;
 			/////////////////////////
 		}
+        
+        if(key == 91){
+            m_Text.insert(m_Position,string_to_wstring("["));
+            m_Position++;
+        }
+        
+        if(key == 92){
+            m_Text.insert(m_Position,string_to_wstring("\\"));
+            m_Position++;
+        }
 	}
 	else
 	{

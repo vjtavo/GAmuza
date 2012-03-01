@@ -27,6 +27,7 @@ void gamuzaMain::setup(){
 
 	//////////////////////////////////////////////
 	// init general openframeworks settings
+    ofSetEscapeQuitsApp(false);
 	ofSetFrameRate(FPS);
 	ofEnableSmoothing();
 	ofSetLogLevel(OF_LOG_VERBOSE);
@@ -145,6 +146,11 @@ void gamuzaMain::update(){
 		updateGui();
 		gui.update();
 		//////////////////////////////////////////////
+        
+        //////////////////////////////////////////////
+		// FBO Output Texture update
+        updateFBO();
+        //////////////////////////////////////////////
 		
 		//////////////////////////////////////////////
 		// OPENNI
@@ -299,6 +305,13 @@ void gamuzaMain::keyReleased(int key){
 	// open file dialog
 	if(alt && (key == 'd' || key == 'D')){
 		openFileDialog();
+	}
+    
+    // open file dialog
+	if(alt && (key == 's' || key == 'S')){
+        liveCoding.saveToFile();
+        logger.log(99, " NEW SCRIPT SAVED");
+		scriptsLister.refreshDir();
 	}
 	
 	// save frame
@@ -520,11 +533,16 @@ void gamuzaMain::saveFrame(){
 	
 	string _d = getDateTimeAsString("%d_%m_%Y");
 	string start = "export/frames/frame"+ofToString(currentSavedFrame);
-	string fin = start+"_"+_d+".jpg";
+	string fin = start+"_"+_d+".tif";
 	
 	currentSavedFrame++;
 	
-	tempFrame.grabScreen(mainScreenW+1,0,projectionScreenW,projectionScreenH);
+    if(useSecondaryScreen && useShader){
+        finalTexture.readToPixels(outputPix);
+    }else{
+        drawingTexture.readToPixels(outputPix);
+    }
+    tempFrame.setFromPixels(outputPix);
 	tempFrame.saveImage(fin.c_str());
 	
 	printf("Frame SAVED\n");

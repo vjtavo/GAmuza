@@ -24,6 +24,7 @@ int simpleFileLister::listDir(string directory){
 
 	ofDirectory::reset();
 	int numFiles = ofDirectory::listDir(directory);
+	ofDirectory::sort();
 	entries.assign(numFiles, entry());
 
 	for(int i = 0; i < numFiles; i++){
@@ -55,7 +56,7 @@ void simpleFileLister::clearChangedFlag(){
 
 //------------------------------------------------
 string simpleFileLister::getName(int which){
-	if( which >= 0 && which < entries.size() ){
+	if( which >= 0 && which < (int)entries.size() ){
 		return entries[which].filename;
 	}else{
 		return "";
@@ -64,7 +65,7 @@ string simpleFileLister::getName(int which){
 
 //------------------------------------------------
 string simpleFileLister::getPath(int which){
-	if( which >= 0 && which < entries.size() ){
+	if( which >= 0 && which < (int)entries.size() ){
 		return entries[which].fullpath;
 	}else{
 		return "";
@@ -73,7 +74,7 @@ string simpleFileLister::getPath(int which){
 
 //------------------------------------------------
 void simpleFileLister::setSelectedFile(int which){
-	if( which >= 0 && which < entries.size() ){
+	if( which >= 0 && which < (int)entries.size() ){
 		selected    = which;
 		selectedChanged = true;
 	}
@@ -81,7 +82,7 @@ void simpleFileLister::setSelectedFile(int which){
 
 //------------------------------------------------
 string simpleFileLister::getSelectedName(){
-	if( selected >= 0 && selected < entries.size() ){
+	if( selected >= 0 && selected < (int)entries.size() ){
 		return entries[selected].filename;
 	}else{
 		return "";
@@ -90,7 +91,7 @@ string simpleFileLister::getSelectedName(){
 
 //------------------------------------------------
 string simpleFileLister::getSelectedPath(){
-	if( selected >= 0 && selected < entries.size() ){
+	if( selected >= 0 && selected < (int)entries.size() ){
 		return entries[selected].fullpath;
 	}else{
 		return "";

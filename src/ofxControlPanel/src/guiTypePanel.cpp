@@ -68,7 +68,7 @@ bool guiTypePanel::checkHit(float x, float y, bool isRelative){
 				}
 			}
 		}
-				
+
 		return true;
 	}
 	return false;
@@ -129,7 +129,7 @@ void guiTypePanel::update(){
 //-----------------------------------------------
 bool guiTypePanel::containsElement( string xmlName )
 {
-	for ( int i=0; i<children.size(); i++ )
+	for (unsigned int i=0; i<children.size(); i++ )
 	{
 		if ( children[i]->xmlName == xmlName )
 			return true;
@@ -140,7 +140,7 @@ bool guiTypePanel::containsElement( string xmlName )
 //-----------------------------------------------
 guiBaseObject* guiTypePanel::getElement( string xmlName )
 {
-	for ( int i=0; i<children.size(); i++ )
+	for (unsigned int i=0; i<children.size(); i++ )
 	{
 		if ( children[i]->xmlName == xmlName )
 			return children[i];
@@ -159,7 +159,7 @@ bool guiTypePanel::containsElement( guiBaseObject* element )
 void guiTypePanel::removeElement( guiBaseObject* element )
 {
 	bool found = false;
-	for ( int i=0; i<children.size(); i++ )
+	for (unsigned int i=0; i<children.size(); i++ )
 	{
 		if ( children[i] == element )
 		{
@@ -177,7 +177,7 @@ void guiTypePanel::removeElement( guiBaseObject* element )
 
 }
 
-void guiTypePanel::addSpace( int height ) 
+void guiTypePanel::addSpace( int height )
 {
 	columns[col].y += height;
 }
@@ -195,7 +195,7 @@ void guiTypePanel::addElement( guiBaseObject * element ){
 	columns[col].y += element->getHeight() + spacingAmntY;
 
 	float checkWidth = element->getWidth();
-		
+
 	if(checkWidth >= columns[col].width && !element->bRemoveFromLayout ){
 		float amnt = checkWidth - columns[col].width;
 		columns[col].width += amnt;
@@ -203,7 +203,7 @@ void guiTypePanel::addElement( guiBaseObject * element ){
 		for(unsigned int i = col+1; i < columns.size(); i++){
 			columns[i].x += amnt;
 		}
-		
+
 	}
 
 	//see if we need to resize!

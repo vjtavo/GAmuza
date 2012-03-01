@@ -12,6 +12,7 @@ int main( ){
 
     ofAppGlutWindow window;
     
+    // antialiasing hacks
     window.setGlutDisplayString("rgba double samples>=4 depth");
     
 	if(START_WITH_FULLSCREEN){

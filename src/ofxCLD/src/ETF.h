@@ -1,7 +1,6 @@
 #ifndef _ETF_H_
 #define _ETF_H_
 
-#include<math.h>
 #include "imatrix.h"
 
 struct Vect {

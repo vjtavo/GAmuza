@@ -42,7 +42,7 @@ public:
 			}
 		}
 	}
-	double norm() { 
+	double normal() { 
 		double sum = 0.0;
 		for (int i = 0; i < N; i++) {
 			sum += p[i]*p[i];

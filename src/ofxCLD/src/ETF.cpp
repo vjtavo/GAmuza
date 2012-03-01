@@ -1,18 +1,18 @@
 #include "ETF.h"
 #include "imatrix.h"
 
-void ETF::set(imatrix& image)
+void ETF::set(imatrix& image) 
 {
 	int i, j;
-	double MAX_VAL = 1020.;
+	double MAX_VAL = 1020.; 
 	double v[2];
 
 	max_grad = -1.;
 
-	for (i = 1; i < Nr - 1; i++) {
+	for (i = 1; i < Nr - 1; i++) { 
 		for (j = 1; j < Nc - 1; j++) {
 			////////////////////////////////////////////////////////////////
-			p[i][j].tx = (image[i+1][j-1] + 2*(double)image[i+1][j] + image[i+1][j+1]
+			p[i][j].tx = (image[i+1][j-1] + 2*(double)image[i+1][j] + image[i+1][j+1] 
 				- image[i-1][j-1] - 2*(double)image[i-1][j] - image[i-1][j+1]) / MAX_VAL;
 			p[i][j].ty = (image[i-1][j+1] + 2*(double)image[i][j+1] + image[i+1][j+1]
 				- image[i-1][j-1] - 2*(double)image[i][j-1] - image[i+1][j-1]) / MAX_VAL;
@@ -38,7 +38,7 @@ void ETF::set(imatrix& image)
 		p[i][Nc - 1].ty = p[i][Nc - 2].ty;
 		p[i][Nc - 1].mag = p[i][Nc - 2].mag;
 	}
-
+	
 	for (j = 1; j <= Nc - 2; j++) {
 		p[0][j].tx = p[1][j].tx;
 		p[0][j].ty = p[1][j].ty;
@@ -47,7 +47,7 @@ void ETF::set(imatrix& image)
 		p[Nr - 1][j].ty = p[Nr - 2][j].ty;
 		p[Nr - 1][j].mag = p[Nr - 2][j].mag;
 	}
-
+	
 	p[0][0].tx = ( p[0][1].tx + p[1][0].tx ) / 2;
 	p[0][0].ty = ( p[0][1].ty + p[1][0].ty ) / 2;
 	p[0][0].mag = ( p[0][1].mag + p[1][0].mag ) / 2;
@@ -65,20 +65,20 @@ void ETF::set(imatrix& image)
 
 }
 
-void ETF::set2(imatrix& image)
+void ETF::set2(imatrix& image) 
 {
 	int i, j;
-	double MAX_VAL = 1020.;
+	double MAX_VAL = 1020.; 
 	double v[2];
 
 	max_grad = -1.;
 
 	imatrix tmp(Nr, Nc);
 
-	for (i = 1; i < Nr - 1; i++) {
+	for (i = 1; i < Nr - 1; i++) { 
 		for (j = 1; j < Nc - 1; j++) {
 			////////////////////////////////////////////////////////////////
-			p[i][j].tx = (image[i+1][j-1] + 2*(double)image[i+1][j] + image[i+1][j+1]
+			p[i][j].tx = (image[i+1][j-1] + 2*(double)image[i+1][j] + image[i+1][j+1] 
 				- image[i-1][j-1] - 2*(double)image[i-1][j] - image[i-1][j+1]) / MAX_VAL;
 			p[i][j].ty = (image[i-1][j+1] + 2*(double)image[i][j+1] + image[i+1][j+1]
 				- image[i-1][j-1] - 2*(double)image[i][j-1] - image[i+1][j-1]) / MAX_VAL;
@@ -98,12 +98,12 @@ void ETF::set2(imatrix& image)
 		tmp[i][0] = tmp[i][1];
 		tmp[i][Nc - 1] = tmp[i][Nc - 2];
 	}
-
+	
 	for (j = 1; j <= Nc - 2; j++) {
 		tmp[0][j] = tmp[1][j];
 		tmp[Nr - 1][j] = tmp[Nr - 2][j];
 	}
-
+	
 	tmp[0][0] = ( tmp[0][1] + tmp[1][0] ) / 2;
 	tmp[0][Nc-1] = ( tmp[0][Nc-2] + tmp[1][Nc-1] ) / 2;
 	tmp[Nr-1][0] = ( tmp[Nr-1][1] + tmp[Nr-2][0] ) / 2;
@@ -112,17 +112,17 @@ void ETF::set2(imatrix& image)
 	imatrix gmag(Nr, Nc);
 
 	// normalize the magnitude
-	for (i = 0; i < Nr; i++) {
+	for (i = 0; i < Nr; i++) { 
 		for (j = 0; j < Nc; j++) {
 			tmp[i][j] /= max_grad;
 			gmag[i][j] = round(tmp[i][j] * 255.0);
 		}
 	}
 
-	for (i = 1; i < Nr - 1; i++) {
+	for (i = 1; i < Nr - 1; i++) { 
 		for (j = 1; j < Nc - 1; j++) {
 			////////////////////////////////////////////////////////////////
-			p[i][j].tx = (gmag[i+1][j-1] + 2*(double)gmag[i+1][j] + gmag[i+1][j+1]
+			p[i][j].tx = (gmag[i+1][j-1] + 2*(double)gmag[i+1][j] + gmag[i+1][j+1] 
 				- gmag[i-1][j-1] - 2*(double)gmag[i-1][j] - gmag[i-1][j+1]) / MAX_VAL;
 			p[i][j].ty = (gmag[i-1][j+1] + 2*(double)gmag[i][j+1] + gmag[i+1][j+1]
 				- gmag[i-1][j-1] - 2*(double)gmag[i][j-1] - gmag[i+1][j-1]) / MAX_VAL;
@@ -148,7 +148,7 @@ void ETF::set2(imatrix& image)
 		p[i][Nc - 1].ty = p[i][Nc - 2].ty;
 		p[i][Nc - 1].mag = p[i][Nc - 2].mag;
 	}
-
+	
 	for (j = 1; j <= Nc - 2; j++) {
 		p[0][j].tx = p[1][j].tx;
 		p[0][j].ty = p[1][j].ty;
@@ -157,7 +157,7 @@ void ETF::set2(imatrix& image)
 		p[Nr - 1][j].ty = p[Nr - 2][j].ty;
 		p[Nr - 1][j].mag = p[Nr - 2][j].mag;
 	}
-
+	
 	p[0][0].tx = ( p[0][1].tx + p[1][0].tx ) / 2;
 	p[0][0].ty = ( p[0][1].ty + p[1][0].ty ) / 2;
 	p[0][0].mag = ( p[0][1].mag + p[1][0].mag ) / 2;
@@ -178,17 +178,17 @@ void ETF::set2(imatrix& image)
 inline void make_unit(double& vx, double& vy)
 {
 	double mag = sqrt( vx*vx + vy*vy );
-	if (mag != 0.0) {
-		vx /= mag;
+	if (mag != 0.0) { 
+		vx /= mag; 
 		vy /= mag;
 	}
 }
 
-void ETF::normalize()
+void ETF::normalize() 
 {
 	int i, j;
 
-	for (i = 0; i < Nr; i++) {
+	for (i = 0; i < Nr; i++) { 
 		for (j = 0; j < Nc; j++) {
 			make_unit(p[i][j].tx, p[i][j].ty);
 			p[i][j].mag /= max_grad;
@@ -208,11 +208,11 @@ void ETF::Smooth(int half_w, int M)
 
 	int image_x = getRow();
 	int image_y = getCol();
+    
+	ETF e2; 
 
-	ETF e2;
-
-	e2.init(image_x, image_y);
-	e2.copy(*this);
+	e2.init(image_x, image_y); 
+	e2.copy(*this); 
 
 	double v[2], w[2], g[2];
 	double angle;
@@ -234,7 +234,7 @@ void ETF::Smooth(int half_w, int M)
 					if (y > image_y-1) y = image_y-1;
 					else if (y < 0) y = 0;
 					////////////////////////////////////////
-					mag_diff = p[x][y].mag - p[i][j].mag;
+					mag_diff = p[x][y].mag - p[i][j].mag; 
 					//////////////////////////////////////////////////////
 					w[0] = p[x][y].tx;
 					w[1] = p[x][y].ty;
@@ -242,9 +242,9 @@ void ETF::Smooth(int half_w, int M)
 					factor = 1.0;
 					angle = v[0] * w[0] + v[1] * w[1];
 					if (angle < 0.0) {
-						factor = -1.0;
+						factor = -1.0; 
 					}
-					weight = mag_diff + 1;
+					weight = mag_diff + 1;  
 					//////////////////////////////////////////////////////
 					g[0] += weight * p[x][y].tx * factor;
 					g[1] += weight * p[x][y].ty * factor;
@@ -270,7 +270,7 @@ void ETF::Smooth(int half_w, int M)
 					if (y > image_y-1) y = image_y-1;
 					else if (y < 0) y = 0;
 					////////////////////////////////////////
-					mag_diff = p[x][y].mag - p[i][j].mag;
+					mag_diff = p[x][y].mag - p[i][j].mag; 
 					//////////////////////////////////////////////////////
 					w[0] = p[x][y].tx;
 					w[1] = p[x][y].ty;
@@ -278,9 +278,9 @@ void ETF::Smooth(int half_w, int M)
 					factor = 1.0;
 					///////////////////////////////
 					angle = v[0] * w[0] + v[1] * w[1];
-					if (angle < 0.0) factor = -1.0;
+					if (angle < 0.0) factor = -1.0; 
 					/////////////////////////////////////////////////////////
-					weight = mag_diff + 1;
+					weight = mag_diff + 1; 
 					//////////////////////////////////////////////////////
 					g[0] += weight * p[x][y].tx * factor;
 					g[1] += weight * p[x][y].ty * factor;

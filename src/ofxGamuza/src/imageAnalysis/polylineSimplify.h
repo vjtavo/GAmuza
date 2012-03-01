@@ -7,7 +7,7 @@ typedef struct{
 	ofVec3f P0;
 	ofVec3f P1;
 
-} Segment;
+} Segment_s;
 
 
 // dot product (3D) which allows vector operations in arguments
@@ -34,7 +34,7 @@ static void simplifyDP( float tol, ofVec3f* v, int j, int k, int* mk ){
     int     maxi = j;          // index of vertex farthest from S
     float   maxd2 = 0;         // distance squared of farthest vertex
     float   tol2 = tol * tol;  // tolerance squared
-    Segment S = {v[j], v[k]};  // segment from v[j] to v[k]
+    Segment_s S = {v[j], v[k]};  // segment from v[j] to v[k]
     ofVec3f  u;
 	u = S.P1 - S.P0;   // segment direction vector
     double  cu = dot(u,u);     // segment length squared

@@ -1162,7 +1162,7 @@ void sourceTracking::drawContourAnalysis(){
 	
 	for(unsigned int i = 0; i < blobTracker.blobs.size(); i++){
 		ostringstream docstring;
-		docstring << blobTracker.findOrder(blobTracker.blobs[i].id) << endl;
+		docstring << blobTracker.findOrder(blobTracker.blobs[i]._id) << endl;
 		temp = docstring.str();
 		blobsOrder[i] = atoi(temp.c_str());
 		

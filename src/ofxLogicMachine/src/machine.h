@@ -34,7 +34,7 @@ struct s_Machine {
             ofClear(0,0,0,1);
             int codeIndex=0;
             ofSetColor(255);
-            float scale = 32;
+            //float scale = 32;
             for(int i = 0; i < 16; i++)
             {
                 for(int j = 0; j < 16; j++)
@@ -58,7 +58,7 @@ struct s_Machine {
 
     void MutateCode(float mutationRate){
 
-        for(int i = 0; i < code.size(); i++)
+        for(unsigned int i = 0; i < code.size(); i++)
         {
             if(ofRandom(0,1) < mutationRate)
             {
@@ -84,7 +84,7 @@ struct s_Machine {
 
         //cout << memory[0] << memory[1] << memory[2] << memory[3] << memory[4] << memory[5] << memory[6] << memory[7] << endl;
 
-        for(int codeIndex = 0; codeIndex < code.size(); codeIndex+=BITS_PER_INSTRUCTION )
+        for(int codeIndex = 0; codeIndex < (int)code.size(); codeIndex+=BITS_PER_INSTRUCTION )
         {
             // find operator and memory addresses by reading the code
             int operatorIndex = 0; int A = 0; int B = 0; int C = 0;

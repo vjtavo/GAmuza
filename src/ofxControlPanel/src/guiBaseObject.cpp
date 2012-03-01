@@ -34,15 +34,16 @@ guiBaseObject::guiBaseObject(){
 		gTextColor.setSelectedColor(255, 255, 255, 255);
 		initialColorsLoaded = true;
 	}
-	
+
 	fgColor			= gFgColor;
-	outlineColor	= gOutlineColor;				
+	outlineColor	= gOutlineColor;
 	bgColor			= gBgColor;
 	textColor		= gTextColor;
-	
+
 	//these need to be setable at some point
 	fontSize     = 11;
 	titleSpacing = 5;
+
 }
 
 //------------------------------------------
@@ -324,7 +325,7 @@ void guiBaseObject::render(){
  void guiBaseObject::setTextSelectColor(int selR, int selG, int selB, int selA = 255){
 	textColor.setSelectedColor(selR, selG, selB, selA);
  }
- 
+
  //-------------------------------------------
  void guiBaseObject::setValue(float _value, int whichParam) {
 	 value.setValue(_value,whichParam);

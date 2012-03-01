@@ -26,7 +26,7 @@ extern guiColor gOutlineColor;
 class ofxControlPanel: public guiBaseObject{
 
 	public:
-	
+
 		static vector <ofxControlPanel *> globalPanelList;
 		static ofxControlPanel * getPanelInstance(string panelName);
 
@@ -42,14 +42,14 @@ class ofxControlPanel: public guiBaseObject{
         void loadFont( string fontName, int fontsize );
 
         guiTypePanel * addPanel(string panelName, int numColumns, bool locked = false);
-		
+
 		int getSelectedPanel();
-		string getSelectedPanelName(){	
-			if (panels.size() > 0 && selectedPanel < panels.size()) return panels[selectedPanel]->name;
+		string getSelectedPanelName(){
+			if (panels.size() > 0 && selectedPanel < (int)panels.size()) return panels[selectedPanel]->name;
 			else return "";
 		};
 		void setSelectedPanel(int whichPanel);
-		
+
         void setWhichPanel(int whichPanel);
         void setWhichPanel(string panelName);
         void setWhichColumn(int column);
@@ -59,7 +59,7 @@ class ofxControlPanel: public guiBaseObject{
 		string getCurrentPanelName();
 
         void setSliderWidth(int width);
-		
+
 		void enableIgnoreLayoutFlag(){
 			bIgnoreLayout = true;
 		}
@@ -76,7 +76,7 @@ class ofxControlPanel: public guiBaseObject{
 			gBgColor.color		= color;
 			gBgColor.selected	= color;
 		}
-		
+
 		static void setTextColor(simpleColor color){
 			gTextColor.color	= color;
 			gTextColor.selected = color;
@@ -86,17 +86,17 @@ class ofxControlPanel: public guiBaseObject{
 			gOutlineColor.color		= color;
 			gOutlineColor.selected	= color;
 		}
-		
+
 		static void setForegroundColor(simpleColor color){
 			gFgColor.color		= color;
 			gFgColor.selected	= color;
 		}
-			
+
 		static void setBackgroundColor(simpleColor color, simpleColor selectedColor){
 			gBgColor.color		= color;
 			gBgColor.selected	= selectedColor;
 		}
-		
+
 		static void setTextColor(simpleColor color, simpleColor selectedColor){
 			gTextColor.color	= color;
 			gTextColor.selected = selectedColor;
@@ -111,7 +111,7 @@ class ofxControlPanel: public guiBaseObject{
 			gFgColor.color		= color;
 			gFgColor.selected	= selectedColor;
 		}
-		
+
 		// remove an object
 		void removeObject( string xmlName );
         guiTypeToggle * addToggle(string name, string xmlName, bool defaultValue);
@@ -130,7 +130,7 @@ class ofxControlPanel: public guiBaseObject{
 		guiTypeFileLister * addFileLister(string name, simpleFileLister * lister, int drawW, int drawH);
 		guiTypeLabel * addLabel( string text );
 		guiTypeTextInput* addTextInput( string name, string text, int width );
-		
+
 		void setupEvents();
 		ofEvent <guiCallbackData> & createEventGroup(string eventGroupName, vector <string> xmlNames);
 		ofEvent <guiCallbackData> & createEventGroup(string xmlName);
@@ -151,10 +151,10 @@ class ofxControlPanel: public guiBaseObject{
 
 		bool hasValueChanged(string xmlName, int whichParam = 0);
 		bool hasValueChangedInPanel(string whichPanel);
-		bool newPanelSelected();		
-		
+		bool newPanelSelected();
+
 		void clearAllChanged();
-		
+
         void setIncrementSave(string incrmentalFileBaseName);
         void disableIncrementSave();
         void loadSettings(string xmlFile);
@@ -185,7 +185,7 @@ class ofxControlPanel: public guiBaseObject{
         vector <guiBaseObject *> guiObjects;
         vector <guiTypePanel *> panels;
         vector <ofRectangle> panelTabs;
-		
+
 		vector <guiCustomEvent *> customEvents;
 
 		ofxXmlSettings settings;
@@ -207,7 +207,7 @@ class ofxControlPanel: public guiBaseObject{
 		bool incrementSave;
 		bool restoreDown;
 		bool bDraggable;
-	
+
 	bool bDoSaveRestore;
 
 		int selectedPanel;
@@ -216,21 +216,21 @@ class ofxControlPanel: public guiBaseObject{
         ofPoint prevMouse;
 
 		int sliderWidth;
-		
+
 		bool bEventsSetup;
 		bool eventsEnabled;
 		bool bIgnoreLayout;
-		
+
 		ofPoint mouseDownPoint;
 
 		bool dragging;
 		bool bNewPanelSelected;
-		
+
 		protected:
 			void eventsIn(guiCallbackData & data);
 
 private:
 	void addXmlAssociation( guiBaseObject* object, string xmlName, int defaultValue );
-		
+
 
 };

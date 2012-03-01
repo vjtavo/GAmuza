@@ -41,6 +41,7 @@
 
 // live coding language
 #include "ofxLua.h"					// Lua embedded scripting interpreter
+#include "gamuzaPointers.h"         // Simple classes wrapping c pointers in Lua
 
 // AUDIO
 #include "ofxAudioSample.h"			// reading&writing audio sample from hard drive with libsndfile
@@ -49,7 +50,7 @@
 // Midi input/output
 #include "ofxMidi.h"                // MIDI input/output
 
-// DMX input/output
+// DMX input/output                 
 #include "ofxDmx.h"                 // DMX input/output
 
 // Video Exporter
@@ -66,6 +67,7 @@
 
 // PHYSICS
 #include "ofxBullet.h"				// Bullet Physics Engine
+#include "ofxBox2d.h"               // box2D Physics Engine
 
 // MATH
 #include "ofxGaussian.h"            // A Gaussian random number generator

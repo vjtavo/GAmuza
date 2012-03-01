@@ -1111,7 +1111,7 @@ float gaGetPitch(int _ch){
 	}
 }
 
-float gaGetFFTBin(int _ch, int _pos){
+float gaGetFFTBand(int _ch, int _pos){
 	if(gapp->gamuzaBase.audioActivated && _ch < gapp->gamuzaBase.audioInputChannels && _pos < BARK_SCALE_CRITICAL_BANDS){
 		if(gapp->gamuzaBase.inputAudioCH[_ch].captureAudio){
 			return gapp->gamuzaBase.inputAudioCH[_ch]._osc_barkBins[_pos];
@@ -1124,15 +1124,15 @@ float gaGetFFTBin(int _ch, int _pos){
 	
 }
 
-float* gaGetFFTBins(int _ch){
-	if(gapp->gamuzaBase.audioActivated && _ch < gapp->gamuzaBase.audioInputChannels){
+float gaGetFFTBin(int _ch, int _pos){
+	if(gapp->gamuzaBase.audioActivated && _ch < gapp->gamuzaBase.audioInputChannels && _pos < gapp->gamuzaBase.audioBufferSize){
 		if(gapp->gamuzaBase.inputAudioCH[_ch].captureAudio){
-			return  gapp->gamuzaBase.inputAudioCH[_ch]._osc_barkBins;
+			return  gapp->gamuzaBase.inputAudioCH[_ch].binsFiltered[_pos];
 		}else{
-			return NULL;
+			return 0.0f;
 		}
 	}else{
-		return NULL;
+		return 0.0f;
 	}
 	
 }

@@ -12,13 +12,13 @@ void guiTypeTextDropDown::setup(string dropDownName, int defaultBox, vector <str
 	boxHeight = MAX(15, displayText.getTextHeight());
 	hitArea.height = boundingBox.height = boxHeight;
 
-	bShowDropDown = false;	
+	bShowDropDown = false;
 }
 
 //-----------------------------------------------
 void guiTypeTextDropDown::updateValue(){
 	//CB
-	notify();	
+	notify();
 }
 
 //-----------------------------------------------.
@@ -29,18 +29,18 @@ void guiTypeTextDropDown::update(){
 		// set new max
 		value.setMax( vecDropList.size()-1 );
 	}
-	
+
 	boxHeight = MAX(15, displayText.getTextHeight());
 	hitArea.height = boundingBox.height = boxHeight;
-	
+
 	int minSize = 0;
-	for(int i = 0; i < vecDropList.size(); i++){
+	for(unsigned int i = 0; i < vecDropList.size(); i++){
 		minSize = MAX(minSize, displayText.getTextWidth(vecDropList[i]));
 	}
-	
+
 	boundingBox.width = MAX(boundingBox.width, minSize + boxHeight + 5);
 	hitArea			= boundingBox;
-	
+
 	//setShowText(false);
 	updateText();
 	if(bShowDropDown) {
@@ -98,7 +98,7 @@ void guiTypeTextDropDown::updateGui(float x, float y, bool firstHit, bool isRela
 	}
 }
 
-void guiTypeTextDropDown::updateText() 
+void guiTypeTextDropDown::updateText()
 {
 	// don't append the selected number
 	displayText.setText( name );

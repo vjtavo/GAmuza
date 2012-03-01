@@ -5,7 +5,7 @@
 #include "gamuzaFBO.h"
 
 /* PALETA
- * 
+ *
  * glColor4f(0.941,0.941,0.941,1.0);		// 240, 240, 240
  * glColor4f(0.863,0.863,0.863,1.0);		// 220, 220, 220
  * glColor4f(0.353,0.353,0.353,1.0);		// 90, 90, 90
@@ -46,20 +46,20 @@ int							splashWait;
 
 //--------------------------------------------------------------
 void gamuzaMain::setupGui(){
-	
+
 	char xml_name[256];
 	char temp[128];
-	
+
 	///////////////////////////////////////////////
 	// load fonts
 	fontSmall.loadFont(GAMUZA_FONT, 6);
 	///////////////////////////////////////////////
-    
+
 	///////////////////////////////////////////////
 	// activate fake video grabber to obtain devices info
 	if(trackingActivated){
 		fake.setVerbose(true);
-        
+
         #ifdef TARGET_LINUX
             fake.initGrabber(320, 240);
             fake.listDevices();
@@ -68,26 +68,26 @@ void gamuzaMain::setupGui(){
             fake.listDevices();
             fake.initGrabber(320, 240);
         #endif
-		
+
 		// obtain cam devices available number
 		numCamInputs = fake.getAvailableDevicesNum();
-		
+
 		camDevices	= new int[numCamInputs];
 		deviceNames	= new string[numCamInputs];
 		inputCam	= new sourceTracking[numCamInputs];
-		
+
 		// obtain cam devices id
 		camDevices = fake.getAvailableIDs();
-		
+
 		// obtain cam devices names
 		deviceNames = fake.getAvailableNames();
-		
+
 		fake.close();
 	}else{
 		numCamInputs = 0;
 	}
 	///////////////////////////////////////////////
-	
+
 	///////////////////////////////////////////////
 	// retrieve dinamic multi panel(webcam & audio inputs) gui indexes
 	if(!openniActivated){
@@ -98,20 +98,20 @@ void gamuzaMain::setupGui(){
 		webcamsStartIndex	 = sensorKinectIndex + 1;
 		audioInputStartIndex = webcamsStartIndex + numCamInputs;
 	}
-	
+
 	if(arduinoActivated){
 		arduinoIndex = audioInputStartIndex + audioInputChannels;
 		oscIndex	 = arduinoIndex + 1;
 	}else if(!arduinoActivated){
 		oscIndex = audioInputStartIndex + audioInputChannels;
 	}
-	
+
 	///////////////////////////////////////////////
-	
+
 	//////////////////////////////////////////////
 	// init splash/intro image
 	gamuzaLogo.loadImage(GAMUZA_LOGO);
-	
+
 	splashImage.loadImage(GAMUZA_SPLASH);
 	if(trackingActivated && !openniActivated){
 		splashWait = 5000*numCamInputs;
@@ -123,17 +123,17 @@ void gamuzaMain::setupGui(){
 		splashWait = 2000*audioInputChannels;
 	}
 	splashFinish = false;
-	
+
 	// empty containers
 	_empty.loadImage("img/empty.png");
 	emptyTexture.allocate(workingW,workingH,GL_RGB);
 	//////////////////////////////////////////////
-	
+
 	//////////////////////////////////////////////
 	// gui string vectors init
 	setupStringVec();
     //////////////////////////////////////////////
-    
+
     //////////////////////////////////////////////
     // timeline init
     showTimeline = false;
@@ -141,19 +141,19 @@ void gamuzaMain::setupGui(){
     initTimeline();
     ofAddListener(ofxTLEvents.trigger, this, &gamuzaMain::receivedTrigger);
 	//////////////////////////////////////////////
-	
+
 	//////////////////////////////////////////////
 	// Main GUI setup
 	gamuzaMainColor  = simpleColor(216,64,64,255);
 	gamuzaWhiteColor = simpleColor(240,240,240,255);
 	gamuzaMarkColor	 = simpleColor(255,231,118,255);
-	
+
 	gui.loadFont(GAMUZA_FONT, 6);
 	gui.setForegroundColor(simpleColor(90, 90, 90, 200),simpleColor(220, 220, 220, 160));
 	gui.setBackgroundColor(simpleColor(20, 20, 20, 255));
 	gui.setTextColor(gamuzaWhiteColor,simpleColor(240, 240, 240, 225));
 	gui.setOutlineColor(simpleColor(0,0,0,255));
-	
+
 	if(isFullscreen){
 		guiPosX = ((mainScreenW - MAIN_WINDOW_W)/2.0) + 1.0;
 		guiPosY = ((mainScreenH - MAIN_WINDOW_H)/2.0) + 3.0;
@@ -186,7 +186,7 @@ void gamuzaMain::setupGui(){
 	gui.setup(" -------------------------------------------------------", guiPosX, guiPosY, MAIN_WINDOW_W-2, MAIN_WINDOW_H-6);
 	gui.setDraggable(false);
 	//////////////////////////////////////////////
-	
+
 	//////////////////////////////////////////////
 	// Live Coding GUI
 	gui.setBackgroundColor(simpleColor(0, 0, 0, 255));
@@ -194,7 +194,7 @@ void gamuzaMain::setupGui(){
 	sprintf(temp," live coding [second screen fullscreen output @ %i x %i]",projectionScreenW,projectionScreenH);
 	gui.addPanel(temp, 5);
 	gui.setWhichPanel(temp);
-	
+
 	gui.setBackgroundColor(simpleColor(255, 255, 255, 20));
 	gui.setOutlineColor(simpleColor(20,20,20,255));
 	gui.setWhichColumn(0);
@@ -211,7 +211,7 @@ void gamuzaMain::setupGui(){
 	gui.setTextColor(gamuzaMainColor);
 	gui.addLabel("Grid Warping Settings");
 	gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-	
+
 	sprintf(xml_name,"DRAW_FBO_GRID");
 	gui.addToggle("draw mapping grid", xml_name, false);
 	sprintf(xml_name,"RESET_FBO_MAPPING_COORDS");
@@ -220,7 +220,7 @@ void gamuzaMain::setupGui(){
 	gui.setTextColor(gamuzaMainColor);
 	gui.addLabel("Calibration Screen Settings");
 	gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-	
+
 	sprintf(xml_name,"DRAW_FBO_CALIB_SCREEN");
 	gui.addToggle("draw calibration screen", xml_name, false);
 	sprintf(xml_name,"FBO_CALIB_SCREEN_SEL");
@@ -230,7 +230,7 @@ void gamuzaMain::setupGui(){
 		gui.setTextColor(gamuzaMainColor);
 		gui.addLabel("Color Correction Settings");
 		gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-		
+
 		sprintf(xml_name,"OUTPUT_FBO_GAMMA");
 		gui.addSlider("gamma correction",xml_name,fbo_gammaCorrection,1.0f,4.0f,false);
 		sprintf(xml_name,"OUTPUT_FBO_BRIGHTNESS");
@@ -238,7 +238,7 @@ void gamuzaMain::setupGui(){
 		sprintf(xml_name,"OUTPUT_FBO_SATURATION");
 		gui.addSlider("saturation",xml_name,fbo_saturation,0.0f,4.0f,false);
 		sprintf(xml_name,"OUTPUT_FBO_CONTRAST");
-		gui.addSlider("contrast",xml_name,fbo_contrast,0.0f,2.0f,false);	
+		gui.addSlider("contrast",xml_name,fbo_contrast,0.0f,2.0f,false);
 		sprintf(xml_name,"OUTPUT_FBO_FILMBLEACH");
 		gui.addSlider("film bleach",xml_name,fbo_filmBleach,0.0f,2.0f,false);
 		sprintf(xml_name,"OUTPUT_FBO_FILM_TECHNICOLOR");
@@ -251,7 +251,7 @@ void gamuzaMain::setupGui(){
 		gui.addSlider("film white diffusion",xml_name,fbo_diffusion,0.0f,4.0f,false);
 	}
 	//////////////////////////////////////////////
-	
+
 	gui.setWhichColumn(1);
 	//////////////////////////////////////////////
 	gui.addDrawableRect("Video Output", &kuro, 512, 384);
@@ -260,7 +260,7 @@ void gamuzaMain::setupGui(){
 		gui.setTextColor(gamuzaMainColor);
 		gui.addLabel("Audio Output");
 		gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-		
+
 		sprintf(xml_name,"GAMUZA_MAIN_OUTPUT_VOLUME");
 		gui.addSlider("main volume",xml_name,mainVolume,0.0f,1.0f,false);
 	}
@@ -278,13 +278,13 @@ void gamuzaMain::setupGui(){
     sprintf(xml_name,"USE_VSYNC");
 	gui.addToggle("use vertical sync", xml_name, false);
 	//////////////////////////////////////////////
-	
+
 	gui.setWhichColumn(2);
 	//////////////////////////////////////////////
     gui.setTextColor(gamuzaMainColor);
     gui.addLabel("Video Export");
     gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-    
+
     sprintf(xml_name,"EXPORT_VIDEO_COMPRESSION_SEL");
 	gui.addTextDropDown("compression", xml_name, 2, exportType);
     sprintf(xml_name,"EXPORT_VIDEO_FILE_DIALOG");
@@ -301,7 +301,7 @@ void gamuzaMain::setupGui(){
 	sprintf(xml_name,"SAVE_SCRIPT_FILE_DIALOG");
 	gui.addToggle("save script", xml_name, false);
     //////////////////////////////////////////////
-	
+
 	gui.setWhichColumn(3);
 	//////////////////////////////////////////////
 	gui.enableIgnoreLayoutFlag();
@@ -312,7 +312,7 @@ void gamuzaMain::setupGui(){
     //////////////////////////////////////////////
     gui.addChartPlotter("RAM", guiStatVarPointer("used(Mb)", &gamuzaMem, GUI_VAR_INT, true, 2), 350, 70, 200, 1, ramMemory.getTotalMemory());
     gui.addChartPlotter("FPS", guiStatVarPointer("FPS", &gamuzaRealFPS, GUI_VAR_FLOAT, true, 2), 350, 70, 200, 1, 120);
-	
+
 	//////////////////////////////////////////////
 	// OpenNI SensorKinect GUI
 	if(openniActivated){
@@ -321,13 +321,13 @@ void gamuzaMain::setupGui(){
 		sprintf(temp," openni sensor kinect device");
 		gui.addPanel(temp, 5);
 		gui.setWhichPanel(temp);
-		
+
 		gui.setBackgroundColor(simpleColor(255, 255, 255, 20));
 		gui.setOutlineColor(simpleColor(20,20,20,255));
 		gui.setWhichColumn(0);
 		//////////////////////////////////////////////
 		gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-		
+
 		gui.addDrawableRect("record image", &_empty, 320, 240);
 		gui.setTextColor(gamuzaMarkColor);
 		sprintf(xml_name,"COMPUTE_SENSOR_KINECT");
@@ -338,22 +338,22 @@ void gamuzaMain::setupGui(){
 		gui.addSlider("near treshold",xml_name,sensorKinect.nearThreshold,300,1000,true);
 		sprintf(xml_name,"FAR_THRESHOLD_SENSOR_KINECT");
 		gui.addSlider("far treshold",xml_name,sensorKinect.farThreshold,1000,3000,true);
-		
+
 		gui.setWhichColumn(1);
 		//////////////////////////////////////////////
 		gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-		
+
 		gui.addDrawableRect("depth range mask", &sensorKinect.cleanImage, 320, 240);
 		sprintf(xml_name,"USE_TRACKING_HANDS_SENSOR_KINECT");
 		gui.addToggle("use kinect hands tracking", xml_name, true);
 		gui.addDrawableRect("all users mask", &_empty, 320, 240);
-		
+
 		gui.setWhichColumn(2);
 		//////////////////////////////////////////////
 		gui.setTextColor(gamuzaMainColor);
 		gui.addLabel("general settings");
 		gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-		
+
 		sprintf(xml_name,"CI_BLUR_SENSOR_KINECT");
 		gui.addSlider("sensor kinect Blur", xml_name, sensorKinect.ciBlur, 0, 33, true);
 		sprintf(xml_name,"CI_USE_ERODE_DILATE_SENSOR_KINECT");
@@ -362,11 +362,11 @@ void gamuzaMain::setupGui(){
 		gui.addSlider("erode", xml_name, sensorKinect.ciErode, 0, 10, true);
 		sprintf(xml_name,"CI_DILATE_SENSOR_KINECT");
 		gui.addSlider("dilate", xml_name, sensorKinect.ciDilate, 0, 10, true);
-		
+
 		gui.setTextColor(gamuzaMainColor);
 		gui.addLabel("motion detection settings");
 		gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-		
+
 		sprintf(xml_name,"M_THRESHOLD_SENSOR_KINECT");
 		gui.addSlider("motion threshold", xml_name, sensorKinect.mThreshold, 1, 300, true);
 		sprintf(xml_name,"MOTION_ON_HORIZON_SENSOR_KINECT");
@@ -375,13 +375,13 @@ void gamuzaMain::setupGui(){
 		gui.addSlider("motion trigger range limit", xml_name, sensorKinect.offHorizon, 0, 200, true);
 		gui.addDrawableRect("motion image", &sensorKinect.motionImg, 160, 120);
 		//////////////////////////////////////////////
-		
+
 		gui.setWhichColumn(3);
 		//////////////////////////////////////////////
 		gui.setTextColor(gamuzaMainColor);
 		gui.addLabel("blob tracking settings");
 		gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-		
+
 		sprintf(xml_name,"MIN_BLOB_AREA_SENSOR_KINECT");
 		gui.addSlider("min blob",xml_name,sensorKinect.minBlobArea,2,5000,true);
 		sprintf(xml_name,"MAX_BLOB_AREA_SENSOR_KINECT");
@@ -396,7 +396,7 @@ void gamuzaMain::setupGui(){
 		gui.setTextColor(gamuzaMainColor);
 		gui.addLabel("computing algorithm selector");
 		gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-		
+
 		sprintf(xml_name,"COMPUTE_CF_SENSOR_KINECT");
 		gui.addToggle("compute contour finder", xml_name, false);
 		sprintf(xml_name,"COMPUTE_CG_SENSOR_KINECT");
@@ -409,18 +409,18 @@ void gamuzaMain::setupGui(){
 		gui.setTextColor(gamuzaMainColor);
 		gui.addLabel("osc data settings");
 		gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-		
+
 		sprintf(xml_name,"USE_KALMAN_FILTER_SENSOR_KINECT");
 		gui.addToggle("use kalman filter", xml_name, false);
 		sprintf(xml_name,"SMOOTHING_FACTOR_SENSOR_KINECT");
 		gui.addSlider("smoothing factor",xml_name,sensorKinect._smoothingFactor,0.01f,0.99f,false);
-		
+
 		gui.setWhichColumn(4);
 		//////////////////////////////////////////////
 		gui.setTextColor(gamuzaMainColor);
 		gui.addLabel("sensor kinect hardware");
 		gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-		
+
 		sprintf(temp,"sensor tilt");
 		gui.addChartPlotter(temp, guiStatVarPointer("angle", &sensorKinect._osc_sensorTilt, GUI_VAR_FLOAT, true, 2), 180, 80, 200, 0.0f, 1.0f);
 		sprintf(temp,"sensor accelerometer x");
@@ -429,32 +429,32 @@ void gamuzaMain::setupGui(){
 		gui.addChartPlotter(temp, guiStatVarPointer("y", &sensorKinect._osc_sensorAcc.y, GUI_VAR_FLOAT, true, 2), 180, 80, 200, 0.0f, 1.0f);
 		sprintf(temp,"sensor accelerometer z");
 		gui.addChartPlotter(temp, guiStatVarPointer("z", &sensorKinect._osc_sensorAcc.z, GUI_VAR_FLOAT, true, 2), 180, 80, 200, 0.0f, 1.0f);
-		
+
 	}
 	//////////////////////////////////////////////
-	
+
 	//////////////////////////////////////////////
 	// Video Tracking multi-panel GUI
 	if(trackingActivated){
-		for(unsigned int i=0;i<numCamInputs;i++){
+		for(int i=0;i<numCamInputs;i++){
 			if(useVideoTest){
 				inputCam[i].setupCam(i,workingW,workingH,camDevices[i],true,haarFinderFile);
 			}else{
 				inputCam[i].setupCam(i,workingW,workingH,camDevices[i],false,haarFinderFile);
 			}
-			
+
 			gui.setBackgroundColor(simpleColor(0, 0, 0, 255));
 			gui.setOutlineColor(simpleColor(0,0,0,255));
 			sprintf(temp," CAM Device [%i] | %s",camDevices[i],deviceNames[i].c_str());
 			gui.addPanel(temp, 5);
-			
+
 			gui.setWhichPanel(temp);
 			gui.setBackgroundColor(simpleColor(255, 255, 255, 20));
 			gui.setOutlineColor(simpleColor(20,20,20,255));
-		
+
 			gui.setWhichColumn(0);
 			gui.addDrawableRect("color Input [eventually]", &inputCam[i].colorImg, 320, 240);
-			
+
 			gui.setTextColor(gamuzaMarkColor);
 			sprintf(xml_name,"USE_DEVICE_%i",camDevices[i]);
 			gui.addToggle("use device", xml_name, true);
@@ -465,7 +465,7 @@ void gamuzaMain::setupGui(){
 			sprintf(xml_name,"RESET_INPUT_WARPING_DEV_%i",camDevices[i]);
 			gui.addToggle("reset quad warping", xml_name, false);
 			gui.addDrawableRect("warped RGB/HSV Input", &inputCam[i].colorImgHSV, 160, 120);
-			
+
 			gui.setWhichColumn(1);
 			gui.addDrawableRect("Balanced Tracking", &inputCam[i].balancedTracking, 320, 240);
 			sprintf(xml_name,"BG_CAPTURE_%i",camDevices[i]);
@@ -476,12 +476,12 @@ void gamuzaMain::setupGui(){
 			sprintf(xml_name,"USE_COLOR_TRACKING_%i",camDevices[i]);
 			gui.addToggle("use color tracking", xml_name, true);
 			gui.addDrawableRect("color Tracking", &inputCam[i].hsvTracking, 160, 120);
-			
+
 			gui.setWhichColumn(2);
 			gui.setTextColor(gamuzaMainColor);
 			gui.addLabel("general settings");
 			gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-			
+
 			//////////////////////////////////////////////
 			sprintf(xml_name,"FLIP_SOURCE_USE_%i",camDevices[i]);
 			gui.addTextDropDown("flip source image ", xml_name, 1, sourceFlipUse);
@@ -500,7 +500,7 @@ void gamuzaMain::setupGui(){
 			gui.setTextColor(gamuzaMainColor);
 			gui.addLabel("background subtraction settings");
 			gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-			
+
 			sprintf(xml_name,"BGSUB_TECH_%i",camDevices[i]);
 			gui.addTextDropDown("subtraction technique ", xml_name, 3, bgSubTechniques);
 			sprintf(xml_name,"BGSUB_THRESHOLD_%i",camDevices[i]);
@@ -522,13 +522,13 @@ void gamuzaMain::setupGui(){
 			sprintf(xml_name,"SMOOTHING_FACTOR_%i",camDevices[i]);
 			gui.addSlider("smoothing factor",xml_name,inputCam[i]._smoothingFactor,0.01f,0.99f,false);
 			//////////////////////////////////////////////
-			
+
 			gui.setWhichColumn(3);
 			//////////////////////////////////////////////
 			gui.setTextColor(gamuzaMainColor);
 			gui.addLabel("color tracking settings");
 			gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-			
+
 			sprintf(xml_name,"HUE_%i",camDevices[i]);
 			gui.addSlider("hue", xml_name, inputCam[i].hue, 0.0, 1.0f, false);
 			sprintf(xml_name,"HUE_WIDTH_%i",camDevices[i]);
@@ -553,7 +553,7 @@ void gamuzaMain::setupGui(){
 			gui.setTextColor(gamuzaMainColor);
 			gui.addLabel("blob tracking settings");
 			gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-			
+
 			sprintf(xml_name,"MIN_BLOB_AREA_%i",camDevices[i]);
 			gui.addSlider("min blob",xml_name,inputCam[i].minBlobArea,2,5000,true);
 			sprintf(xml_name,"MAX_BLOB_AREA_%i",camDevices[i]);
@@ -565,13 +565,13 @@ void gamuzaMain::setupGui(){
 			sprintf(xml_name,"CF_TOLERANCE_%i",camDevices[i]);
 			gui.addSlider("contour simple tolerance", xml_name,inputCam[i].tolerance,0.01f,20.0f,false);
 			//////////////////////////////////////////////
-			
+
 			gui.setWhichColumn(4);
 			//////////////////////////////////////////////
 			gui.setTextColor(gamuzaMainColor);
 			gui.addLabel("motion detection settings");
 			gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-			
+
 			sprintf(xml_name,"M_THRESHOLD_%i",camDevices[i]);
 			gui.addSlider("motion threshold", xml_name, inputCam[i].mThreshold, 1, 300, true);
 			sprintf(xml_name,"M_NOISE_COMP_%i",camDevices[i]);
@@ -584,7 +584,7 @@ void gamuzaMain::setupGui(){
 			gui.setTextColor(gamuzaMainColor);
 			gui.addLabel("balanced tracking settings");
 			gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-			
+
 			sprintf(xml_name,"BT_BLUR_%i",camDevices[i]);
 			gui.addSlider("balanced tracking Blur", xml_name, inputCam[i].btBlur, 0, 33, true);
 			sprintf(xml_name,"BT_USE_ERODE_DILATE_%i",camDevices[i]);
@@ -601,7 +601,7 @@ void gamuzaMain::setupGui(){
 			gui.setTextColor(gamuzaMainColor);
 			gui.addLabel("computing algorithm selector");
 			gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-			
+
 			sprintf(xml_name,"COMPUTE_CF_%i",camDevices[i]);
 			gui.addToggle("compute contour finder", xml_name, false);
 			sprintf(xml_name,"COMPUTE_CG_%i",camDevices[i]);
@@ -613,16 +613,16 @@ void gamuzaMain::setupGui(){
 			sprintf(xml_name,"COMPUTE_TA_%i",camDevices[i]);
 			gui.addToggle("compute trigger areas", xml_name, false);
 			//////////////////////////////////////////////
-			
+
 		}
 	}
 	//////////////////////////////////////////////
-	
+
 	//////////////////////////////////////////////
 	// Audio Source multi-panel GUI
 	if(audioActivated){
-		for(unsigned int i=0;i<audioInputChannels;i++){
-		
+		for(int i=0;i<audioInputChannels;i++){
+
 			inputAudioCH[i].loadNoiseFilter();
 			sprintf(temp," AUDIO input [channel %i]",i);
 			gui.setBackgroundColor(simpleColor(40, 40, 0, 70));
@@ -631,17 +631,17 @@ void gamuzaMain::setupGui(){
 			gui.setWhichPanel(temp);
 			gui.setBackgroundColor(simpleColor(255, 255, 255, 20));
 			gui.setOutlineColor(simpleColor(20,20,20,255));
-		
+
 			gui.setWhichColumn(0);
 			//////////////////////////////////////////////
 			gui.setTextColor(gamuzaMainColor);
 			gui.addLabel("General Settings");
-			
+
 			gui.setTextColor(gamuzaMarkColor);
 			sprintf(xml_name,"USE_AUDIO_INPUT_%i",i);
 			gui.addToggle("use input channel", xml_name, false);
 			gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-			
+
 			sprintf(xml_name,"VOLUME_AUDIO_INPUT_%i",i);
 			gui.addSlider("volume", xml_name, inputAudioCH[i]._volume,0.01f,1.0f,false);
 			sprintf(xml_name,"MUTE_AUDIO_INPUT_%i",i);
@@ -650,7 +650,7 @@ void gamuzaMain::setupGui(){
 			gui.setTextColor(gamuzaMainColor);
 			gui.addLabel("Noise Reduction Settings");
 			gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-			
+
 			sprintf(xml_name,"REC_NOISE_FILTER_%i",i);
 			gui.addToggle("rec noise", xml_name, false);
 			sprintf(xml_name,"NOISE_REDUX_FACTOR_%i",i);
@@ -659,8 +659,8 @@ void gamuzaMain::setupGui(){
 			gui.setTextColor(gamuzaMainColor);
 			gui.addLabel("3 band parametric equalization");
 			gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-			
-			
+
+
 			sprintf(xml_name,"EQ_BAND1_CENTER_%i",i);
 			gui.addSlider("band 1 center [bin]", xml_name, inputAudioCH[i].eqLOWCenter,0.0f,audioBufferSize/2.0f,false);
 			sprintf(xml_name,"EQ_BAND1_AMPLITUDE_%i",i);
@@ -682,13 +682,13 @@ void gamuzaMain::setupGui(){
 			sprintf(xml_name,"EQ_BAND3_WIDTH_%i",i);
 			gui.addSlider("band 3 width [q]", xml_name, inputAudioCH[i].eqHIWidth,0.01f,audioBufferSize/4.0f,false);
 			//////////////////////////////////////////////
-			
+
 			gui.setWhichColumn(1);
 			//////////////////////////////////////////////
 			gui.setTextColor(gamuzaMainColor);
 			gui.addLabel("osc data settings");
 			gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-			
+
 			sprintf(xml_name,"USE_KALMAN_FILTER_AUDIOCH_%i",i);
 			gui.addToggle("use kalman filter", xml_name, false);
 			sprintf(xml_name,"SMOOTHING_FACTOR_AUDIOCH_%i",i);
@@ -696,17 +696,17 @@ void gamuzaMain::setupGui(){
 			//////////////////////////////////////////////
 			gui.addChartPlotter("Volume chart", guiStatVarPointer("channel volume", &inputAudioCH[i]._osc_chVolume, GUI_VAR_FLOAT, true, 2), 180, 80, 200, 0.0f, 1.0f);
 			gui.addChartPlotter("Pitch chart", guiStatVarPointer("channel pitch", &inputAudioCH[i]._s_chPitch, GUI_VAR_FLOAT, true, 2), 180, 80, 200, 20.0f, 20000.0f);
-			
+
 		}
 	}
 	//////////////////////////////////////////////
-	
+
 	//////////////////////////////////////////////
 	// Serial GUI [Arduino]
 	if(arduinoActivated){
-		
+
 		arduinoGraphics.loadImage("img/arduino.png");
-		
+
 		gui.setBackgroundColor(simpleColor(0, 0, 20, 255));
 		gui.setOutlineColor(simpleColor(0, 0, 20, 255));
 		sprintf(temp," arduino device connected at serial port %s | with baudrate %i", serialDevice.c_str(), baudRate);
@@ -714,36 +714,36 @@ void gamuzaMain::setupGui(){
 		gui.setWhichPanel(temp);
 		gui.setBackgroundColor(simpleColor(255, 255, 255, 20));
 		gui.setOutlineColor(simpleColor(20,20,20,255));
-		
+
 		gui.setWhichColumn(0);
 		//////////////////////////////////////////////
 		gui.setTextColor(gamuzaMainColor);
 		gui.addLabel("Analog values reading [0 | 5]");
 		gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-		
+
 		for(unsigned int i=0;i<6;i++){
 			sprintf(temp,"analog pin %i ",i);
 			gui.addChartPlotter(temp, guiStatVarPointer("Reading", &_s_analogPinValues[i], GUI_VAR_FLOAT, true, 2), 180, 80, 200, 0.0, 1023.0);
 		}
-		
+
 		gui.setWhichColumn(1);
 		//////////////////////////////////////////////
 		gui.setTextColor(gamuzaMainColor);
 		gui.addLabel("Analog pins control [0 | 5]");
 		gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-		
+
 		for(unsigned int i=0;i<6;i++){
 			sprintf(xml_name,"ARDUINO_ANALOG_PIN_%i_MODE",i);
 			sprintf(temp,"pin %i ",i);
 			gui.addTextDropDown(temp, xml_name, 1, ardAnalogPinModes);
 		}
-		
+
 		gui.setWhichColumn(2);
 		//////////////////////////////////////////////
 		gui.setTextColor(gamuzaMainColor);
 		gui.addLabel("Arduino board");
 		gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-		
+
 		gui.setTextColor(gamuzaMarkColor);
 		sprintf(xml_name,"USE_ARDUINO");
 		gui.addToggle("use arduino", xml_name, true);
@@ -753,18 +753,18 @@ void gamuzaMain::setupGui(){
 		gui.setTextColor(gamuzaMainColor);
 		gui.addLabel("osc data settings");
 		gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-		
+
 		sprintf(xml_name,"USE_KALMAN_FILTER_ARDUINO");
 		gui.addToggle("use kalman filter", xml_name, false);
 		sprintf(xml_name,"SMOOTHING_FACTOR_ARDUINO");
 		gui.addSlider("smoothing factor",xml_name,arduino_smoothingFactor,0.01f,0.99f,false);
-		
+
 		gui.setWhichColumn(3);
 		//////////////////////////////////////////////
 		gui.setTextColor(gamuzaMainColor);
 		gui.addLabel("digital pins control [2 | 13]");
 		gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-		
+
 		//////////////////////////////////////////////
 		for(unsigned int i=2;i<14;i++){
 			sprintf(xml_name,"ARDUINO_DIGITAL_PIN_%i_MODE",i);
@@ -776,13 +776,13 @@ void gamuzaMain::setupGui(){
 				gui.addTextDropDown(temp, xml_name, 0, ardDigitalPinModes);
 			}
 		}
-		
+
 		gui.setWhichColumn(4);
 		//////////////////////////////////////////////
 		gui.setTextColor(gamuzaMainColor);
 		gui.addLabel("digital values writing [2 | 13]");
 		gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-		
+
 		//////////////////////////////////////////////
 		for(unsigned int i=2;i<14;i++){
 			sprintf(xml_name,"ARDUINO_DIGITAL_PIN_%i_VALUE",i);
@@ -808,10 +808,10 @@ void gamuzaMain::setupGui(){
 				gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
 			}
 		}
-		
+
 	}
 	//////////////////////////////////////////////
-	
+
 	//////////////////////////////////////////////
 	// OSC GUI [Open Sound Control Output DATA]
 	if(oscActivated){
@@ -822,21 +822,21 @@ void gamuzaMain::setupGui(){
 		gui.setWhichPanel(temp);
 		gui.setBackgroundColor(simpleColor(255, 255, 255, 20));
 		gui.setOutlineColor(simpleColor(20,20,20,255));
-		
+
 		gui.setWhichColumn(0);
-		
+
 		//////////////////////////////////////////////
 		gui.setTextColor(gamuzaMarkColor);
 		sprintf(xml_name,"USE_OSC");
 		gui.addToggle("use osc", xml_name, true);
 		//////////////////////////////////////////////
-		
+
 		if(openniActivated){
 			//////////////////////////////////////////////
 			gui.setTextColor(gamuzaMainColor);
 			gui.addLabel("openni sensor kinect osc data");
 			gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-			
+
 			sprintf(xml_name,"SENSOR_KINECT_SEND_OSC_BD");
 			gui.addToggle("send blob detection data", xml_name, true);
 			sprintf(xml_name,"SENSOR_KINECT_SEND_OSC_CF");
@@ -851,33 +851,33 @@ void gamuzaMain::setupGui(){
 			gui.addToggle("send hand tracking data", xml_name, true);
 			sprintf(xml_name,"SENSOR_KINECT_SEND_OSC_HW");
 			gui.addToggle("send sensor hardware data", xml_name, true);
-		
+
 		}
 		//////////////////////////////////////////////
-		
+
 		if(arduinoActivated){
 			//////////////////////////////////////////////
 			gui.setTextColor(gamuzaMainColor);
 			gui.addLabel("arduino [serial port]");
 			gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-			
+
 			sprintf(xml_name,"ARDUINO_SEND_OSC_AAP");
 			gui.addToggle("send analog pins data", xml_name, true);
 			sprintf(xml_name,"ARDUINO_SEND_OSC_ADP");
 			gui.addToggle("send digital pins data", xml_name, true);
-			
+
 		}
 		//////////////////////////////////////////////
-		
+
 		if(trackingActivated){
-			for(unsigned int i=0;i<numCamInputs;i++){
+			for(int i=0;i<numCamInputs;i++){
 				gui.setWhichColumn(i+1);
 				//////////////////////////////////////////////
 				gui.setTextColor(gamuzaMainColor);
 				sprintf(temp,"Dev.[%i] | %s",camDevices[i],deviceNames[i].c_str());
 				gui.addLabel(temp);
 				gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-				
+
 				sprintf(xml_name,"WEBCAM_ID%i_SEND_OSC_MD",camDevices[i]);
 				gui.addToggle("send motion detection data", xml_name, true);
 				sprintf(xml_name,"WEBCAM_ID%i_SEND_OSC_BD",camDevices[i]);
@@ -892,55 +892,55 @@ void gamuzaMain::setupGui(){
 				gui.addToggle("send haar finder data", xml_name, true);
 				sprintf(xml_name,"WEBCAM_ID%i_SEND_OSC_TA",camDevices[i]);
 				gui.addToggle("send trigger areas data", xml_name, true);
-				
+
 			}
-			
+
 		}
 		//////////////////////////////////////////////
-		
+
 		if(audioActivated){
-			for(unsigned int i=0;i<audioInputChannels;i++){
+			for(int i=0;i<audioInputChannels;i++){
 				gui.setWhichColumn(i+1);
 				//////////////////////////////////////////////
 				gui.setTextColor(gamuzaMainColor);
 				sprintf(temp,"AUDIO input [channel %i]",i);
 				gui.addLabel(temp);
 				gui.setTextColor(gamuzaWhiteColor,gamuzaMarkColor);
-				
+
 				sprintf(xml_name,"AUDIO_INPUT_CH%i_SEND_OSC_VD",i);
 				gui.addToggle("send volume detection data", xml_name, true);
 				sprintf(xml_name,"AUDIO_INPUT_CH%i_SEND_OSC_PD",i);
 				gui.addToggle("send pitch detection data", xml_name, true);
 				sprintf(xml_name,"AUDIO_INPUT_CH%i_SEND_OSC_BK",i);
 				gui.addToggle("send bark scale data", xml_name, true);
-				
+
 			}
-			
+
 		}
 		//////////////////////////////////////////////
-		
+
 	}
 	//////////////////////////////////////////////
-	
+
 	//////////////////////////////////////////////
 	// Gamuza Credits GUI
 	gui.setBackgroundColor(simpleColor(20, 20, 20, 255));
-	
+
 	sprintf(temp," Gamuza [0.3] rel. %s 'Raven Shammy' Beta Testing", GAMUZA_RELEASE);
 	gui.addPanel(temp, 3);
 	gui.setWhichPanel(temp);
 	//////////////////////////////////////////////
-	
+
 	gui.loadSettings(GAMUZAGUI_SETTINGS);
-	
+
 	//////////////////////////////////////////////
 	// GUI Events
 	gui.setupEvents();
 	gui.enableEvents();
-	
+
 	// enable all events for gui logger
 	ofAddListener(gui.guiEvent, this, &gamuzaMain::eventsIn);
-	
+
 	// openNI sensor kinect GUI
 	if(openniActivated){
 		// create events to force contour finder computing
@@ -949,10 +949,10 @@ void gamuzaMain::setupGui(){
 		sprintf(temp,"COMPUTE_TA_SENSOR_KINECT");
 		ofAddListener(gui.createEventGroup(temp), this, &gamuzaMain::activateTrackingCF);
 	}
-	
+
 	// Video Tracking multi-panel GUI
 	if(trackingActivated){
-		for(unsigned int i=0;i<numCamInputs;i++){ // for each input camera
+		for(int i=0;i<numCamInputs;i++){ // for each input camera
 			// create event for capture background
 			sprintf(temp,"BG_CAPTURE_%i",camDevices[i]);
 			ofAddListener(gui.createEventGroup(temp), this, &gamuzaMain::grabBackgroundEvent);
@@ -966,16 +966,16 @@ void gamuzaMain::setupGui(){
 			ofAddListener(gui.createEventGroup(temp), this, &gamuzaMain::activateTrackingCF);
 		}
 	}
-	
+
 	// Audio Source multi-panel GUI
 	if(audioActivated){
-		for(unsigned int i=0;i<audioInputChannels;i++){ // for each audio input channel
+		for(int i=0;i<audioInputChannels;i++){ // for each audio input channel
 			// create event for noise filtering
 			sprintf(temp,"REC_NOISE_FILTER_%i",i);
 			ofAddListener(gui.createEventGroup(temp), this, &gamuzaMain::recordNoise);
 		}
 	}
-	
+
 	// Arduino GUI
 	if(arduinoActivated){
 		// Serial GUI [Arduino] ANALOG PINS
@@ -983,7 +983,7 @@ void gamuzaMain::setupGui(){
 			sprintf(temp,"ARDUINO_ANALOG_PIN_%i_MODE",i);
 			ofAddListener(gui.createEventGroup(temp),this, &gamuzaMain::changeAnalogPinMode);
 		}
-	
+
 		// Serial GUI [Arduino] DIGITAL PINS
 		for(unsigned int i=2;i<14;i++){
 			sprintf(temp,"ARDUINO_DIGITAL_PIN_%i_MODE",i);
@@ -992,21 +992,21 @@ void gamuzaMain::setupGui(){
 			ofAddListener(gui.createEventGroup(temp),this, &gamuzaMain::sendDigitalValue);
 		}
 	}
-	
+
 	// create event for reset output texture warping points
 	sprintf(temp,"RESET_FBO_MAPPING_COORDS");
 	ofAddListener(gui.createEventGroup(temp), this, &gamuzaMain::resetMappingPoints);
 	//////////////////////////////////////////////
-	
+
 	// last line of gamuza setup
 	flagSystemLoaded = true;
 	ofSeedRandom();
-	
+
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::setupStringVec(){
-	
+
 	// vector<string> of bgSubTechniques list
 	bgSubTechniques.push_back("color abs");
 	bgSubTechniques.push_back("b&w abs");
@@ -1068,14 +1068,14 @@ void gamuzaMain::setupStringVec(){
     exportType.push_back("vimeo_SD");
     exportType.push_back("vimeo_720p");
     exportType.push_back("vimeo_1080p");
-	
+
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::updateGui(){
-	
+
 	char xml_name[256];
-	
+
 	//////////////////////////////////////////////
 	// FBO Mapping texture preview & control
 	sprintf(xml_name,"COMPUTE_FBO_TEXTURE");
@@ -1132,7 +1132,7 @@ void gamuzaMain::updateGui(){
 		mainVolume = gui.getValueF(xml_name);
 	}
 	//////////////////////////////////////////////
-	
+
 	//////////////////////////////////////////////
 	// OpenNI SensorKinect GUI
 	if(openniActivated){
@@ -1158,7 +1158,7 @@ void gamuzaMain::updateGui(){
 		sprintf(xml_name,"MOTION_ON_HORIZON_SENSOR_KINECT");
 		sensorKinect.onHorizon = gui.getValueI(xml_name);
 		sprintf(xml_name,"MOTION_OFF_HORIZON_SENSOR_KINECT");
-		sensorKinect.offHorizon = gui.getValueI(xml_name);	
+		sensorKinect.offHorizon = gui.getValueI(xml_name);
 		sprintf(xml_name,"USE_KALMAN_FILTER_SENSOR_KINECT");
 		sensorKinect.useKalmanFilter = gui.getValueI(xml_name);
 		sprintf(xml_name,"SMOOTHING_FACTOR_SENSOR_KINECT");
@@ -1184,11 +1184,11 @@ void gamuzaMain::updateGui(){
 		sensorKinect.computeTriggerAreas = gui.getValueI(xml_name);
 	}
 	//////////////////////////////////////////////
-	
+
 	//////////////////////////////////////////////
 	// Video Tracking multi-panel GUI
 	if(trackingActivated){
-		for(unsigned int i=0;i<numCamInputs;i++){
+		for(int i=0;i<numCamInputs;i++){
 			sprintf(xml_name,"USE_DEVICE_%i",camDevices[i]);
 			inputCam[i].captureVideo = gui.getValueI(xml_name);
 			//////////////////////////////////////////////
@@ -1298,17 +1298,17 @@ void gamuzaMain::updateGui(){
 			sprintf(xml_name,"SMOOTHING_FACTOR_%i",camDevices[i]);
 			inputCam[i]._smoothingFactor = gui.getValueF(xml_name);
 			//////////////////////////////////////////////
-			
+
 			inputCam[i].drawInfoGraphics = !gui.minimize;
-		
+
 		}
 	}
 	//////////////////////////////////////////////
-	
+
 	//////////////////////////////////////////////
 	// Audio Source multi-panel GUI
 	if(audioActivated){
-		for(unsigned int i=0;i<audioInputChannels;i++){
+		for(int i=0;i<audioInputChannels;i++){
 			sprintf(xml_name,"USE_AUDIO_INPUT_%i",i);
 			inputAudioCH[i].captureAudio = gui.getValueI(xml_name);
 			//////////////////////////////////////////////
@@ -1345,13 +1345,13 @@ void gamuzaMain::updateGui(){
 			inputAudioCH[i].useKalmanFilter = gui.getValueI(xml_name);
 			sprintf(xml_name,"SMOOTHING_FACTOR_AUDIOCH_%i",i);
 			inputAudioCH[i]._smoothingFactor = gui.getValueF(xml_name);
-			
+
 			inputAudioCH[i].drawGraphics = !gui.minimize;
-		
+
 		}
 	}
 	//////////////////////////////////////////////
-	
+
 	//////////////////////////////////////////////
 	// Serial GUI [Arduino]
 	if(arduinoActivated){
@@ -1362,10 +1362,10 @@ void gamuzaMain::updateGui(){
 		useKalmanFilterArduino = gui.getValueI(xml_name);
 		sprintf(xml_name,"SMOOTHING_FACTOR_ARDUINO");
 		arduino_smoothingFactor = gui.getValueF(xml_name);
-		
+
 	}
 	//////////////////////////////////////////////
-	
+
 	//////////////////////////////////////////////
 	// OSC GUI [Open Sound Control Output DATA]
 	if(oscActivated){
@@ -1390,7 +1390,7 @@ void gamuzaMain::updateGui(){
 		}
 		//////////////////////////////////////////////
 		if(trackingActivated){
-			for(unsigned int i=0;i<numCamInputs;i++){
+			for(int i=0;i<numCamInputs;i++){
 				sprintf(xml_name,"WEBCAM_ID%i_SEND_OSC_MD",camDevices[i]);
 				inputCam[i].sendOsc_MD = gui.getValueI(xml_name);
 				sprintf(xml_name,"WEBCAM_ID%i_SEND_OSC_BD",camDevices[i]);
@@ -1409,7 +1409,7 @@ void gamuzaMain::updateGui(){
 		}
 		//////////////////////////////////////////////
 		if(audioActivated){
-			for(unsigned int i=0;i<audioInputChannels;i++){
+			for(int i=0;i<audioInputChannels;i++){
 				sprintf(xml_name,"AUDIO_INPUT_CH%i_SEND_OSC_VD",i);
 				inputAudioCH[i].sendOsc_VD = gui.getValueI(xml_name);
 				sprintf(xml_name,"AUDIO_INPUT_CH%i_SEND_OSC_PD",i);
@@ -1425,27 +1425,27 @@ void gamuzaMain::updateGui(){
 			sprintf(xml_name,"ARDUINO_SEND_OSC_ADP");
 			sendOsc_ADP = gui.getValueI(xml_name);
 		}
-		
+
 	}
 	//////////////////////////////////////////////
-	
+
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::drawGui(){
-	
+
 	char temp[128];
 	string temp1;
 	ostringstream temp2;
-	
+
 	glColor3f(1.0,1.0,1.0);
 	ofNoFill();
-	
+
 	////////////////////////////////////
 	// panel tabs colorize
 	if(!gui.minimize){
 		ofEnableAlphaBlending();
-		
+
 		ofFill();
 		// live Coding
 		glColor4f(1.0,1.0,1.0,1.0);
@@ -1458,14 +1458,14 @@ void gamuzaMain::drawGui(){
 		// webcams
 		if(trackingActivated){
 			glColor4f(0.847,0.25,0.25,1.0);
-			for(unsigned int i=0;i<numCamInputs;i++){
+			for(int i=0;i<numCamInputs;i++){
 				ofRect(gui.panelTabs[webcamsStartIndex+i].x+1, gui.panelTabs[webcamsStartIndex+i].y+1, gui.panelTabs[webcamsStartIndex+i].width-2, gui.panelTabs[webcamsStartIndex+i].height-2);
 			}
 		}
 		// audio input
 		if(audioActivated){
 			glColor4f(1.0,0.906,0.463,1.0);
-			for(unsigned int i=0;i<audioInputChannels;i++){
+			for(int i=0;i<audioInputChannels;i++){
 				ofRect(gui.panelTabs[audioInputStartIndex+i].x+1, gui.panelTabs[audioInputStartIndex+i].y+1, gui.panelTabs[audioInputStartIndex+i].width-2, gui.panelTabs[audioInputStartIndex+i].height-2);
 			}
 		}
@@ -1482,21 +1482,21 @@ void gamuzaMain::drawGui(){
 		// credits
 		glColor4f(1.0,1.0,1.0,1.0);
 		ofRect(gui.panelTabs[gui.panelTabs.size()-1].x+1, gui.panelTabs[gui.panelTabs.size()-1].y+1, gui.panelTabs[gui.panelTabs.size()-1].width-2, gui.panelTabs[gui.panelTabs.size()-1].height-2);
-		
+
 		ofDisableAlphaBlending();
 	}
 	////////////////////////////////////
-	
+
 	glPushMatrix();
 	glTranslatef(guiPosX, guiPosY, 0.0f);
-	
+
 	////////////////////////////////////
 	// MAIN TITLE
 	sprintf(temp," GAMUZA[0.3] rel. %s | <http://www.gamuza.cc> | <http://www.d3cod3.org>",GAMUZA_RELEASE);
 	ofSetColor(216, 64, 64);
 	fontSmall.drawString(temp,8,14);
 	////////////////////////////////////
-    
+
     ////////////////////////////////////
 	// LIVE CODING
     ofSetColor(255, 255, 255);
@@ -1515,11 +1515,11 @@ void gamuzaMain::drawGui(){
         ofRect(11,42,gui.boundingBox.width - gui.borderWidth*2 - 2, gui.boundingBox.height - gui.topSpacing*3 - 1);
         glColor4f(1.0,1.0,1.0,0.7);
         // encoding image
-        
+
         ofDisableAlphaBlending();
     }
     ////////////////////////////////////
-	
+
 	//////////////////////////////////////////////
 	// OPENNI
 	if(openniActivated){
@@ -1551,11 +1551,11 @@ void gamuzaMain::drawGui(){
 		}
 	}
 	//////////////////////////////////////////////
-	
+
 	//////////////////////////////////////////////
 	// Video Tracking Additional GUI
 	if(trackingActivated){
-		for(unsigned int i=0;i<numCamInputs;i++){
+		for(int i=0;i<numCamInputs;i++){
 			sprintf(temp," CAM Device [%i] | %s",camDevices[i],deviceNames[i].c_str());
 			if(gui.getSelectedPanelName() == temp){
 				if(inputCam[gui.getSelectedPanel()-webcamsStartIndex].captureVideo){
@@ -1590,11 +1590,11 @@ void gamuzaMain::drawGui(){
 		}
 	}
 	//////////////////////////////////////////////
-	
+
 	//////////////////////////////////////////////
 	// AUDIO input  Additional GUI
 	if(audioActivated){
-		for(unsigned int i=0;i<audioInputChannels;i++){
+		for(int i=0;i<audioInputChannels;i++){
 			sprintf(temp," AUDIO input [channel %i]",i);
 			if(gui.getSelectedPanelName() == temp && inputAudioCH[i].drawGraphics){
 				if(inputAudioCH[i].noiseRec){
@@ -1616,14 +1616,14 @@ void gamuzaMain::drawGui(){
 		if(audioOutputChannels > 0 && gui.getSelectedPanelName() == temp){
 			// draw audio output scope (multichannel mix)
 			float stretch = 512 / (float)((audioBufferSize*audioOutputChannels) - 1);
-			glPushMatrix();	
+			glPushMatrix();
 				glTranslatef(245, 504, 0.0f);
 				glEnable(GL_BLEND);
 				glColor4f(0.9f,0.9f,0.9f,0.85f);
 				ofNoFill();
 				glLineWidth(1.0f);
 				ofBeginShape();
-				for (unsigned int i = 0; i < (audioBufferSize*audioOutputChannels)-1; i++){
+				for (int i = 0; i < (audioBufferSize*audioOutputChannels)-1; i++){
 					ofVertex(i * stretch, hardClip(outputBufferCopy[i]) * 30);
 					ofVertex((i + 1) * stretch, hardClip(outputBufferCopy[i+1]) * 30);
 				}
@@ -1633,7 +1633,7 @@ void gamuzaMain::drawGui(){
 		}
 	}
 	//////////////////////////////////////////////
-	
+
 	//////////////////////////////////////////////
 	// Serial GUI [Arduino]
 	if(arduinoActivated){
@@ -1648,7 +1648,7 @@ void gamuzaMain::drawGui(){
 		}
 	}
 	//////////////////////////////////////////////
-	
+
 	//////////////////////////////////////////////
 	// OSC GUI [Open Sound Control Output DATA]
 	if(oscActivated){
@@ -1663,10 +1663,10 @@ void gamuzaMain::drawGui(){
 		}
 	}
 	//////////////////////////////////////////////
-	
+
 	//////////////////////////////////////////////
 	// Gamuza Credits Additional GUI
-	if(gui.getSelectedPanel() == gui.panelTabs.size()-1){
+	if(gui.getSelectedPanel() == (int)gui.panelTabs.size()-1){
 		// Credits background
 		ofEnableAlphaBlending();
 		glColor4f(1.0,1.0,1.0,0.9);
@@ -1680,13 +1680,13 @@ void gamuzaMain::drawGui(){
 		ofDisableAlphaBlending();
 	}
 	//////////////////////////////////////////////
-	
+
 	glPopMatrix();
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::gamuzaFullscreen(){
-	
+
 	ofToggleFullscreen();
 	if(isFullscreen){
 		isFullscreen = false;
@@ -1725,7 +1725,7 @@ void gamuzaMain::gamuzaFullscreen(){
 		gui.setDimensions(MAIN_WINDOW_W-2, MAIN_WINDOW_H-6);
         timeline.setWidth(mainScreenW-6);
 	}
-    
+
     if(liveCodingMode && isFullscreen){
         scriptScroll.reset(lcPrevX-20,1,20,lcPrevH-1);
     }else if(!liveCodingMode && isFullscreen){
@@ -1735,7 +1735,7 @@ void gamuzaMain::gamuzaFullscreen(){
     }else{
         scriptScroll.reset(224,previewY,20,previewH);
     }
-	
+
 }
 
 //--------------------------------------------------------------
@@ -1750,17 +1750,17 @@ void gamuzaMain::initTimeline(){
     if(showTimeline){
         timeline.show();
         timeline.enableMouse();
-        
+
     }else{
         timeline.hide();
         timeline.disableMouse();
     }
-    
+
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::resetWarpingPoints(int actualPanel){
-	
+
 	inputCam[actualPanel].sourceFrame.points[0].x = 0.0f;
 	inputCam[actualPanel].sourceFrame.points[0].y = 0.0f;
 	inputCam[actualPanel].sourceFrame.points[1].x = 320.0f;
@@ -1769,74 +1769,74 @@ void gamuzaMain::resetWarpingPoints(int actualPanel){
 	inputCam[actualPanel].sourceFrame.points[2].y = 240.0f;
 	inputCam[actualPanel].sourceFrame.points[3].x = 0.0f;
 	inputCam[actualPanel].sourceFrame.points[3].y = 240.0f;
-	
+
 }
 
 //////////////////////////////////////////////////////////////// GUI Events
 //--------------------------------------------------------------
 void gamuzaMain::eventsIn(guiCallbackData & data){
-	
+
 	//lets send all events to our logger
 	if( !data.isElement( "events logger" ) ){
 		/*string logStr = data.getXmlName();
-		
+
 		for(int k = 0; k < data.getNumValues(); k++){
 			logStr += " | " + data.getString(k);
 		}
-		
+
 		logger.log(OF_LOG_NOTICE, " %s", logStr.c_str());*/
-		
+
 		if(data.isElement("script examples")){
 			loadScript(scriptsLister.getSelectedPath());
 			liveCoding.glEditor[liveCoding.currentEditor]->clearEditor();
 			liveCoding.pasteFromLuaScript(readScript(scriptsLister.getSelectedPath(),false));
 		}
-		
+
 		if(data.isElement("OPEN_SCRIPT_FILE_DIALOG")){
 			openFileDialog();
 			gui.setValueB("OPEN_SCRIPT_FILE_DIALOG", false);
 		}
-		
+
 		if(data.isElement("SAVE_SCRIPT_FILE_DIALOG")){
 			saveFileDialog();
 			gui.setValueB("SAVE_SCRIPT_FILE_DIALOG", false);
 		}
-        
+
         if(data.isElement("EXPORT_VIDEO_FILE_DIALOG")){
 			exportVideoFileDialog();
 			gui.setValueB("EXPORT_VIDEO_FILE_DIALOG", false);
 		}
-        
+
         if(data.isElement("STOP_EXPORT_VIDEO")){
 			stopExportVideo();
 			gui.setValueB("STOP_EXPORT_VIDEO", false);
 		}
-        
+
         if(data.isElement("EXPORT_VIDEO_FPS_SEL")){
             gamuzaExportFPS = ofToInt(exportFPS[data.getInt(0)]);
             ofSetFrameRate(gamuzaExportFPS);
         }
-		
+
 		if(data.isElement("USE_LIVECODING") && data.getInt(0) == 1){
 			gui.setValueB("DRAW_FBO_CALIB_SCREEN", false);
 		}
-		
+
 		if(data.isElement("DRAW_FBO_CALIB_SCREEN") && data.getInt(0) == 1){
 			gui.setValueB("USE_LIVECODING", false);
 		}
-        
+
         if(data.isElement("RENDER_SCRIPT") && data.getInt(0) == 1){
             liveCoding.renderScript();
 			gui.setValueB("RENDER_SCRIPT", false);
 		}
-		
+
 	}
-	
+
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::grabBackgroundEvent(guiCallbackData & data){
-	
+
 	if(gui.getSelectedPanel() >= webcamsStartIndex && gui.getSelectedPanel() < webcamsStartIndex + numCamInputs){
 		char temp[256];
 		sprintf(temp,"BG_CAPTURE_%i",camDevices[gui.getSelectedPanel()-webcamsStartIndex]);
@@ -1845,12 +1845,12 @@ void gamuzaMain::grabBackgroundEvent(guiCallbackData & data){
 			gui.setValueB(temp, false);
 		}
 	}
-	
+
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::resetMappingPoints(guiCallbackData & data){
-	
+
 	char temp[256];
 	sprintf(temp,"RESET_FBO_MAPPING_COORDS");
 	if(data.isElement(temp) && data.getInt(0) == 1 ){
@@ -1858,12 +1858,12 @@ void gamuzaMain::resetMappingPoints(guiCallbackData & data){
 		finalTextureMapping.reset(projectionScreenW,projectionScreenH);
 		gui.setValueB(temp, false);
 	}
-	
+
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::activateTrackingCF(guiCallbackData & data){
-	
+
 	if(gui.getSelectedPanel() >= webcamsStartIndex && gui.getSelectedPanel() < webcamsStartIndex + numCamInputs){
 		char temp[256], temp2[256],temp3[256];
 		sprintf(temp,"COMPUTE_CG_%i",camDevices[gui.getSelectedPanel()-webcamsStartIndex]);
@@ -1873,7 +1873,7 @@ void gamuzaMain::activateTrackingCF(guiCallbackData & data){
 			gui.setValueB(temp3, true);
 		}
 	}
-	
+
 	if(gui.getSelectedPanel() == sensorKinectIndex){
 		char temp[256], temp2[256],temp3[256];
 		sprintf(temp,"COMPUTE_CG_SENSOR_KINECT");
@@ -1883,12 +1883,12 @@ void gamuzaMain::activateTrackingCF(guiCallbackData & data){
 			gui.setValueB(temp3, true);
 		}
 	}
-	
+
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::resetInputWarping(guiCallbackData & data){
-	
+
 	char temp[256];
 	if(gui.getSelectedPanel() >= webcamsStartIndex && gui.getSelectedPanel() < webcamsStartIndex + numCamInputs){
 		sprintf(temp,"RESET_INPUT_WARPING_DEV_%i",camDevices[gui.getSelectedPanel()-webcamsStartIndex]);
@@ -1901,7 +1901,7 @@ void gamuzaMain::resetInputWarping(guiCallbackData & data){
 
 //--------------------------------------------------------------
 void gamuzaMain::recordNoise(guiCallbackData & data){
-	
+
 	if(gui.getSelectedPanel() >= audioInputStartIndex && gui.getSelectedPanel() < (audioInputStartIndex+audioInputChannels)){
 		char temp[256];
 		sprintf(temp,"REC_NOISE_FILTER_%i",gui.getSelectedPanel()-audioInputStartIndex);
@@ -1910,12 +1910,12 @@ void gamuzaMain::recordNoise(guiCallbackData & data){
 			gui.setValueB(temp, false);
 		}
 	}
-	
+
 }
 
 //--------------------------------------------------------------
 void gamuzaMain::changeAnalogPinMode(guiCallbackData & data){
-	
+
 	char temp[256];
 	for(unsigned int i=0;i<6;i++){
 		sprintf(temp,"ARDUINO_ANALOG_PIN_%i_MODE",i);
@@ -1932,7 +1932,7 @@ void gamuzaMain::changeAnalogPinMode(guiCallbackData & data){
 
 //--------------------------------------------------------------
 void gamuzaMain::changeDigitalPinMode(guiCallbackData & data){
-	
+
 	char temp[256];
 	for(unsigned int i=2;i<14;i++){
 		sprintf(temp,"ARDUINO_DIGITAL_PIN_%i_MODE",i);
