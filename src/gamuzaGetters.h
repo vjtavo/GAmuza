@@ -36,6 +36,18 @@ ofPixelsRef gaGetWebcamPixelsRef(int _id){
 	}
 }
 
+void gaSaveFrame(string _name){
+    string start = "export/frames/";
+    string fin = start+_name;
+    if(gapp->gamuzaBase.useSecondaryScreen && gapp->gamuzaBase.useShader){
+        gapp->gamuzaBase.finalTexture.readToPixels(gapp->gamuzaBase.outputPix);
+    }else{
+        gapp->gamuzaBase.drawingTexture.readToPixels(gapp->gamuzaBase.outputPix);
+    }
+    gapp->gamuzaBase.tempFrame.setFromPixels(gapp->gamuzaBase.outputPix);
+    gapp->gamuzaBase.tempFrame.saveImage(fin.c_str());
+}
+
 //--------------------------------------------------------------
 // PIXELS MANIPULATION SECTION
 //--------------------------------------------------------------
